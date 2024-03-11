@@ -1,14 +1,19 @@
 spring:
-  jpa:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/refesta
+    username: root
+    password: ssafy
 
+  jpa:
     defer-datasource-initialization: true
     hibernate:
       ddl-auto: update
   jackson:
     property-naming-strategy: LOWER_CAMEL_CASE
 
-
   profiles:
     include:
       - cors
+
 
