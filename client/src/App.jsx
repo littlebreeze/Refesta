@@ -6,7 +6,10 @@ function App() {
 
   return (
     <>
-      <h1>REFESTA</h1>
+      <div className='App'>
+        <h1>REFESTA</h1>
+        <h2>test</h2>
+      </div>
     </>
   );
 }
