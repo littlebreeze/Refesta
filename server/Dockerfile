@@ -7,7 +7,7 @@ EXPOSE 8081
 EXPOSE 80
 
 
-ADD /var/jenkins_home/workspace/refesta-server/server/build/libs/*.jar app.jar
+ADD var/jenkins_home/workspace/refesta-server/server/build/libs/*.jar app.jar
 ENTRYPOINT ["java", "-jar", "/app.jar"]
 
 # Dockerfile
