@@ -1,0 +1,14 @@
+spring:
+  jpa:
+
+    defer-datasource-initialization: true
+    hibernate:
+      ddl-auto: update
+  jackson:
+    property-naming-strategy: LOWER_CAMEL_CASE
+
+
+  profiles:
+    include:
+      - cors
+
