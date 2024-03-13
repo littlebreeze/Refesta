@@ -7,7 +7,12 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum ErrorCode {
 
-    USER_NOT_FOUND_ERROR(404, "USR001", "존재하지 않는 사용자입니다.");
+    //User
+    USER_NOT_FOUND_ERROR(404, "USR001", "존재하지 않는 사용자입니다."),
+
+    //Festival
+    FESTIVAL_NOT_FOUND_ERROR(404, "FES001", "존재하지 않는 페스티벌입니다."),
+    FESTIVAL_DETAIL_NOT_FOUND_ERROR(404, "FES002", "페스티벌 상세정보가 존재하지 않습니다.");
 
     private final int status;
 
