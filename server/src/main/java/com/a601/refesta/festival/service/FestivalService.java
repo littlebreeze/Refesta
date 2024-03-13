@@ -45,7 +45,7 @@ public class FestivalService {
     }
 
     //공통 메서드
-    public Festival getFestival(Integer festivalId) {
+    public Festival getFestival(int festivalId) {
         return festivalRepository.findById(festivalId)
                 .orElseThrow(() -> new CustomException(ErrorCode.FESTIVAL_NOT_FOUND_ERROR));
     }
