@@ -1,8 +1,8 @@
-package com.a601.refesta.user.domain.join;
+package com.a601.refesta.member.domain.join;
 
 import com.a601.refesta.common.entity.BaseEntity;
 import com.a601.refesta.genre.domain.Genre;
-import com.a601.refesta.user.domain.Member;
+import com.a601.refesta.member.domain.Member;
 import jakarta.persistence.*;
 import lombok.*;
 

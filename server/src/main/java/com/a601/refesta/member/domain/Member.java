@@ -1,4 +1,4 @@
-package com.a601.refesta.user.domain;
+package com.a601.refesta.member.domain;
 
 import com.a601.refesta.common.entity.BaseEntity;
 import jakarta.persistence.*;

@@ -1,7 +1,7 @@
-package com.a601.refesta.user.domain.join;
+package com.a601.refesta.member.domain.join;
 
 import com.a601.refesta.festival.domain.Festival;
-import com.a601.refesta.user.domain.Member;
+import com.a601.refesta.member.domain.Member;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -25,5 +25,9 @@ public class FestivalLike {
 
     @Column(nullable = false)
     private boolean isDeleted;
+
+    public void updateStatus() {
+        this.isDeleted = !isDeleted;
+    }
 }
 
