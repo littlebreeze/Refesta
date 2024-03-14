@@ -23,5 +23,5 @@ public class FestivalDetail extends BaseEntity {
     private Integer price;
 
     @Column(nullable = false)
-    private String pictureUrl;
+    private String infoImgUrl;
 }

@@ -27,11 +27,8 @@ public class FestivalInfoRes {
     private int price;
     private String infoImgUrl;
 
-    public void setPrice(Integer price) {
+    public void setDetailInfo(Integer price, String infoImgUrl) {
         this.price = price;
-    }
-
-    public void setInfoImgUrl(String infoImgUrl) {
         this.infoImgUrl = infoImgUrl;
     }
 }

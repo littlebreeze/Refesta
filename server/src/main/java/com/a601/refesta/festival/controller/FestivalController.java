@@ -14,5 +14,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class FestivalController {
 
+    private final FestivalService festivalService;
+
+    @GetMapping("/{festival_id}")
+    public SuccessResponse<FestivalInfoRes> getFestivalInfo(@PathVariable int festivalId) {
+        return new SuccessResponse<>(festivalService.getFestivalInfo(festivalId));
+    }
+
 
 }
