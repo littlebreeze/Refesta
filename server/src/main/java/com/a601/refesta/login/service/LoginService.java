@@ -3,6 +3,7 @@ package com.a601.refesta.login.service;
 import com.a601.refesta.common.jwt.TokenProvider;
 import com.a601.refesta.login.data.GoogleOAuthTokenRes;
 import com.a601.refesta.login.data.GoogleUserInfoRes;
+import com.a601.refesta.login.data.OauthTokenRes;
 import com.a601.refesta.member.domain.Member;
 import com.a601.refesta.member.repository.MemberRepository;
 import com.google.gson.Gson;
@@ -90,7 +91,20 @@ public class LoginService {
         return gson.fromJson(response.getBody(), GoogleUserInfoRes.class);
     }
 
-    public Member registrationCheck(GoogleUserInfoRes googleUserInfoRes) {
+    public OauthTokenRes getAccessTokenJsonData(String code) {
+        //코드로 토큰받기
+        GoogleOAuthTokenRes oauthTokenData = getTokenbyCode(code);
+
+        //토큰으로 사용자 정보 받기
+        GoogleUserInfoRes googleUserInfoRes = getUserInfoByToken(oauthTokenData.getAccess_token());
+
+        //받아온 사용자 정보(로그인/회원가입한 유저)로 우리 토큰 만들기
+        OauthTokenRes oauthTokenRes = generateTokenbyUserInfo(googleUserInfoRes);
+        return oauthTokenRes;
+    }
+
+    private OauthTokenRes generateTokenbyUserInfo(GoogleUserInfoRes googleUserInfoRes) {
+        boolean isSignUp=false;
         if (memberRepository.findByGoogleId(googleUserInfoRes.getId()) == null) { //우리 회원이 아니면
             Member newMember = Member.builder()
                     .googleId(googleUserInfoRes.getId())
@@ -99,7 +113,13 @@ public class LoginService {
                     .profileUrl(googleUserInfoRes.getPicture())
                     .build();
             memberRepository.save(newMember);
+            isSignUp=true;
         }
-        return memberRepository.findByGoogleId(googleUserInfoRes.getId());
+
+        Member member=memberRepository.findByGoogleId(googleUserInfoRes.getId());
+
+        OauthTokenRes oauthTokenRes=tokenProvider.generateTokenDto(member);
+        if (isSignUp) oauthTokenRes.isSignUp(true);
+        return oauthTokenRes;
     }
 }
