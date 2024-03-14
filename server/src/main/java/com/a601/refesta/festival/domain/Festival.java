@@ -3,6 +3,7 @@ package com.a601.refesta.festival.domain;
 import com.a601.refesta.common.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 
 import java.time.LocalDate;
 
@@ -27,8 +28,9 @@ public class Festival extends BaseEntity {
     private LocalDate date;
 
     @Column(nullable = false)
-    private Integer price;
+    private String posterUrl;
 
     @Column(nullable = false)
-    private String posterUrl;
+    @ColumnDefault("false")
+    private boolean isEnded;
 }

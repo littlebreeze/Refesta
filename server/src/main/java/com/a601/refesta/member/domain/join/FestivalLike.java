@@ -1,11 +1,9 @@
-package com.a601.refesta.user.domain.join;
+package com.a601.refesta.member.domain.join;
 
 import com.a601.refesta.festival.domain.Festival;
-import com.a601.refesta.user.domain.User;
+import com.a601.refesta.member.domain.Member;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.ColumnDefault;
-import org.springframework.boot.context.properties.bind.DefaultValue;
 
 @Entity
 @Getter
@@ -18,8 +16,8 @@ public class FestivalLike {
     private Integer id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
+    @JoinColumn(name = "member_id")
+    private Member member;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "festival_id")
@@ -27,5 +25,9 @@ public class FestivalLike {
 
     @Column(nullable = false)
     private boolean isDeleted;
+
+    public void updateStatus() {
+        this.isDeleted = !isDeleted;
+    }
 }
 

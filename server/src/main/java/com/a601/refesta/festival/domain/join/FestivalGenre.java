@@ -2,7 +2,6 @@ package com.a601.refesta.festival.domain.join;
 
 import com.a601.refesta.festival.domain.Festival;
 import com.a601.refesta.genre.domain.Genre;
-import com.a601.refesta.user.domain.User;
 import jakarta.persistence.*;
 import lombok.*;
 

@@ -1,7 +1,7 @@
 package com.a601.refesta.reservation.domain;
 
 import com.a601.refesta.festival.domain.Festival;
-import com.a601.refesta.user.domain.User;
+import com.a601.refesta.member.domain.Member;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -16,8 +16,8 @@ public class Reservation {
     private Integer id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
+    @JoinColumn(name = "member_id")
+    private Member member;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "festival_id")

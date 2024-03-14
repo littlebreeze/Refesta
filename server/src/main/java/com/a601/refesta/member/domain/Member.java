@@ -1,4 +1,4 @@
-package com.a601.refesta.user.domain;
+package com.a601.refesta.member.domain;
 
 import com.a601.refesta.common.entity.BaseEntity;
 import jakarta.persistence.*;
@@ -9,7 +9,7 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class User extends BaseEntity {
+public class Member extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
