@@ -2,6 +2,7 @@ package com.a601.refesta.login.service;
 
 import com.a601.refesta.common.jwt.TokenProvider;
 import com.a601.refesta.login.data.GoogleOAuthTokenRes;
+import com.a601.refesta.login.data.GoogleUserInfoRes;
 import com.google.gson.Gson;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -65,4 +66,24 @@ public class LoginService {
 
     }
 
+    public GoogleUserInfoRes getUserInfoByToken(String accessToken) {
+        RestTemplate rt = new RestTemplate();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", "Bearer " + accessToken);
+        headers.add("Content-Type", "application/x-www-form-urlencoded;charset=utf-8");
+
+        HttpEntity<MultiValueMap<String, String>> req = new HttpEntity<>(headers);
+
+        ResponseEntity<String> response = rt.exchange(
+                "https://www.googleapis.com/userinfo/v2/me",
+                HttpMethod.POST,
+                req,
+                String.class
+        );
+
+        Gson gson = new Gson();
+
+        return gson.fromJson(response.getBody(), GoogleUserInfoRes.class);
+    }
 }
