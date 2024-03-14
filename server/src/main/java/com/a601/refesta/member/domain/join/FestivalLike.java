@@ -23,11 +23,11 @@ public class FestivalLike {
     @JoinColumn(name = "festival_id")
     private Festival festival;
 
-    @Column(nullable = false)
-    private boolean isDeleted;
+    @Column(nullable = true)
+    private boolean isLiked;
 
     public void updateStatus() {
-        this.isDeleted = !isDeleted;
+        this.isLiked = !isLiked;
     }
 }
 
