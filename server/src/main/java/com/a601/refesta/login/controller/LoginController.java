@@ -5,6 +5,7 @@ import com.a601.refesta.login.data.GoogleOAuthTokenRes;
 import com.a601.refesta.login.data.GoogleUserInfoRes;
 import com.a601.refesta.login.data.OauthTokenRes;
 import com.a601.refesta.login.service.LoginService;
+import com.a601.refesta.member.domain.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,7 +25,9 @@ public class LoginController {
         GoogleOAuthTokenRes oauthTokenData = loginService.getTokenbyCode(code);
         //토큰으로 사용자 정보 받기
         GoogleUserInfoRes googleUserInfoRes = loginService.getUserInfoByToken(oauthTokenData.getAccess_token());
-        //사용자 우리 유저인지 체크하기
+        
+        //사용자 우리 유저인지 체크하고 아니라면 회원가입
+        Member member = loginService.registrationCheck(googleUserInfoRes);
 
 
         OauthTokenRes oauthTokenRes = new OauthTokenRes();

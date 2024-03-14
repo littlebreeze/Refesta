@@ -3,6 +3,8 @@ package com.a601.refesta.login.service;
 import com.a601.refesta.common.jwt.TokenProvider;
 import com.a601.refesta.login.data.GoogleOAuthTokenRes;
 import com.a601.refesta.login.data.GoogleUserInfoRes;
+import com.a601.refesta.member.domain.Member;
+import com.a601.refesta.member.repository.MemberRepository;
 import com.google.gson.Gson;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,6 +22,7 @@ import org.springframework.web.client.RestTemplate;
 public class LoginService {
 
     private final TokenProvider tokenProvider;
+    private final MemberRepository memberRepository;
 
     private final String GRANT_TYPE = "authorization_code";
 
@@ -85,5 +88,18 @@ public class LoginService {
         Gson gson = new Gson();
 
         return gson.fromJson(response.getBody(), GoogleUserInfoRes.class);
+    }
+
+    public Member registrationCheck(GoogleUserInfoRes googleUserInfoRes) {
+        if (memberRepository.findByGoogleId(googleUserInfoRes.getId()) == null) { //우리 회원이 아니면
+            Member newMember = Member.builder()
+                    .googleId(googleUserInfoRes.getId())
+                    .email(googleUserInfoRes.getEmail())
+                    .name(googleUserInfoRes.getName())
+                    .profileUrl(googleUserInfoRes.getPicture())
+                    .build();
+            memberRepository.save(newMember);
+        }
+        return memberRepository.findByGoogleId(googleUserInfoRes.getId());
     }
 }
