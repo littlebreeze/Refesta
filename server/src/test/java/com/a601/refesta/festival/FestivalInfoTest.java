@@ -24,10 +24,8 @@ public class FestivalInfoTest {
 
     @Mock
     private FestivalRepository festivalRepository;
-
     @Mock
     private FestivalDetailRepository festivalDetailRepository;
-
     @InjectMocks
     private FestivalService festivalService;
 
@@ -38,13 +36,16 @@ public class FestivalInfoTest {
 
     @Test
     void getFestivalInfo_ended() {
+        //given
         Festival endedFestival = new Festival(1,
                 "endedFestival", "ssafy", LocalDate.now(), "posterUrl", true);
 
         when(festivalRepository.findById(1)).thenReturn(Optional.of(endedFestival));
 
+        //when
         FestivalInfoRes endedInfo = festivalService.getFestivalInfo(1);
 
+        //then
         assertNotNull(endedInfo);
         assertEquals((Integer) 0, endedInfo.getPrice());
         assertEquals(null, endedInfo.getInfoImgUrl());

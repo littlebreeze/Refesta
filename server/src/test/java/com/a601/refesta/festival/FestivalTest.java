@@ -26,10 +26,8 @@ public class FestivalTest {
 
     @Mock
     private FestivalRepository festivalRepository;
-
     @Mock
     private FestivalDetailRepository festivalDetailRepository;
-
     @InjectMocks
     private FestivalService festivalService;
 
