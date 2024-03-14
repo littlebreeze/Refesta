@@ -14,10 +14,4 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class ArtistController {
 
-    private final ArtistService artistService;
-
-    @GetMapping("/{artist_id}")
-    public SuccessResponse<ArtistInfoRes> getArtistInfo(@PathVariable Integer artistId) {
-        return new SuccessResponse<>(artistService.getArtistInfo(artistId));
-    }
 }

@@ -13,24 +13,4 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class ArtistService {
 
-    private final ArtistRepository artistRepository;
-
-    public ArtistInfoRes getArtistInfo(int artistId) {
-        Artist artist = getArtist(artistId);
-
-        //장르
-
-        //참여행사
-
-        ArtistInfoRes artistInfo = ArtistInfoRes.builder()
-                .name(artist.getName())
-                .profileUrl(artist.getProfileUrl())
-                .build();
-    }
-
-    //공통 메서드
-    public Artist getArtist(int artistId) {
-        return artistRepository.findById(artistId)
-                .orElseThrow(() -> new CustomException(ErrorCode.Artist_NOT_FOUND_ERROR));
-    }
 }
