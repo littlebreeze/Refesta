@@ -104,7 +104,7 @@ public class LoginService {
     }
 
     private OauthTokenRes generateTokenbyUserInfo(GoogleUserInfoRes googleUserInfoRes) {
-        boolean isSignUp=false;
+        boolean signUp = false;
         if (memberRepository.findByGoogleId(googleUserInfoRes.getId()) == null) { //우리 회원이 아니면
             Member newMember = Member.builder()
                     .googleId(googleUserInfoRes.getId())
@@ -113,13 +113,13 @@ public class LoginService {
                     .profileUrl(googleUserInfoRes.getPicture())
                     .build();
             memberRepository.save(newMember);
-            isSignUp=true;
+            signUp = true;
         }
 
-        Member member=memberRepository.findByGoogleId(googleUserInfoRes.getId());
+        Member member = memberRepository.findByGoogleId(googleUserInfoRes.getId());
 
-        OauthTokenRes oauthTokenRes=tokenProvider.generateTokenDto(member);
-        if (isSignUp) oauthTokenRes.isSignUp(true);
+        OauthTokenRes oauthTokenRes = tokenProvider.generateTokenDto(member);
+        if (signUp) oauthTokenRes.isSignUp(true);
         return oauthTokenRes;
     }
 }
