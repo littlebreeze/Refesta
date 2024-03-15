@@ -18,5 +18,5 @@ public class Artist extends BaseEntity {
     private String name;
 
     @Column(nullable = false)
-    private String profileUrl;
+    private String pictureUrl;
 }
