@@ -45,7 +45,7 @@ public class FestivalInfoTest {
         //when
         FestivalInfoRes endedInfo = festivalService.getFestivalInfo(1);
 
-        //then
+        //then(종료된 페스티벌 정보, price와 상세 정보 이미지 X)
         assertNotNull(endedInfo);
         assertEquals((Integer) 0, endedInfo.getPrice());
         assertEquals(null, endedInfo.getInfoImgUrl());
@@ -61,8 +61,10 @@ public class FestivalInfoTest {
         when(festivalRepository.findById(1)).thenReturn(Optional.of(scheduledFestival));
         when(festivalDetailRepository.findByFestival_Id(1)).thenReturn(Optional.of(scheduledDetail));
 
+        //when
         FestivalInfoRes scheduledInfo = festivalService.getFestivalInfo(1);
 
+        //then(예정된 페스티벌 정보, price와 상세 정보 이미지 O)
         assertNotNull(scheduledInfo);
         assertEquals(10000, scheduledInfo.getPrice());
         assertEquals("infoImgUrl", scheduledInfo.getInfoImgUrl());
@@ -70,13 +72,13 @@ public class FestivalInfoTest {
 
     @Test
     void getFestivalInfo_Error() {
-        //예정된 행사인데, id에 해당하는 페스티벌 상세 정보가 존재하지 않는 경우
         Festival testFestival = new Festival(1,
                 "testFestival", "ssafy", LocalDate.now(), "posterUrl", false);
 
         when(festivalRepository.findById(1)).thenReturn(Optional.of(testFestival));
         when(festivalDetailRepository.findByFestival_Id(1)).thenReturn(Optional.empty());
 
+        //예정된 행사인데, id에 해당하는 페스티벌 상세 정보가 존재하지 않는 경우
         CustomException exception = assertThrows(CustomException.class, () -> festivalService.getFestivalInfo(1));
 
         assertEquals(ErrorCode.FESTIVAL_DETAIL_NOT_FOUND_ERROR, exception.getErrorCode());

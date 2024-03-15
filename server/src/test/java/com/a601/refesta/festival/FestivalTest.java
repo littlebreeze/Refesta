@@ -8,11 +8,10 @@ import com.a601.refesta.festival.domain.FestivalDetail;
 import com.a601.refesta.festival.repository.FestivalDetailRepository;
 import com.a601.refesta.festival.repository.FestivalRepository;
 import com.a601.refesta.festival.service.FestivalService;
+import com.a601.refesta.member.domain.join.FestivalLike;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.*;
 
 import java.time.LocalDate;
 import java.util.Optional;

@@ -11,17 +11,13 @@ import com.a601.refesta.member.service.MemberService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.*;
 
 import java.time.LocalDate;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class FestivalLikeTest {
 
@@ -31,9 +27,10 @@ public class FestivalLikeTest {
     private FestivalLikeRepository festivalLikeRepository;
     @Mock
     private MemberService memberService;
-
     @InjectMocks
     private FestivalService festivalService;
+    @Captor
+    private ArgumentCaptor<FestivalLike> festivalLikeCaptor;
 
     @BeforeEach
     void setUp() {
@@ -41,11 +38,10 @@ public class FestivalLikeTest {
     }
 
     @Test
-    void updateFestivalLike_First() {
+    void updateFestivalLike_Create() {
         String memberId = "testMember";
         int festivalId = 1;
 
-        //최초 요청시엔 DB에 존재 X
         when(festivalLikeRepository.findByFestival_IdAndMember_Id(memberId, festivalId))
                 .thenReturn(Optional.empty());
 
@@ -53,16 +49,33 @@ public class FestivalLikeTest {
         Festival testFestival = mock(Festival.class);
 
         when(memberService.getMember(memberId)).thenReturn(testMember);
-        when(festivalService.getFestival(festivalId)).thenReturn(testFestival);
-
-        ArgumentCaptor<FestivalLike> festivalLikeCaptor = ArgumentCaptor.forClass(FestivalLike.class);
+        when(festivalRepository.findById(festivalId)).thenReturn(Optional.of(testFestival));
 
         //when
         festivalService.updateFestivalLike(memberId, festivalId);
 
-        //then
-        FestivalLike capturedFestivalLike = festivalLikeCaptor.getValue();
-        assertTrue(capturedFestivalLike.isLiked());
+        //then(DB에 없으면 새로 생성, isLiked 디폴트 값은 true)
+        verify(festivalLikeRepository).save(festivalLikeCaptor.capture());
+        FestivalLike createdLike = festivalLikeCaptor.getValue();
+        assertTrue(createdLike.isLiked());
     }
 
+    @Test
+    void updateFestivalLike_Update() {
+        String memberId = "googleId";
+        int festivalId = 1;
+
+        Member testMember = mock(Member.class);
+        Festival testFestival = mock(Festival.class);
+        FestivalLike testLike = new FestivalLike(1, testMember, testFestival, true);
+
+        when(festivalLikeRepository.findByFestival_IdAndMember_Id(memberId, festivalId))
+                .thenReturn(Optional.of(testLike));
+
+        //when
+        festivalService.updateFestivalLike(memberId, festivalId);
+
+        //then(DB에 있으면 좋아요 상태 업데이트)
+        assertFalse(testLike.isLiked());
+    }
 }
