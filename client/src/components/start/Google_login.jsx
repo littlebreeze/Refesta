@@ -26,7 +26,7 @@ const Google_Login = () => {
         'https://jsonplaceholder.typicode.com/comments'
       ).then((res) => res.json());
 
-      // 토큰 저장
+      // 토큰 저장 - 정하기
       // isSigUp으로 기존/신규 여부 판단
       res ? handleHome() : handleProfile();
     } catch (error) {
