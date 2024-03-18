@@ -1,19 +1,16 @@
 package com.a601.refesta.festival;
 
 import com.a601.refesta.festival.domain.Festival;
-import com.a601.refesta.festival.repository.FestivalLikeRepository;
+import com.a601.refesta.member.repository.FestivalLikeRepository;
 import com.a601.refesta.festival.repository.FestivalRepository;
 import com.a601.refesta.festival.service.FestivalService;
 import com.a601.refesta.member.domain.Member;
 import com.a601.refesta.member.domain.join.FestivalLike;
-import com.a601.refesta.member.repository.MemberRepository;
 import com.a601.refesta.member.service.MemberService;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -46,7 +43,7 @@ public class FestivalLikeTest {
         festivalIdList.add(1);
         int festivalId = festivalIdList.get(0);
 
-        when(festivalLikeRepository.findByFestival_IdAndMember_Id(memberId, festivalId))
+        when(festivalLikeRepository.findByMember_GoogleIdAndFestival_Id(memberId, festivalId))
                 .thenReturn(Optional.empty());
 
         Member testMember = mock(Member.class);
@@ -75,7 +72,7 @@ public class FestivalLikeTest {
         Festival testFestival = mock(Festival.class);
         FestivalLike testLike = new FestivalLike(1, testMember, testFestival, true);
 
-        when(festivalLikeRepository.findByFestival_IdAndMember_Id(memberId, festivalId))
+        when(festivalLikeRepository.findByMember_GoogleIdAndFestival_Id(memberId, festivalId))
                 .thenReturn(Optional.of(testLike));
 
         //when
