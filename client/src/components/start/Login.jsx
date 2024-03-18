@@ -1,5 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 
+import logo from '../../assets/refesta_logo.png';
+
 const Login = () => {
   const navigate = useNavigate();
 
@@ -7,7 +9,7 @@ const Login = () => {
     navigate(-1);
   };
 
-  const handleLogin = () => {
+  const handleGoogleLogin = () => {
     // 구글 로그인 화면으로 이동시키기
     window.location.href = `https://accounts.google.com/o/oauth2/v2/auth?
 		client_id=${import.meta.env.VITE_GOOGLE_AUTH_CLIENT_ID}
@@ -17,8 +19,9 @@ const Login = () => {
   };
 
   return (
-    <div>
-      <button onClick={handleLogin}>Google로 시작하기</button>
+    <div className='grid place-items-center bg-emerald-200'>
+      <img src={logo} />
+      <button onClick={handleGoogleLogin}>Google로 시작하기</button>
     </div>
   );
 };
