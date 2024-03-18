@@ -12,23 +12,15 @@ import java.time.LocalDate;
 @Builder
 public class FestivalInfoRes {
 
-    @NonNull
     private String name;
 
-    @NonNull
     private LocalDate date;
 
-    @NonNull
     private String location;
 
-    @NonNull
     private String posterUrl;
 
     private int price;
-    private String infoImgUrl;
 
-    public void setDetailInfo(Integer price, String infoImgUrl) {
-        this.price = price;
-        this.infoImgUrl = infoImgUrl;
-    }
+    private boolean isEnded;
 }
