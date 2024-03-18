@@ -10,25 +10,35 @@ const Google_Login = () => {
   };
 
   const handleProfile = () => {
-    nav('/nickname', { replace: true });
+    nav('/regist', { replace: true });
     //window.location.reload();
   };
 
   const [params, setParams] = useSearchParams();
   const code = params.get('code');
 
-  const handleLoginPost = async (code) => {
+  const postLogin = async (code) => {
     // code url에서 받아오기
     const data = { code: code };
     try {
       // 백으로 요청 보내기
-      const res = await fetch(
+      const response = await fetch(
         'https://jsonplaceholder.typicode.com/comments'
       ).then((res) => res.json());
 
       // 토큰 저장 - 정하기
+      console.log(response);
+      // localStorage.setItem(
+      //   'accessToken',
+      //   response.data.data.accessToken
+      // );
+      // localStorage.setItem(
+      //   'refreshToken',
+      //   response.data.data.refreshToken
+      // );
+
       // isSigUp으로 기존/신규 여부 판단
-      res ? handleHome() : handleProfile();
+      response.isSignUp ? handleHome() : handleProfile();
     } catch (error) {
       console.log(error);
     }
@@ -36,7 +46,7 @@ const Google_Login = () => {
 
   useEffect(() => {
     if (code) {
-      handleLoginPost(code);
+      postLogin(code);
     } else {
       console.log('로그인 재시도하세요.');
     }

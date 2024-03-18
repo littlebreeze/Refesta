@@ -17,7 +17,7 @@ function App() {
       <Routes>
         <Route path='/login' element={<Login />} />
         <Route path='/google-login' element={<Google_Login />} />
-        <Route path='/Regist' element={<RegisterInfo />} />
+        <Route path='/regist' element={<RegisterInfo />} />
         <Route path='/' element={<Home />} />
         <Route path='/FestivalList' element={<FestivalList />} />
         <Route path='/FestivalDetail' element={<FestivalDetail />} />
