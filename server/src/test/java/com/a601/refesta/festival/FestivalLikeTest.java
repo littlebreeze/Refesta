@@ -14,6 +14,8 @@ import org.junit.jupiter.api.Test;
 import org.mockito.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -40,7 +42,9 @@ public class FestivalLikeTest {
     @Test
     void updateFestivalLike_Create() {
         String memberId = "testMember";
-        int festivalId = 1;
+        List<Integer> festivalIdList = new ArrayList<>();
+        festivalIdList.add(1);
+        int festivalId = festivalIdList.get(0);
 
         when(festivalLikeRepository.findByFestival_IdAndMember_Id(memberId, festivalId))
                 .thenReturn(Optional.empty());
@@ -52,7 +56,7 @@ public class FestivalLikeTest {
         when(festivalRepository.findById(festivalId)).thenReturn(Optional.of(testFestival));
 
         //when
-        festivalService.updateFestivalLike(memberId, festivalId);
+        festivalService.updateFestivalLike(memberId, festivalIdList);
 
         //then(DB에 없으면 새로 생성, isLiked 디폴트 값은 true)
         verify(festivalLikeRepository).save(festivalLikeCaptor.capture());
@@ -62,8 +66,10 @@ public class FestivalLikeTest {
 
     @Test
     void updateFestivalLike_Update() {
-        String memberId = "googleId";
-        int festivalId = 1;
+        String memberId = "testMember";
+        List<Integer> festivalIdList = new ArrayList<>();
+        festivalIdList.add(1);
+        int festivalId = festivalIdList.get(0);
 
         Member testMember = mock(Member.class);
         Festival testFestival = mock(Festival.class);
@@ -73,7 +79,7 @@ public class FestivalLikeTest {
                 .thenReturn(Optional.of(testLike));
 
         //when
-        festivalService.updateFestivalLike(memberId, festivalId);
+        festivalService.updateFestivalLike(memberId, festivalIdList);
 
         //then(DB에 있으면 좋아요 상태 업데이트)
         assertFalse(testLike.isLiked());
