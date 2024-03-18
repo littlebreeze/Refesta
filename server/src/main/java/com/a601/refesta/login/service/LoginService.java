@@ -4,7 +4,9 @@ import com.a601.refesta.common.jwt.TokenProvider;
 import com.a601.refesta.login.data.GoogleOAuthTokenRes;
 import com.a601.refesta.login.data.GoogleUserInfoRes;
 import com.a601.refesta.login.data.OauthTokenRes;
+import com.a601.refesta.login.repository.RefreshTokenRepository;
 import com.a601.refesta.member.domain.Member;
+import com.a601.refesta.member.domain.RefreshToken;
 import com.a601.refesta.member.repository.MemberRepository;
 import com.google.gson.Gson;
 import lombok.RequiredArgsConstructor;
@@ -18,12 +20,15 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
+import java.time.LocalDateTime;
+
 @Service
 @RequiredArgsConstructor
 public class LoginService {
 
     private final TokenProvider tokenProvider;
     private final MemberRepository memberRepository;
+    private final RefreshTokenRepository refreshTokenRepository;
 
     private final String GRANT_TYPE = "authorization_code";
 
@@ -119,7 +124,17 @@ public class LoginService {
         Member member = memberRepository.findByGoogleId(googleUserInfoRes.getId());
 
         OauthTokenRes oauthTokenRes = tokenProvider.generateTokenDto(member);
+        //refreshtoken 일단 db저장 방식 구현
+        RefreshToken refreshToken = RefreshToken.builder()
+                .member(member)
+                .token(oauthTokenRes.getRefreshToken())
+                .expireDate(LocalDateTime.now().plusSeconds(oauthTokenRes.getRefreshTokenExpiresIn()))
+                .isExpired(false)
+                .build();
+        refreshTokenRepository.save(refreshToken);
+
         if (signUp) oauthTokenRes.isSignUp(true);
+
         return oauthTokenRes;
     }
 }
