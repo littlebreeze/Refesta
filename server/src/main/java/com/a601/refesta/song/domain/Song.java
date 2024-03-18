@@ -24,6 +24,4 @@ public class Song extends BaseEntity {
 
     @Column(nullable = false)
     private String imageUrl;
-
-
 }
