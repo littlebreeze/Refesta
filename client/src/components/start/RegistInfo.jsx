@@ -3,9 +3,12 @@ import editPencil from '../../assets/editPencil.png';
 
 const RegisterInfo = () => {
   return (
-    <div className='grid place-items-center w-full gap-y-4'>
-      <div className='relative p-2'>
-        <img className='rounded-full w-full' src={defaultImg} />
+    <div className='grid place-items-center w-full gap-y-5'>
+      <div className='text-center text-2xl font-bold leading-9 tracking-tight text-ourIndigo'>
+        프로필 설정하기
+      </div>
+      <div className='relative p-2 w-full'>
+        <img className='rounded-full  w-full' src={defaultImg} />
         <div
           className='absolute bottom-5 right-2 overflow-hidden flex justify-center bg-[#D9D9D9] rounded-full w-12 h-12 cursor-pointer'
           onClick={() => {
