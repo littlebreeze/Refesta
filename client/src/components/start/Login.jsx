@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 
 import logo from '../../assets/refesta_logo.png';
+import glogo from '../../assets/Google__G__logo.svg.png';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -19,9 +20,18 @@ const Login = () => {
   };
 
   return (
-    <div className='grid place-items-center bg-emerald-200'>
+    <div className='grid place-items-center w-full'>
       <img src={logo} />
-      <button onClick={handleGoogleLogin}>Google로 시작하기</button>
+      <h3 className='text-center text-2xl font-bold leading-9 tracking-tight text-ourIndigo'>
+        당신만을 위한 페스티벌
+      </h3>
+      <h2 className='text-center text-3xl font-bold leading-9 tracking-tight text-ourIndigo'>
+        Refesta
+      </h2>
+      <div className='flex justify-center items-center bg-white shadow-md shadow-zinc-400 h-14 w-full mt-14 font-semibold'>
+        <img className='max-w-4 mr-4' src={glogo} />
+        <button onClick={handleGoogleLogin}>Google로 시작하기</button>
+      </div>
     </div>
   );
 };
