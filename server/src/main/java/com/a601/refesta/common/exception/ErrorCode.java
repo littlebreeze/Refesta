@@ -7,8 +7,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum ErrorCode {
 
-    //User
-    USER_NOT_FOUND_ERROR(404, "USR001", "존재하지 않는 사용자입니다."),
+    //Member
+    MEMBER_NOT_FOUND_ERROR(404, "MEM001", "존재하지 않는 사용자입니다."),
 
     //Festival
     FESTIVAL_NOT_FOUND_ERROR(404, "FES001", "존재하지 않는 페스티벌입니다."),
