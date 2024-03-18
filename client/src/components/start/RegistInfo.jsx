@@ -1,34 +1,26 @@
-import defaultImg from '../../assets/defaultImg.jpg';
-import editPencil from '../../assets/editPencil.png';
+import { useState } from 'react';
+
+import ProfileInfo from '../start/ProfileInfo';
+import YoutubeConnect from './YoutubeConnect';
+import GenreList from './GenreList';
+
+// STEP : PROFILE > YOUTUBE > GENRE
 
 const RegisterInfo = () => {
+  const [step, setStep] = useState('PROFILE');
+
+  // 저장된 토큰으로 사용자 정보 요청해서 받아오기
+  // setStep 함수 넘겨주기
+
   return (
     <div className='grid place-items-center w-full gap-y-5'>
-      <div className='text-center text-2xl font-bold leading-9 tracking-tight text-ourIndigo'>
-        프로필 설정하기
-      </div>
-      <div className='relative p-2 w-full'>
-        <img className='rounded-full  w-full' src={defaultImg} />
-        <div
-          className='absolute bottom-5 right-2 overflow-hidden flex justify-center bg-[#D9D9D9] rounded-full w-12 h-12 cursor-pointer'
-          onClick={() => {
-            alert('사진 선택');
-          }}
-        >
-          <img
-            className='w-1/2 h-full object-contain'
-            src={editPencil}
-          />
-        </div>
-      </div>
-      <input
-        className='flex justify-center items-center bg-ourBrightGray h-14 w-full pl-5 rounded-md'
-        type='text'
-        placeholder='닉네임 입력'
-      />
-      <button className='flex justify-center items-center text-white bg-ourIndigo h-14 w-full rounded-md'>
-        회원가입 완료
-      </button>
+      {step === 'PROFILE' ? (
+        <ProfileInfo setStep={setStep} />
+      ) : step === 'YOUTUBE' ? (
+        <YoutubeConnect setStep={setStep} />
+      ) : (
+        <GenreList setStep={setStep} />
+      )}
     </div>
   );
 };

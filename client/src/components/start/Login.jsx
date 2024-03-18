@@ -12,6 +12,7 @@ const Login = () => {
 
   const handleGoogleLogin = () => {
     // 구글 로그인 화면으로 이동시키기
+    // 새창을 켜야할지도?
     window.location.href = `https://accounts.google.com/o/oauth2/v2/auth?
 		client_id=${import.meta.env.VITE_GOOGLE_AUTH_CLIENT_ID}
 		&redirect_uri=${import.meta.env.VITE_GOOGLE_AUTH_REDIRECT_URI}
