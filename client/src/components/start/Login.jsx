@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 
 import logo from '../../assets/refesta_logo.png';
-import glogo from '../../assets/Google__G__logo.svg.png';
+import glogo from '../../assets/google_small_logo.png';
 
 const Login = () => {
   const navigate = useNavigate();

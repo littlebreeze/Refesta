@@ -23,7 +23,8 @@ const Google_Login = () => {
     try {
       // 백으로 요청 보내기
       const response = await fetch(
-        'https://jsonplaceholder.typicode.com/comments'
+        'https://jsonplaceholder.typicode.com/comments',
+        data
       ).then((res) => res.json());
 
       // 토큰 저장 - 정하기

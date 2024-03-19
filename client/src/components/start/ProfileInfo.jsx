@@ -1,6 +1,5 @@
-import { useNavigate } from 'react-router-dom';
-import defaultImg from '../../assets/defaultImg.jpg';
-import editPencil from '../../assets/editPencil.png';
+import defaultImg from '../../assets/default_img.jpg';
+import editPencil from '../../assets/edit_pencil.png';
 
 const ProfileInfo = ({ setStep, stepParam }) => {
   const onClickRegist = () => {
