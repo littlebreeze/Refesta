@@ -6,5 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 public interface FestivalLikeRepository extends JpaRepository<FestivalLike, Integer> {
+
     Optional<FestivalLike> findByMember_GoogleIdAndFestival_Id(String memberId, int festivalId);
 }

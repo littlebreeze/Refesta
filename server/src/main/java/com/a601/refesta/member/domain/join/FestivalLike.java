@@ -4,6 +4,7 @@ import com.a601.refesta.festival.domain.Festival;
 import com.a601.refesta.member.domain.Member;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 
 @Entity
 @Getter
@@ -11,6 +12,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class FestivalLike {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -23,7 +25,8 @@ public class FestivalLike {
     @JoinColumn(name = "festival_id")
     private Festival festival;
 
-    @Column(nullable = true)
+    @Column(nullable = false)
+    @ColumnDefault("true")
     private boolean isLiked;
 
     public void updateStatus() {
