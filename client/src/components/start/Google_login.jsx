@@ -9,8 +9,8 @@ const Google_Login = () => {
     //window.location.reload();
   };
 
-  const handleProfile = () => {
-    nav('/regist/profile', { replace: true });
+  const handleProfile = (data) => {
+    nav('/regist/profile', { state: { ...data }, replace: true });
     //window.location.reload();
   };
 
@@ -19,7 +19,7 @@ const Google_Login = () => {
 
   const postLogin = async (code) => {
     // code url에서 받아오기
-    const data = { code: code };
+    // const data = { code: code };
     try {
       // 백으로 요청 보내기
       const response = await fetch(
@@ -29,23 +29,21 @@ const Google_Login = () => {
           headers: {
             'Content-Type': 'applicaion/json;charset-utf-8',
           },
-          body: JSON.stringify(data),
+          body: code,
         }
       ).then((res) => res.json());
 
-      // 토큰 저장 - 정하기
-      console.log(response);
-      // localStorage.setItem(
-      //   'accessToken',
-      //   response.data.data.accessToken
-      // );
-      // localStorage.setItem(
-      //   'refreshToken',
-      //   response.data.data.refreshToken
-      // );
+      // 토큰 저장
+      localStorage.setItem('accessToken', response.data.accessToken);
+      localStorage.setItem(
+        'refreshToken',
+        response.data.refreshToken
+      );
 
       // isSigUp으로 기존/신규 여부 판단
-      response.isSignUp ? handleHome() : handleProfile();
+      response.data.signUp
+        ? handleHome()
+        : handleProfile(response.data);
     } catch (error) {
       console.log(error);
     }

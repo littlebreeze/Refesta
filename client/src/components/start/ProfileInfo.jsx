@@ -1,7 +1,13 @@
+import { useLocation } from 'react-router-dom';
 import defaultImg from '../../assets/default_img.jpg';
 import editPencil from '../../assets/edit_pencil.png';
 
 const ProfileInfo = ({ setStep, stepParam }) => {
+  // navigate로 값 받으려면 이거 사용
+  const location = useLocation();
+
+  // 이 페이지로 이동했을 때, 토큰으로 사용자 정보 요청
+
   const onClickRegist = () => {
     alert('프로필 설정 완료');
     setStep(stepParam.step2);
