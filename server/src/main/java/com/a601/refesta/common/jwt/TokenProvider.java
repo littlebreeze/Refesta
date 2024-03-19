@@ -1,16 +1,24 @@
 package com.a601.refesta.common.jwt;
 
+import com.a601.refesta.common.exception.CustomException;
+import com.a601.refesta.common.exception.ErrorCode;
+import com.a601.refesta.login.data.MemberDetail;
+import com.a601.refesta.login.data.MemberDetailAuthenticationToken;
 import com.a601.refesta.login.data.OauthTokenRes;
 import com.a601.refesta.member.domain.Member;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import com.a601.refesta.member.repository.MemberRepository;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
 import java.sql.Timestamp;
+import java.util.Collection;
 import java.util.Date;
 
 import static java.time.LocalDateTime.now;
@@ -24,6 +32,9 @@ public class TokenProvider {
     private static final String AUD = "https://j10a601.p.ssafy.io/";
     private static final String ISS = "https://j10a601.p.ssafy.io/";
     private final Key key;
+
+    @Autowired
+    private MemberRepository memberRepository;
 
     public TokenProvider(@Value("${spring.security.oauth2.jwt.secret}") String secret) {
         byte[] keyBytes = Decoders.BASE64.decode(secret);
@@ -46,7 +57,7 @@ public class TokenProvider {
 
         //REFRESHTOKEN 생성
         String refreshToken = Jwts.builder()
-                .signWith(key,SignatureAlgorithm.ES512)
+                .signWith(key, SignatureAlgorithm.ES512)
                 .setAudience(AUD)
                 .setSubject(String.valueOf(member.getGoogleId()))
                 .setIssuer(ISS)
@@ -59,9 +70,58 @@ public class TokenProvider {
                 .memberId(member.getId())
                 .tokenType(BEARER_TYPE)
                 .accessToken(accessToken)
-                .expiresIn(ACCESS_TOKEN_EXPIRE_TIME-1)
+                .expiresIn(ACCESS_TOKEN_EXPIRE_TIME - 1)
                 .refreshToken(refreshToken)
                 .refreshTokenExpiresIn(REFRESH_TOKEN_EXPIRE_TIME)
                 .build();
+    }
+    //토큰에서 member정보 빼노는 메소드 만들기
+
+    // 토큰을 검증하는 역할
+    public boolean validateToken(String token) {
+        try {
+            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
+            return true;
+        } catch (ExpiredJwtException e) {
+            throw new CustomException(ErrorCode.ACCESS_TOKEN_EXPIRE_ERROR);
+        } catch (SecurityException | MalformedJwtException | UnsupportedJwtException | IllegalArgumentException e) {
+            //권한 X |JWT가 올바르게 구성되지 않았을 때 | 수신한 JWT의 형식이 애플리케이션에서 원하는 형식과 맞지 않는 경우
+            throw new CustomException(ErrorCode.ACCESS_TOKEN_ERROR);
+        }
+    }
+
+    //토큰의 권한 검증
+    public MemberDetailAuthenticationToken getAuthentication(String accessToken) {
+        // 토큰 복호화 : JWT의 body
+        Claims claims = parseClaims(accessToken);
+
+        if (claims.get(AUTHORITIES_KEY) == null) {
+            throw new RuntimeException("권한 정보가 없는 토큰입니다.");
+        }
+
+        Collection<? extends GrantedAuthority> authorities =
+                ((Collection<String>) claims.get(AUTHORITIES_KEY)).stream()
+                        .map(SimpleGrantedAuthority::new)
+                        .toList();
+
+        String googleId = claims.getSubject();
+        Member member = memberRepository.findByGoogleId(googleId).orElseThrow();
+
+        MemberDetail memberDetail = MemberDetail.builder()
+                .googleId(member.getGoogleId())
+                .email(member.getEmail())
+                .build();
+
+        return new MemberDetailAuthenticationToken(authorities, memberDetail);
+
+    }
+
+    //복호화
+    private Claims parseClaims(String accessToken) {
+        try {
+            return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(accessToken).getBody();
+        } catch (ExpiredJwtException e) {
+            return e.getClaims();
+        }
     }
 }
