@@ -78,6 +78,6 @@ public class FestivalDetailTest {
         CustomException exception = assertThrows(CustomException.class,
                 () -> festivalService.getFestivalDetail(festivalId));
 
-        assertEquals(ErrorCode.FESTIVAL_ALREADY_ENDED, exception.getErrorCode());
+        assertEquals(ErrorCode.FESTIVAL_ALREADY_ENDED_ERROR, exception.getErrorCode());
     }
 }
