@@ -1,10 +1,8 @@
 package com.a601.refesta.artist.data;
 
-import com.a601.refesta.festival.domain.Festival;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NonNull;
 
 import java.util.List;
 

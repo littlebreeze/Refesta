@@ -8,9 +8,9 @@ import com.a601.refesta.festival.data.FestivalReviewRes;
 import com.a601.refesta.festival.domain.Festival;
 import com.a601.refesta.festival.domain.FestivalDetail;
 import com.a601.refesta.festival.repository.FestivalDetailRepository;
-import com.a601.refesta.member.repository.FestivalLikeRepository;
 import com.a601.refesta.festival.repository.FestivalRepository;
 import com.a601.refesta.member.domain.join.FestivalLike;
+import com.a601.refesta.member.repository.FestivalLikeRepository;
 import com.a601.refesta.member.service.MemberService;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -37,6 +37,7 @@ public class FestivalService {
 
     /**
      * 페스티벌 정보 조회
+     *
      * @param festivalId
      * @return FestivalInfoRes - 이름, 날짜, 장소, 포스터 URL, 가격
      */
@@ -58,13 +59,14 @@ public class FestivalService {
 
     /**
      * 페스티벌(예정) 상세 정보 조회
+     *
      * @param festivalId
      * @return FestivalDetailRes - 상세 정보 URL
      */
     public FestivalDetailRes getFestivalDetail(int festivalId) {
         Optional<FestivalDetail> optFindDetail = festivalDetailRepository.findByFestival_Id(festivalId);
 
-        if(optFindDetail.isEmpty()) {
+        if (optFindDetail.isEmpty()) {
             Festival findFestival = getFestival(festivalId);
             ErrorCode errorCode = findFestival.isEnded() ?
                     ErrorCode.FESTIVAL_ALREADY_ENDED_ERROR : ErrorCode.FESTIVAL_DETAIL_NOT_FOUND_ERROR;
@@ -81,6 +83,7 @@ public class FestivalService {
 
     /**
      * 페스티벌 후기 조회
+     *
      * @param festivalId
      * @return List<FestivalReviewRes> - 작성자 닉네임, 작성자 프로필, 첨부파일 Url, 미디어타입, 내용
      */
@@ -95,7 +98,7 @@ public class FestivalService {
                 .orderBy(review.id.desc())
                 .fetch();
 
-        if(festivalReview.size() == 0) {
+        if (festivalReview.size() == 0) {
             Festival festival = getFestival(festivalId);
             if (!festival.isEnded()) {
                 throw new CustomException(ErrorCode.FESTIVAL_IS_NOT_ENDED_ERROR);
@@ -107,16 +110,17 @@ public class FestivalService {
 
     /**
      * 페스티벌 좋아요 업데이트
-     * @param memberId - 구글 식별 ID
+     *
+     * @param memberId       - 구글 식별 ID
      * @param festivalIdList
      */
     public void updateFestivalLike(String memberId, List<Integer> festivalIdList) {
-        for(int festivalId : festivalIdList) {
+        for (int festivalId : festivalIdList) {
             Optional<FestivalLike> optFindLike = festivalLikeRepository
-                        .findByMember_GoogleIdAndFestival_Id(memberId, festivalId);
+                    .findByMember_GoogleIdAndFestival_Id(memberId, festivalId);
 
             //DB에 없으면 추가
-            if(optFindLike.isEmpty()) {
+            if (optFindLike.isEmpty()) {
                 festivalLikeRepository.save(FestivalLike.builder()
                         .member(memberService.getMember(memberId))
                         .festival(getFestival(festivalId))
@@ -136,7 +140,7 @@ public class FestivalService {
     }
 
     public Festival getFestival(int festivalId) {
-        return  festivalRepository.findById(festivalId)
+        return festivalRepository.findById(festivalId)
                 .orElseThrow(() -> new CustomException(ErrorCode.FESTIVAL_NOT_FOUND_ERROR));
     }
 }

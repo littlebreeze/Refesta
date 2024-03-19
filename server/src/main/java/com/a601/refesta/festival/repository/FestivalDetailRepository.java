@@ -1,6 +1,5 @@
 package com.a601.refesta.festival.repository;
 
-import com.a601.refesta.festival.domain.Festival;
 import com.a601.refesta.festival.domain.FestivalDetail;
 import org.springframework.data.jpa.repository.JpaRepository;
 
