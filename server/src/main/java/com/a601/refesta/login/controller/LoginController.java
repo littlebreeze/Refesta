@@ -12,14 +12,13 @@ import org.springframework.web.bind.annotation.*;
 public class LoginController {
 
     private final LoginService loginService;
-
-    @GetMapping("/oauth2/code/google")
-    public SuccessResponse<OauthTokenRes> getAccessTokenJsonData(@RequestParam String code) { // Data를 리턴해주는 컨트롤러 함수
+    @PostMapping("/oauth2/code/google")
+    public SuccessResponse<OauthTokenRes> getAccessTokenJsonData(@RequestBody String code) { // Data를 리턴해주는 컨트롤러 함수
         OauthTokenRes oauthTokenRes = loginService.getAccessTokenJsonData(code);
         return new SuccessResponse<>(oauthTokenRes);
     }
 
-    @PostMapping("oauth/token") //accessToken 만료 시 refreshToken으로 토큰 재발급
+    @PostMapping("/oauth/token") //accessToken 만료 시 refreshToken으로 토큰 재발급
     public SuccessResponse<OauthTokenRes> regenerateToken(@RequestBody String refreshTokenReq) {
         OauthTokenRes oauthTokenRes = loginService.regenerateToken(refreshTokenReq);
         return new SuccessResponse<>(oauthTokenRes);
