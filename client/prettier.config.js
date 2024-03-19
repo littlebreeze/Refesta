@@ -1,4 +1,4 @@
-//import tailwindcss from "prettier-plugin-tailwindcss";
+import tailwindcss from "prettier-plugin-tailwindcss";
 
 export default {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],

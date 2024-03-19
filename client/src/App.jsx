@@ -3,12 +3,15 @@ import './App.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Login from './pages/LoginPage';
 import RegisterInfo from './pages/RegisterInfoPage';
-import Home from './pages/Home';
-import FestivalList from './pages/FestivalList';
-import FestivalDetail from './pages/FestivalDetail';
-import Notfound from './pages/Notfound';
+import Home from './pages/HomePage';
+import FestivalList from './pages/FestivalListPage';
+import FestivalDetail from './pages/FestivalDetailPage';
+import Notfound from './pages/NotfoundPage';
 import Google_Login from './components/start/Google_login';
+import ArtistDetail from './pages/ArtistDetailPage';
 import './index.css';
+import Reservation from './pages/ReservationPage';
+import ReservationResult from './pages/ReservationResultPage';
 
 function App() {
   const [count, setCount] = useState(0);
@@ -25,6 +28,18 @@ function App() {
           <Route
             path='/FestivalDetail'
             element={<FestivalDetail />}
+          />
+          <Route
+            path='/artistDetail'
+            element={<ArtistDetail />}
+          />
+          <Route
+            path='/reservation'
+            element={<Reservation />}
+          />
+          <Route
+            path='/reservationResult'
+            element={<ReservationResult />}
           />
           <Route path='*' element={<Notfound />} />
         </Routes>

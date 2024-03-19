@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
+  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
       colors: {
@@ -9,7 +9,14 @@ export default {
         ourBrightIndigo: '#18608C',
         ourBrightGray: '#ECECEC',
       },
+      height: {
+        myVh: "45vh",
+      },
+      width: {
+        myVw: "75vw",
+      }
     },
+    
   },
   plugins: [],
 };
