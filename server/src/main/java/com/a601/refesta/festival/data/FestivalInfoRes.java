@@ -8,8 +8,8 @@ import lombok.NonNull;
 import java.time.LocalDate;
 
 @Getter
-@AllArgsConstructor
 @Builder
+@AllArgsConstructor
 public class FestivalInfoRes {
 
     private String name;

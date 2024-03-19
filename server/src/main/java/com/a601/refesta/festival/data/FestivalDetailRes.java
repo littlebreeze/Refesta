@@ -6,8 +6,8 @@ import lombok.Getter;
 import lombok.NonNull;
 
 @Getter
-@AllArgsConstructor
 @Builder
+@AllArgsConstructor
 public class FestivalDetailRes {
 
     private String infoImgUrl;

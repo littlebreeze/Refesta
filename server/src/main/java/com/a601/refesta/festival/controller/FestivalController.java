@@ -28,7 +28,7 @@ public class FestivalController {
         return new SuccessResponse<>(festivalService.getFestivalDetail(festivalId));
     }
 
-    @GetMapping("/{festival_id/reviews}")
+    @GetMapping("/{festival_id}/reviews")
     public SuccessResponse<List<FestivalReviewRes>> getFestivalReviews(@PathVariable(name = "festival_id") int festivalId) {
         return new SuccessResponse<>(festivalService.getFestivalReview(festivalId));
     }

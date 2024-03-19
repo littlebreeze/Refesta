@@ -67,7 +67,7 @@ public class FestivalService {
         if(optFindDetail.isEmpty()) {
             Festival findFestival = getFestival(festivalId);
             ErrorCode errorCode = findFestival.isEnded() ?
-                    ErrorCode.FESTIVAL_ALREADY_ENDED : ErrorCode.FESTIVAL_DETAIL_NOT_FOUND_ERROR;
+                    ErrorCode.FESTIVAL_ALREADY_ENDED_ERROR : ErrorCode.FESTIVAL_DETAIL_NOT_FOUND_ERROR;
 
             throw new CustomException(errorCode);
         }
@@ -85,9 +85,9 @@ public class FestivalService {
      * @return List<FestivalReviewRes> - 작성자 닉네임, 작성자 프로필, 첨부파일 Url, 미디어타입, 내용
      */
     public List<FestivalReviewRes> getFestivalReview(int festivalId) {
-        List<FestivalReviewRes> festivalReview = jpaQueryFactory.select(Projections.constructor(FestivalReviewRes.class,
-                    member.nickname, member.profileUrl,
-                    review.attachmentUrl, review.mediaType, review.contents))
+        List<FestivalReviewRes> festivalReview = jpaQueryFactory
+                .select(Projections.constructor(FestivalReviewRes.class, member.nickname, member.profileUrl,
+                        review.attachmentUrl, review.mediaType, review.contents))
                 .from(review)
                 .innerJoin(member)
                 .on(review.member.id.eq(member.id))
@@ -98,7 +98,7 @@ public class FestivalService {
         if(festivalReview.size() == 0) {
             Festival festival = getFestival(festivalId);
             if (!festival.isEnded()) {
-                throw new CustomException(ErrorCode.FESTIVAL_IS_NOT_ENDED);
+                throw new CustomException(ErrorCode.FESTIVAL_IS_NOT_ENDED_ERROR);
             }
         }
 
@@ -112,7 +112,9 @@ public class FestivalService {
      */
     public void updateFestivalLike(String memberId, List<Integer> festivalIdList) {
         for(int festivalId : festivalIdList) {
-            Optional<FestivalLike> optFindLike = festivalLikeRepository.findByMember_GoogleIdAndFestival_Id(memberId, festivalId);
+            Optional<FestivalLike> optFindLike = festivalLikeRepository
+                        .findByMember_GoogleIdAndFestival_Id(memberId, festivalId);
+
             //DB에 없으면 추가
             if(optFindLike.isEmpty()) {
                 festivalLikeRepository.save(FestivalLike.builder()
