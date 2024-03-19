@@ -7,15 +7,17 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum ErrorCode {
 
-    //User
-    USER_NOT_FOUND_ERROR(404, "USR001", "존재하지 않는 사용자입니다."),
+    //Member
+    MEMBER_NOT_FOUND_ERROR(404, "USR001", "존재하지 않는 사용자입니다."),
 
     //Festival
     FESTIVAL_NOT_FOUND_ERROR(404, "FES001", "존재하지 않는 페스티벌입니다."),
-    FESTIVAL_DETAIL_NOT_FOUND_ERROR(500, "FES002", "예정된 페스티벌의 상세 정보가 존재하지 않습니다."),
+    FESTIVAL_DETAIL_NOT_FOUND_ERROR(503, "FES002", "예정된 페스티벌의 상세 정보가 등록되지 않았습니다."),
+    FESTIVAL_ALREADY_ENDED_ERROR(400, "FES003", "이미 종료된 페스티벌입니다."),
+    FESTIVAL_IS_NOT_ENDED_ERROR(400, "FES004", "아직 종료되지 않은 페스티벌입니다."),
 
     //Artist
-    Artist_NOT_FOUND_ERROR(404, "Art001", "존재하지 않는 아티스트입니다.");
+    ARTIST_NOT_FOUND_ERROR(404, "ART001", "존재하지 않는 아티스트입니다.");
 
     private final int status;
 

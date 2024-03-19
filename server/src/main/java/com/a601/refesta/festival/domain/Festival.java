@@ -31,6 +31,9 @@ public class Festival extends BaseEntity {
     private String posterUrl;
 
     @Column(nullable = false)
+    private Integer price;
+
+    @Column(nullable = false)
     @ColumnDefault("false")
     private boolean isEnded;
 }

@@ -11,5 +11,4 @@ public class RefestaApplication {
     public static void main(String[] args) {
         SpringApplication.run(RefestaApplication.class, args);
     }
-
 }

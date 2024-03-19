@@ -18,16 +18,13 @@ import java.time.LocalDate;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class FestivalInfoTest {
 
     @Mock
     private FestivalRepository festivalRepository;
-
-    @Mock
-    private FestivalDetailRepository festivalDetailRepository;
-
     @InjectMocks
     private FestivalService festivalService;
 
@@ -37,47 +34,18 @@ public class FestivalInfoTest {
     }
 
     @Test
-    void getFestivalInfo_ended() {
-        Festival endedFestival = new Festival(1,
-                "endedFestival", "ssafy", LocalDate.now(), "posterUrl", true);
-
-        when(festivalRepository.findById(1)).thenReturn(Optional.of(endedFestival));
-
-        FestivalInfoRes endedInfo = festivalService.getFestivalInfo(1);
-
-        assertNotNull(endedInfo);
-        assertEquals((Integer) 0, endedInfo.getPrice());
-        assertEquals(null, endedInfo.getInfoImgUrl());
-    }
-
-    @Test
-    void getFestivalInfo_scheduled() {
-        Festival scheduledFestival = new Festival(1,
-                "scheduledFestival", "ssafy", LocalDate.now(), "posterUrl", false);
-        FestivalDetail scheduledDetail = new FestivalDetail(1,
-                scheduledFestival, 10000, "infoImgUrl");
-
-        when(festivalRepository.findById(1)).thenReturn(Optional.of(scheduledFestival));
-        when(festivalDetailRepository.findByFestival_Id(1)).thenReturn(Optional.of(scheduledDetail));
-
-        FestivalInfoRes scheduledInfo = festivalService.getFestivalInfo(1);
-
-        assertNotNull(scheduledInfo);
-        assertEquals(10000, scheduledInfo.getPrice());
-        assertEquals("infoImgUrl", scheduledInfo.getInfoImgUrl());
-    }
-
-    @Test
-    void getFestivalInfo_Error() {
-        //예정된 행사인데, id에 해당하는 페스티벌 상세 정보가 존재하지 않는 경우
-        Festival testFestival = new Festival(1,
-                "testFestival", "ssafy", LocalDate.now(), "posterUrl", false);
+    void getFestivalInfo() {
+        Festival testFestival = new Festival(1, "testFestival",
+                "ssafy", LocalDate.now(), "posterUrl", 10000, false);
 
         when(festivalRepository.findById(1)).thenReturn(Optional.of(testFestival));
-        when(festivalDetailRepository.findByFestival_Id(1)).thenReturn(Optional.empty());
 
-        CustomException exception = assertThrows(CustomException.class, () -> festivalService.getFestivalInfo(1));
+        //when
+        FestivalInfoRes festivalInfo = festivalService.getFestivalInfo(1);
 
-        assertEquals(ErrorCode.FESTIVAL_DETAIL_NOT_FOUND_ERROR, exception.getErrorCode());
+        //then(예정된 페스티벌 정보, 상세 정보 이미지 O)
+        assertNotNull(festivalInfo);
+        assertEquals(10000, festivalInfo.getPrice());
+        assertFalse(festivalInfo.isEnded());
     }
 }

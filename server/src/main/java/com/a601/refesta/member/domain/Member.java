@@ -10,6 +10,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Member extends BaseEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -19,9 +20,6 @@ public class Member extends BaseEntity {
 
     @Column(nullable = false)
     private String email;
-
-    @Column(nullable = false)
-    private String name;
 
     @Column(nullable = false)
     private String nickname;
