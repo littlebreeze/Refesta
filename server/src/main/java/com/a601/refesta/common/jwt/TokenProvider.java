@@ -105,8 +105,10 @@ public class TokenProvider {
                         .toList();
 
         String googleId = claims.getSubject();
-        Member member = memberRepository.findByGoogleId(googleId).orElseThrow();
-
+        Member member = memberRepository.findByGoogleId(googleId);
+        if (member == null) {
+            //예외처리
+        }
         MemberDetail memberDetail = MemberDetail.builder()
                 .googleId(member.getGoogleId())
                 .email(member.getEmail())
