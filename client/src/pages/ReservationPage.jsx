@@ -1,5 +1,7 @@
-const Reservation = () => {
-  return <h2>Reservation</h2>;
+import Reservation from "./../components/reservation/Reservation";
+
+const ReservationPage = () => {
+  return <Reservation />;
 };
 
-export default Reservation;
+export default ReservationPage;
