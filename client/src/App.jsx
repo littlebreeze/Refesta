@@ -1,18 +1,12 @@
 import { useState } from 'react';
 import './App.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import LoginPage from './pages/LoginPage';
-import RegisterInfoPage from './pages/RegisterInfoPage';
-import HomePage from './pages/HomePage';
-import FestivalListPage from './pages/FestivalListPage';
-import FestivalDetailPage from './pages/FestivalDetailPage';
-import NotfoundPage from './pages/NotfoundPage';
 import Login from './pages/LoginPage';
 import RegisterInfo from './pages/RegisterInfoPage';
-import Home from './pages/Home';
-import FestivalList from './pages/FestivalList';
-import FestivalDetail from './pages/FestivalDetail';
-import Notfound from './pages/Notfound';
+import Home from './pages/HomePage';
+import FestivalList from './pages/FestivalListPage';
+import FestivalDetail from './pages/FestivalDetailPage';
+import Notfound from './pages/NotfoundPage';
 import Google_Login from './components/start/Google_login';
 import './index.css';
 
@@ -20,19 +14,7 @@ function App() {
   const [count, setCount] = useState(0);
 
   return (
-    <div className='flex flex-col items-center h-full p-2'>
-
-    <BrowserRouter>
-      <Routes>
-        <Route path='/' element={<HomePage />} />
-        <Route path='/login' element={<LoginPage />} />
-        <Route path='/Regist' element={<RegisterInfoPage />} />
-        <Route path='/FestivalList' element={<FestivalListPage />} />
-        <Route path='/FestivalDetail' element={<FestivalDetailPage />} />
-        <Route path='*' element={<NotfoundPage />} />
-      </Routes>
-    </BrowserRouter>
-    <div className='flex flex-col items-center h-full p-2'>
+    <div className='flex flex-col items-center h-full'>
       <BrowserRouter>
         <Routes>
           <Route path='/login' element={<Login />} />
@@ -47,7 +29,6 @@ function App() {
           <Route path='*' element={<Notfound />} />
         </Routes>
       </BrowserRouter>
-    </div>
     </div>
   );
 }
