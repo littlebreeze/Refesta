@@ -16,7 +16,8 @@ public class ArtistLike extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private boolean isDeleted;
+    @Column(nullable = false)
+    private boolean isLiked;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
@@ -25,4 +26,8 @@ public class ArtistLike extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "artist_id")
     private Artist artist;
+
+    public void updateStatus() {
+        this.isLiked = !isLiked;
+    }
 }
