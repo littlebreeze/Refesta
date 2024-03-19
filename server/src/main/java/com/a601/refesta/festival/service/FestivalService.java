@@ -20,7 +20,9 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
+import static com.a601.refesta.festival.domain.QFestival.festival;
 import static com.a601.refesta.member.domain.QMember.member;
+import static com.a601.refesta.member.domain.join.QFestivalLike.festivalLike;
 import static com.a601.refesta.review.domain.QReview.review;
 
 @Service
@@ -42,19 +44,16 @@ public class FestivalService {
      * @return FestivalInfoRes - 이름, 날짜, 장소, 포스터 URL, 가격
      */
     public FestivalInfoRes getFestivalInfo(int festivalId) {
-        Festival findFestival = getFestival(festivalId);
-
         //기본 정보 저장
-        FestivalInfoRes festivalInfo = FestivalInfoRes.builder()
-                .name(findFestival.getName())
-                .date(findFestival.getDate())
-                .location(findFestival.getLocation())
-                .posterUrl(findFestival.getPosterUrl())
-                .price(findFestival.getPrice())
-                .isEnded(findFestival.isEnded())
-                .build();
-
-        return festivalInfo;
+        return jpaQueryFactory
+                .select(Projections.constructor(FestivalInfoRes.class,
+                        festival.name, festival.date, festival.location, festival.posterUrl, festival.price, festival.isEnded,
+                        festivalLike.isLiked))
+                .from(festival)
+                .innerJoin(festivalLike)
+                .on(festival.id.eq(festivalLike.festival.id))
+                .where(festival.id.eq(festivalId))
+                .fetchOne();
     }
 
     /**
@@ -74,11 +73,9 @@ public class FestivalService {
             throw new CustomException(errorCode);
         }
 
-        FestivalDetailRes festivalDetail = FestivalDetailRes.builder()
+        return FestivalDetailRes.builder()
                 .infoImgUrl(optFindDetail.get().getInfoImgUrl())
                 .build();
-
-        return festivalDetail;
     }
 
     /**
@@ -98,7 +95,7 @@ public class FestivalService {
                 .orderBy(review.id.desc())
                 .fetch();
 
-        if (festivalReview.size() == 0) {
+        if (festivalReview.isEmpty()) {
             Festival festival = getFestival(festivalId);
             if (!festival.isEnded()) {
                 throw new CustomException(ErrorCode.FESTIVAL_IS_NOT_ENDED_ERROR);
