@@ -10,6 +10,7 @@ import com.a601.refesta.member.repository.MemberRepository;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
@@ -22,7 +23,7 @@ import java.util.Collection;
 import java.util.Date;
 
 import static java.time.LocalDateTime.now;
-
+@Slf4j
 @Component
 public class TokenProvider {
     private static final String AUTHORITIES_KEY = "auth";
@@ -47,7 +48,7 @@ public class TokenProvider {
         //ACCESSTOKEN 생성
         String accessToken = Jwts.builder()
                 .claim(AUTHORITIES_KEY, "USER")
-                .signWith(key, SignatureAlgorithm.ES512)
+                .signWith(key, SignatureAlgorithm.HS512)
                 .setAudience(AUD) //식별가능해야한다.
                 .setSubject(String.valueOf(member.getGoogleId()))
                 .setIssuer(ISS)
@@ -57,7 +58,7 @@ public class TokenProvider {
 
         //REFRESHTOKEN 생성
         String refreshToken = Jwts.builder()
-                .signWith(key, SignatureAlgorithm.ES512)
+                .signWith(key, SignatureAlgorithm.HS512)
                 .setAudience(AUD)
                 .setSubject(String.valueOf(member.getGoogleId()))
                 .setIssuer(ISS)
