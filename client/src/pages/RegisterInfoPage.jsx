@@ -1,5 +1,10 @@
-const RegisterInfo = () => {
-  return <h2>RegisterInfo</h2>;
+import RegisterInfo from '../components/start/RegistInfo';
+const RegisterInfoPage = () => {
+  return (
+    <div className='mx-0 my-auto w-full'>
+      <RegisterInfo />
+    </div>
+  );
 };
 
-export default RegisterInfo;
+export default RegisterInfoPage;

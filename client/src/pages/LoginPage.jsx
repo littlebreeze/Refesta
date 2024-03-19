@@ -1,5 +1,10 @@
-const Login = () => {
-  return <h2>Login</h2>;
+import Login from '../components/start/Login';
+const LoginPage = () => {
+  return (
+    <div className='mx-0 my-auto'>
+      <Login />
+    </div>
+  );
 };
 
-export default Login;
+export default LoginPage;
