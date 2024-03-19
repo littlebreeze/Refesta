@@ -1,6 +1,15 @@
+import Header from '../components/common/Header';
+import FestivalInfo from '../components/festivalDetail/FestivalInfo';
+
 // 페스티벌 상세 완료
-const FestivalDetailDone = () => {
-  return <h2>FestivalDetailDone</h2>;
+const FestivalDetailDonePage = () => {
+  return (
+    <>
+      <Header />
+      <FestivalInfo />
+      <h2>FestivalDetailDone</h2>
+    </>
+  );
 };
 
-export default FestivalDetailDone;
+export default FestivalDetailDonePage;
