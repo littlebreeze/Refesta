@@ -1,5 +1,7 @@
+import ArtistDetail from "./../components/artistDetail/ArtistDetail";
+
 const ArtistDetailPage = () => {
-  return <h2>ArtistDetail</h2>;
+  return <ArtistDetail />;
 };
 
 export default ArtistDetailPage;

@@ -9,13 +9,14 @@ export default {
         ourBrightIndigo: '#18608C',
         ourBrightGray: '#ECECEC',
       },
+      height: {
+        myVh: "45vh",
+      },
+      width: {
+        myVw: "75vw",
+      }
     },
-    height: {
-      myVh: "45vh",
-    },
-    width: {
-      myVw: "75vw",
-    }
+    
   },
   plugins: [],
 };
