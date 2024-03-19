@@ -38,7 +38,7 @@ public class LoginService {
     @Value("${spring.security.oauth2.provider.google.client-id}")
     private String CLIENT_ID;
 
-    private final String REDIRECT_URI = "http://j10a601.p.ssafy.io/login";
+    private final String REDIRECT_URI = "http://localhost:5173/google-login";
 
     private final String TOKEN_URL = "https://oauth2.googleapis.com/token";
 
@@ -54,7 +54,6 @@ public class LoginService {
         // HTTP POST를 요청할 때 보내는 데이터(body)를 설명해주는 헤더도 만들어 같이 보내줘야 한다.
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/x-www-form-urlencoded;charset=utf-8");
-
         LinkedMultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("grant_type", GRANT_TYPE);
         params.add("client_id", CLIENT_ID);
@@ -88,21 +87,19 @@ public class LoginService {
         HttpEntity<MultiValueMap<String, String>> req = new HttpEntity<>(headers);
 
         ResponseEntity<String> response = rt.exchange(
-                "https://www.googleapis.com/userinfo/v2/me",
-                HttpMethod.POST,
+                "https://www.googleapis.com/userinfo/v2/me?access_token="+accessToken,
+                HttpMethod.GET,
                 req,
                 String.class
         );
 
         Gson gson = new Gson();
-
         return gson.fromJson(response.getBody(), GoogleUserInfoRes.class);
     }
 
     public OauthTokenRes getAccessTokenJsonData(String code) {
         //코드로 토큰받기
         GoogleOAuthTokenRes oauthTokenData = getTokenbyCode(code);
-
         //토큰으로 사용자 정보 받기
         GoogleUserInfoRes googleUserInfoRes = getUserInfoByToken(oauthTokenData.getAccess_token());
 
