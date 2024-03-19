@@ -1,8 +1,11 @@
 package com.a601.refesta.login.service;
 
+import com.a601.refesta.common.exception.CustomException;
+import com.a601.refesta.common.exception.ErrorCode;
 import com.a601.refesta.common.jwt.TokenProvider;
 import com.a601.refesta.login.data.GoogleOAuthTokenRes;
 import com.a601.refesta.login.data.GoogleUserInfoRes;
+import com.a601.refesta.login.data.MemberDetail;
 import com.a601.refesta.login.data.OauthTokenRes;
 import com.a601.refesta.login.repository.RefreshTokenRepository;
 import com.a601.refesta.member.domain.Member;
@@ -123,7 +126,7 @@ public class LoginService {
 
         Member member = memberRepository.findByGoogleId(googleUserInfoRes.getId());
         if (member == null) {
-            //예외처리
+            throw new CustomException(ErrorCode.MEMBER_NOT_FOUND_ERROR);
         }
         OauthTokenRes oauthTokenRes = tokenProvider.generateTokenDto(member);
         //refreshtoken 일단 db저장 방식 구현
@@ -136,6 +139,39 @@ public class LoginService {
         refreshTokenRepository.save(refreshToken);
 
         if (signUp) oauthTokenRes.isSignUp(true);
+
+        return oauthTokenRes;
+    }
+
+    public OauthTokenRes regenerateToken(String refreshTokenReq) {
+        //Refresh Token 일치 확인
+        RefreshToken refreshToken = refreshTokenRepository.findByToken(refreshTokenReq).orElseThrow(() ->
+                new CustomException(ErrorCode.REFRESH_TOKEN_VALIDATION_ERROR));
+
+        //Refresh Token 만료 여부
+        if (!refreshToken.isValid(LocalDateTime.now())) {
+            throw new CustomException(ErrorCode.REFRESH_TOKEN_VALIDATION_ERROR);
+        }
+        //tokenProvider에서 refreshToken으로 member정보 받기
+        MemberDetail memberDetail = tokenProvider.getUserByRefreshToken(refreshTokenReq);
+
+        Member member = memberRepository.findByGoogleId(memberDetail.getGoogleId());
+        if (member == null) {
+            throw new CustomException(ErrorCode.MEMBER_NOT_FOUND_ERROR);
+        }
+        //Member 정보로 토큰 재발급
+        OauthTokenRes oauthTokenRes = tokenProvider.generateTokenDto(member);
+        //원래 refreshtoken 만료 처리
+        refreshToken.setExpired();
+        refreshTokenRepository.save(refreshToken);
+        //새로운 refreshtoken 저장 (일단 DB)
+        RefreshToken newRefreshToken = RefreshToken.builder()
+                .member(member)
+                .token(oauthTokenRes.getRefreshToken())
+                .expireDate(LocalDateTime.now().plusSeconds(oauthTokenRes.getRefreshTokenExpiresIn()))
+                .isExpired(false)
+                .build();
+        refreshTokenRepository.save(newRefreshToken);
 
         return oauthTokenRes;
     }

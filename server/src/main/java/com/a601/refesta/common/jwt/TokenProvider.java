@@ -107,7 +107,7 @@ public class TokenProvider {
         String googleId = claims.getSubject();
         Member member = memberRepository.findByGoogleId(googleId);
         if (member == null) {
-            //예외처리
+            throw new CustomException(ErrorCode.MEMBER_NOT_FOUND_ERROR);
         }
         MemberDetail memberDetail = MemberDetail.builder()
                 .googleId(member.getGoogleId())
@@ -119,11 +119,27 @@ public class TokenProvider {
     }
 
     //복호화
-    private Claims parseClaims(String accessToken) {
+    private Claims parseClaims(String token) {
         try {
-            return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(accessToken).getBody();
+            return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
         } catch (ExpiredJwtException e) {
             return e.getClaims();
         }
+    }
+
+    //검증된 refreshToken 복호화해서 Member 정보 가져오기
+    public MemberDetail getUserByRefreshToken(String refreshToken) {
+        Claims claims = parseClaims(refreshToken);
+
+        String googleId = claims.getSubject();
+
+        Member member = memberRepository.findByGoogleId(googleId);
+        if (member == null) {
+            throw new CustomException(ErrorCode.MEMBER_NOT_FOUND_ERROR);
+        }
+        return MemberDetail.builder()
+                .googleId(member.getGoogleId())
+                .email(member.getEmail())
+                .build();
     }
 }
