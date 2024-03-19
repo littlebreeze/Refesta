@@ -1,10 +1,11 @@
+import { useNavigate } from 'react-router-dom';
 import defaultImg from '../../assets/defaultImg.jpg';
 import editPencil from '../../assets/editPencil.png';
 
-const ProfileInfo = ({ setStep }) => {
+const ProfileInfo = ({ setStep, stepParam }) => {
   const onClickRegist = () => {
     alert('프로필 설정 완료');
-    setStep('YOUTUBE');
+    setStep(stepParam.step2);
   };
 
   return (

@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router';
 
-const GenreList = ({ setStep }) => {
+const GenreList = ({ setStep, stepParam }) => {
   const nav = useNavigate();
 
   const onClickStart = () => {
@@ -9,7 +9,6 @@ const GenreList = ({ setStep }) => {
     nav('/', { replace: true });
   };
   const onClickSkip = () => {
-    // setStep('GENRE');
     nav('/', { replace: true });
   };
   return (

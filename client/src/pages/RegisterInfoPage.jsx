@@ -1,8 +1,11 @@
+import { useParams } from 'react-router-dom';
 import RegisterInfo from '../components/start/RegistInfo';
 const RegisterInfoPage = () => {
+  const { step } = useParams();
+
   return (
-    <div className='mx-0 my-auto w-full'>
-      <RegisterInfo />
+    <div className='w-full mx-0 my-auto'>
+      <RegisterInfo step={step} />
     </div>
   );
 };

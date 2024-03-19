@@ -1,9 +1,9 @@
-const YoutubeConnect = ({ setStep }) => {
+const YoutubeConnect = ({ setStep, stepParam }) => {
   const onClickConnect = () => {
     alert('연동을 진행합니다');
   };
   const onClickSkip = () => {
-    setStep('GENRE');
+    setStep(stepParam.step3);
   };
 
   return (
