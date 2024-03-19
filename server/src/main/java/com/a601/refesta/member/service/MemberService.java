@@ -11,14 +11,10 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class MemberService {
 
-    final MemberRepository memberRepository;
-    public Member getMember(Integer memberId) {
-        return memberRepository.findById(memberId)
+    private final MemberRepository memberRepository;
+
+    public Member getMember(String googleId) {
+        return memberRepository.findByGoogleId(googleId)
                 .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND_ERROR));
     }
-
-//    public Member getMember(String googleId) {
-//        return memberRepository.findByGoogleId(googleId)
-//                .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND_ERROR));
-//    }
 }

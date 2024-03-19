@@ -1,6 +1,8 @@
 package com.a601.refesta.common.exception;
 
 import com.a601.refesta.common.response.FailResponse;
+import com.querydsl.core.NonUniqueResultException;
+import jakarta.persistence.NoResultException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -30,5 +32,19 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(
                 FailResponse.of("PAR001", "Param 형식 잘못됨"),
                 HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(NonUniqueResultException.class)
+    public ResponseEntity<FailResponse<Map<String, String>>> handle(NonUniqueResultException ex) {
+        return new ResponseEntity<>(
+                FailResponse.of("RES001", "결과가 둘 이상입니다."),
+                HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(NoResultException.class)
+    public ResponseEntity<FailResponse<Map<String, String>>> handle(NoResultException ex) {
+        return new ResponseEntity<>(
+                FailResponse.of("RES002", "결과가 존재하지 않습니다."),
+                HttpStatus.NOT_FOUND);
     }
 }

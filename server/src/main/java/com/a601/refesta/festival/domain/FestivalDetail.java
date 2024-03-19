@@ -20,8 +20,5 @@ public class FestivalDetail extends BaseEntity {
     private Festival festival;
 
     @Column(nullable = false)
-    private Integer price;
-
-    @Column(nullable = false)
-    private String pictureUrl;
+    private String infoImgUrl;
 }

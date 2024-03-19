@@ -4,6 +4,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 public class FailResponse<T> extends BaseResponse<T> {
+
     public FailResponse(T data) {
         super("fail", data);
     }

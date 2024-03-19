@@ -1,8 +1,8 @@
 package com.a601.refesta.member.domain.join;
 
 import com.a601.refesta.common.entity.BaseEntity;
-import com.a601.refesta.song.domain.Song;
 import com.a601.refesta.member.domain.Member;
+import com.a601.refesta.song.domain.Song;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -12,6 +12,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PreferSong extends BaseEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;

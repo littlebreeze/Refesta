@@ -10,6 +10,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Artist extends BaseEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -18,5 +19,5 @@ public class Artist extends BaseEntity {
     private String name;
 
     @Column(nullable = false)
-    private String profileUrl;
+    private String pictureUrl;
 }
