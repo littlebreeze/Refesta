@@ -23,7 +23,6 @@ public class SecurityConfig {
 
     private final JwtFilter jwtFilter;
 
-
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(httpSecurityCsrfConfigurer -> httpSecurityCsrfConfigurer.disable());
@@ -32,7 +31,10 @@ public class SecurityConfig {
                 .accessDeniedHandler(jwtAccessDeniedHandler));
         http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         http.authorizeHttpRequests(
-                request -> request.requestMatchers("")
+                request -> request.requestMatchers(
+                                "/login/oauth2/code/google",
+                                "/login/oauth/token"
+                        )
                         .permitAll()
                         .anyRequest().authenticated());//로그인 주소만 허용하면 된다.
 
