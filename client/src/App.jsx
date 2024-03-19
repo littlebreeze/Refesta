@@ -1,30 +1,28 @@
 import { useState } from 'react';
 import './App.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Login from './pages/Login';
-import RegisterInfo from './pages/RegisterInfo';
-import Home from './pages/Home';
-import FestivalList from './pages/FestivalList';
-import FestivalDetail from './pages/FestivalDetail';
-import Notfound from './pages/Notfound';
+import LoginPage from './pages/LoginPage';
+import RegisterInfoPage from './pages/RegisterInfoPage';
+import HomePage from './pages/HomePage';
+import FestivalListPage from './pages/FestivalListPage';
+import FestivalDetailPage from './pages/FestivalDetailPage';
+import NotfoundPage from './pages/NotfoundPage';
 import './index.css';
 
 function App() {
   const [count, setCount] = useState(0);
 
   return (
-    <div className='bg-blue-500 text-white p-4'>
-      <BrowserRouter>
-        <Routes>
-          <Route path='/' element={<Home />} />
-          <Route path='/login' element={<Login />} />
-          <Route path='/Regist' element={<RegisterInfo />} />
-          <Route path='/FestivalList' element={<FestivalList />} />
-          <Route path='/FestivalDetail' element={<FestivalDetail />} />
-          <Route path='*' element={<Notfound />} />
-        </Routes>
-      </BrowserRouter>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path='/' element={<HomePage />} />
+        <Route path='/login' element={<LoginPage />} />
+        <Route path='/Regist' element={<RegisterInfoPage />} />
+        <Route path='/FestivalList' element={<FestivalListPage />} />
+        <Route path='/FestivalDetail' element={<FestivalDetailPage />} />
+        <Route path='*' element={<NotfoundPage />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
