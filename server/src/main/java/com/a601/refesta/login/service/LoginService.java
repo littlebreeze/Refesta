@@ -121,7 +121,7 @@ public class LoginService {
             signUp = true;
         }
 
-        Member member = memberRepository.findByGoogleId(googleUserInfoRes.getId());
+        Member member = memberRepository.findByGoogleId(googleUserInfoRes.getId()).orElseThrow();
 
         OauthTokenRes oauthTokenRes = tokenProvider.generateTokenDto(member);
         //refreshtoken 일단 db저장 방식 구현
