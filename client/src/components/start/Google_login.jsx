@@ -10,7 +10,7 @@ const Google_Login = () => {
   };
 
   const handleProfile = () => {
-    nav('/regist', { replace: true });
+    nav('/regist/profile', { replace: true });
     //window.location.reload();
   };
 
@@ -23,8 +23,14 @@ const Google_Login = () => {
     try {
       // 백으로 요청 보내기
       const response = await fetch(
-        'https://jsonplaceholder.typicode.com/comments',
-        data
+        'http://localhost:8080/login/oauth2/code/google',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'applicaion/json;charset-utf-8',
+          },
+          body: JSON.stringify(data),
+        }
       ).then((res) => res.json());
 
       // 토큰 저장 - 정하기
