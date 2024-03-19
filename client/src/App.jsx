@@ -14,7 +14,7 @@ function App() {
   const [count, setCount] = useState(0);
 
   return (
-    <div className='p-2 h-full flex flex-col items-center'>
+    <div className='flex flex-col items-center h-full p-2'>
       <BrowserRouter>
         <Routes>
           <Route path='/login' element={<Login />} />

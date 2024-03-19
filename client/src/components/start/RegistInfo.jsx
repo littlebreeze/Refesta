@@ -13,7 +13,7 @@ const RegisterInfo = () => {
   // setStep 함수 넘겨주기
 
   return (
-    <div className='grid place-items-center w-full gap-y-5'>
+    <div className='grid w-full place-items-center gap-y-5'>
       {step === 'PROFILE' ? (
         <ProfileInfo setStep={setStep} />
       ) : step === 'YOUTUBE' ? (

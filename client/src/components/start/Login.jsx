@@ -21,16 +21,16 @@ const Login = () => {
   };
 
   return (
-    <div className='grid place-items-center w-full'>
+    <div className='grid w-full place-items-center'>
       <img src={logo} />
-      <h3 className='text-center text-2xl font-bold leading-9 tracking-tight text-ourIndigo'>
+      <h3 className='text-2xl font-bold leading-9 tracking-tight text-center text-ourIndigo'>
         당신만을 위한 페스티벌
       </h3>
-      <h2 className='text-center text-3xl font-bold leading-9 tracking-tight text-ourIndigo'>
+      <h2 className='text-3xl font-bold leading-9 tracking-tight text-center text-ourIndigo'>
         Refesta
       </h2>
-      <div className='flex justify-center items-center bg-white shadow-md shadow-zinc-400 h-14 w-full mt-14 font-semibold'>
-        <img className='max-w-4 mr-4' src={glogo} />
+      <div className='flex items-center justify-center w-full font-semibold bg-white shadow-md shadow-zinc-400 h-14 mt-14'>
+        <img className='mr-4 max-w-4' src={glogo} />
         <button onClick={handleGoogleLogin}>Google로 시작하기</button>
       </div>
     </div>
