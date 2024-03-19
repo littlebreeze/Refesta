@@ -45,7 +45,7 @@ public class ArtistService {
                 .select(Projections.constructor(ArtistInfoRes.class,
                         artist.name, artist.pictureUrl, artistLike.isLiked))
                 .from(artist)
-                .innerJoin(artistLike)
+                .leftJoin(artistLike)
                 .on(artist.id.eq(artistLike.artist.id))
                 .where(artist.id.eq(artistId))
                 .fetchOne();

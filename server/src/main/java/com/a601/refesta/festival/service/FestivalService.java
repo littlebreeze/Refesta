@@ -50,7 +50,7 @@ public class FestivalService {
                         festival.name, festival.date, festival.location, festival.posterUrl, festival.price, festival.isEnded,
                         festivalLike.isLiked))
                 .from(festival)
-                .innerJoin(festivalLike)
+                .leftJoin(festivalLike)
                 .on(festival.id.eq(festivalLike.festival.id))
                 .where(festival.id.eq(festivalId))
                 .fetchOne();
