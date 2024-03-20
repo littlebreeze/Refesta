@@ -173,7 +173,6 @@ public class FestivalService {
     }
 
 
-
     public void checkIsEnded(int festivalId) {
         Festival findFestival = getFestival(festivalId);
         if (!findFestival.isEnded()) {

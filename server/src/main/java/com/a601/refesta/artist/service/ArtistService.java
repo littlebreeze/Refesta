@@ -36,6 +36,7 @@ public class ArtistService {
 
     /**
      * 아티스트 정보 조회
+     *
      * @param artistId
      * @return ArtistInfoRes - 이름, 사진, 좋아요 여부, 장르, 참가 페스티벌(아이디, 이름, 포스터)
      */
@@ -75,15 +76,16 @@ public class ArtistService {
 
     /**
      * 아티스트 좋아요 업데이트
-     * @param memberId - 구글 식별 ID
+     *
+     * @param memberId     - 구글 식별 ID
      * @param artistIdList
      */
     public void updateArtistLike(String memberId, List<Integer> artistIdList) {
-        for(int artistId : artistIdList) {
+        for (int artistId : artistIdList) {
             Optional<ArtistLike> optFindLike = artistLikeRepository.findByMember_GoogleIdAndArtist_Id(memberId, artistId);
 
             //DB에 없으면 추가
-            if(optFindLike.isEmpty()) {
+            if (optFindLike.isEmpty()) {
                 artistLikeRepository.save(ArtistLike.builder()
                         .member(memberService.getMember(memberId))
                         .artist(getArtist(artistId))
@@ -103,7 +105,7 @@ public class ArtistService {
     }
 
     public Artist getArtist(int artistId) {
-        return  artistRepository.findById(artistId)
+        return artistRepository.findById(artistId)
                 .orElseThrow(() -> new CustomException(ErrorCode.ARTIST_NOT_FOUND_ERROR));
     }
 }
