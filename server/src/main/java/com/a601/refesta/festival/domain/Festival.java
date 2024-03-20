@@ -27,7 +27,7 @@ public class Festival extends BaseEntity {
     @Column(nullable = false)
     private LocalDate date;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 2100)
     private String posterUrl;
 
     @Column(nullable = false)

@@ -19,6 +19,6 @@ public class FestivalDetail extends BaseEntity {
     @JoinColumn(name = "festival_id")
     private Festival festival;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 2100)
     private String infoImgUrl;
 }
