@@ -1,12 +1,13 @@
-import { useState } from "react";
-import PosterImage from "./PosterImage";
+import { useState } from 'react';
+import PosterImage from './PosterImage';
+import Header from './../common/Header';
 
 const Reservation = () => {
   const festival = {
-    genre: ["랩", "힙합"],
-    name: "대구 힙합 페스티벌(1일차)",
-    date: new Date("2024-05-04"),
-    location: "대구스타디움 보조경기장",
+    genre: ['랩', '힙합'],
+    name: '대구 힙합 페스티벌(1일차)',
+    date: new Date('2024-05-04'),
+    location: '대구스타디움 보조경기장',
     price: 110000,
   };
 
@@ -15,21 +16,20 @@ const Reservation = () => {
 
   // 천단위 콤마 넣기
   const addComma = (price) => {
-    let returnString = price?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    let returnString = price?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
     return returnString;
   };
 
   return (
-    <div className="flex-col">
-      <div className="h-[80px] w-full bg-slate-400">헤더</div>
+    <div className="flex flex-col">
       <PosterImage />
-      <section className="flex-col mx-5 my-4">
+      <section className="flex flex-col mx-5 my-4">
         <div>
-          <div className="text-gray-400 text-xs">
+          <div className="text-xs text-gray-400">
             {festival.genre.map((genre, index) => (
               <span key={index}>
                 {genre}
-                {index < festival.genre.length - 1 ? "/" : ""}
+                {index < festival.genre.length - 1 ? '/' : ''}
               </span>
             ))}
           </div>
@@ -40,13 +40,8 @@ const Reservation = () => {
             <div>일시</div>
             <div>
               {festival.date.getFullYear()}-
-              {festival.date.getMonth() < 9
-                ? `0${festival.date.getMonth() + 1}`
-                : festival.date.getMonth() + 1}
-              -
-              {festival.date.getDay() < 10
-                ? `0${festival.date.getDay()}`
-                : festival.date.getDay()}
+              {festival.date.getMonth() < 9 ? `0${festival.date.getMonth() + 1}` : festival.date.getMonth() + 1}-
+              {festival.date.getDay() < 10 ? `0${festival.date.getDay()}` : festival.date.getDay()}
             </div>
           </div>
           <div className="flex justify-between mt-2">
@@ -58,9 +53,9 @@ const Reservation = () => {
             <div>성인 1매 {addComma(festival.price)}원</div>
           </div>
         </div>
-        <div className="flex mt-10 justify-between bg-gray-200 rounded-md py-2 px-3">
+        <div className="flex justify-between px-3 py-2 mt-10 bg-gray-200 rounded-md">
           <div className="text-sm">주문 수량</div>
-          <div className="flex bg-white px-2">
+          <div className="flex px-2 bg-white">
             <button
               className="px-1"
               onClick={() => {
@@ -80,15 +75,13 @@ const Reservation = () => {
             </button>
           </div>
         </div>
-        <div className="mt-3 flex justify-between font-bold">
+        <div className="flex justify-between mt-3 font-bold">
           <div>총 상품 금액 :</div>
           <div>{addComma(cnt * festival.price)}원</div>
         </div>
-        <div className="flex justify-between w-full min-h-14 mt-3">
-          <button className="mr-1 flex-1 bg-gray-300 rounded-md">취소</button>
-          <button className="ml-1 flex-1 bg-yellow-300 rounded-md">
-            카카오결제
-          </button>
+        <div className="flex justify-between w-full mt-3 min-h-14">
+          <button className="flex-1 mr-1 bg-gray-300 rounded-md">취소</button>
+          <button className="flex-1 ml-1 bg-yellow-300 rounded-md">카카오결제</button>
         </div>
       </section>
     </div>
