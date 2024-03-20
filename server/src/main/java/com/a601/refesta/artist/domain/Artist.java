@@ -18,6 +18,6 @@ public class Artist extends BaseEntity {
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 2100)
     private String pictureUrl;
 }

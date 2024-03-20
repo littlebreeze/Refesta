@@ -18,11 +18,12 @@ public class Song extends BaseEntity {
     @Column(nullable = false)
     private String title;
 
-    private String songUrl;
+    @Column(nullable = false, length = 2100)
+    private String audioUrl;
 
     @Column(nullable = false)
     private String genre;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 2100)
     private String imageUrl;
 }

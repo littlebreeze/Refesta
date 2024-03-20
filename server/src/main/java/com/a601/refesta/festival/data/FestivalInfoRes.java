@@ -22,4 +22,6 @@ public class FestivalInfoRes {
     private int price;
 
     private boolean isEnded;
+
+    private boolean isLiked;
 }
