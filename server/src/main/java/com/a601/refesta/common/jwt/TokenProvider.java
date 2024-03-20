@@ -10,6 +10,7 @@ import com.a601.refesta.member.repository.MemberRepository;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,6 +24,7 @@ import java.util.Collection;
 import java.util.Date;
 
 import static java.time.LocalDateTime.now;
+
 @Slf4j
 @Component
 public class TokenProvider {
@@ -33,7 +35,8 @@ public class TokenProvider {
     private static final String AUD = "https://j10a601.p.ssafy.io/";
     private static final String ISS = "https://j10a601.p.ssafy.io/";
     private final Key key;
-
+    private static final String AUTHORIZATION_HEADER = "Authorization";
+    private static final String BEARER_PREFIX = "Bearer";
     @Autowired
     private MemberRepository memberRepository;
 
@@ -142,5 +145,15 @@ public class TokenProvider {
                 .googleId(member.getGoogleId())
                 .email(member.getEmail())
                 .build();
+    }
+
+    //토큰에서 memberId 꺼내기
+    public Integer getUserIdByToken(HttpServletRequest request) {
+        //검증은 끝난 것이라 예외처리 하지않음
+        String accessToken = request.getHeader(AUTHORIZATION_HEADER).substring(7);
+        //복호화를 통해 googleID로 memberId꺼내기
+        Claims claims = parseClaims(accessToken);
+        String googleId = claims.getSubject();
+        return memberRepository.findByGoogleId(googleId).getId();
     }
 }
