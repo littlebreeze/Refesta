@@ -13,13 +13,13 @@ import com.a601.refesta.festival.repository.FestivalRepository;
 import com.a601.refesta.member.domain.join.FestivalLike;
 import com.a601.refesta.member.repository.FestivalLikeRepository;
 import com.a601.refesta.member.service.MemberService;
+import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static com.a601.refesta.artist.domain.QArtist.artist;
 import static com.a601.refesta.artist.domain.join.QArtistSong.artistSong;
@@ -50,14 +50,13 @@ public class FestivalService {
      * @return FestivalInfoRes - 이름, 날짜, 장소, 포스터 URL, 가격
      */
     public FestivalInfoRes getFestivalInfo(int festivalId) {
-        //기본 정보 저장
+        //기본 정보 반환
         return jpaQueryFactory
                 .select(Projections.constructor(FestivalInfoRes.class,
                         festival.name, festival.date, festival.location, festival.posterUrl, festival.price, festival.isEnded,
                         festivalLike.isLiked))
                 .from(festival)
-                .leftJoin(festivalLike)
-                .on(festival.id.eq(festivalLike.festival.id))
+                .leftJoin(festivalLike).on(festival.id.eq(festivalLike.festival.id))
                 .where(festival.id.eq(festivalId))
                 .fetchOne();
     }
@@ -85,7 +84,7 @@ public class FestivalService {
                 continue;
             }
 
-            //DB에 있으면 좋아요 상태 업데이트 후 저장
+            //DB에 있으면 좋아요 상태 업데이트
             FestivalLike findLike = optFindLike.get();
             findLike.updateStatus();
 
@@ -100,11 +99,12 @@ public class FestivalService {
      * @return FestivalDetailRes - 상세 정보 URL
      */
     public FestivalDetailRes getFestivalDetail(int festivalId) {
-        checkIsScheduled(festivalId);
+        checkIsScheduled(getFestival(festivalId));
 
         FestivalDetail findDetail = festivalDetailRepository.findByFestival_Id(festivalId)
-                .orElseThrow(() -> new CustomException(ErrorCode.FESTIVAL_DETAIL_NOT_FOUND_ERROR));
+                .orElseThrow(() -> new CustomException(ErrorCode.FESTIVAL_DETAIL_NOT_READY_ERROR));
 
+        //상세 정보 이미지 반환
         return FestivalDetailRes.builder()
                 .infoImgUrl(findDetail.getInfoImgUrl())
                 .build();
@@ -117,19 +117,17 @@ public class FestivalService {
      * @return List<FestivalReviewRes> - 작성자 닉네임, 작성자 프로필, 첨부파일 Url, 미디어타입, 내용
      */
     public List<FestivalReviewRes> getFestivalReview(int festivalId) {
-        checkIsEnded(festivalId);
+        checkIsEnded(getFestival(festivalId));
 
-        List<FestivalReviewRes> festivalReview = jpaQueryFactory
+        //작성자 정보, Review 정보 반환
+        return jpaQueryFactory
                 .select(Projections.constructor(FestivalReviewRes.class, member.nickname, member.profileUrl,
                         review.attachmentUrl, review.mediaType, review.contents))
                 .from(review)
-                .innerJoin(member)
-                .on(review.member.id.eq(member.id))
+                .innerJoin(member).on(review.member.id.eq(member.id))
                 .where(review.festival.id.eq(festivalId))
                 .orderBy(review.id.desc())
                 .fetch();
-
-        return festivalReview;
     }
 
     /**
@@ -139,49 +137,55 @@ public class FestivalService {
      * @return FestivalSetlistRes - 아티스트(아이디, 이름, 사진 Url) 리스트, 노래(제목, 사진 Url, 음원 Url, 가수 이름) 리스트
      */
     public FestivalSetlistRes getFestivalSetlist(int festivalId) {
-        checkIsEnded(festivalId);
+        checkIsEnded(getFestival(festivalId));
 
-        List<FestivalSetlistRes.ArtistInfo> artistInfoList = jpaQueryFactory
-                .select(Projections.constructor(FestivalSetlistRes.ArtistInfo.class,
-                        artist.id, artist.pictureUrl, artist.name))
-                .from(festivalLineup)
-                .innerJoin(artist)
-                .on(festivalLineup.artist.id.eq(artist.id))
-                .where(festivalLineup.festival.id.eq(festivalId))
-                .fetch();
-
-        List<FestivalSetlistRes.SongInfo> songInfoList = jpaQueryFactory
-                .select(Projections.constructor(FestivalSetlistRes.SongInfo.class,
-                        song.title, song.audioUrl, song.imageUrl, artist.name))
+        List<Tuple> searchResult = jpaQueryFactory
+                .select(song.title, song.audioUrl, song.imageUrl, artist.id, artist.name, artist.pictureUrl)
                 .from(festivalSetlist)
-                .innerJoin(festivalLineup)
-                .on(festivalSetlist.festival.id.eq(festivalLineup.festival.id))
-                .innerJoin(artistSong)
-                .on(festivalLineup.artist.id.eq(artistSong.artist.id))
-                .innerJoin(song)
-                .on(artistSong.song.id.eq(song.id))
-                .innerJoin(artist)
-                .on(artistSong.artist.id.eq(artist.id))
+                .innerJoin(festivalLineup).on(festivalSetlist.festival.id.eq(festivalLineup.festival.id))
+                .innerJoin(artistSong).on(festivalLineup.artist.id.eq(artistSong.artist.id))
+                .innerJoin(song).on(artistSong.song.id.eq(song.id))
+                .innerJoin(artist).on(artistSong.artist.id.eq(artist.id))
                 .where(festivalSetlist.festival.id.eq(festivalId))
                 .orderBy(festivalSetlist.id.asc())
                 .fetch();
 
+        if (searchResult.isEmpty()) {
+            throw new CustomException(ErrorCode.FESTIVAL_SETLIST_NOT_READY_ERROR);
+        }
+
+        List<FestivalSetlistRes.ArtistInfo> lineupList = new ArrayList<>();
+        Map<Integer, List<FestivalSetlistRes.SongInfo>> songInfoMap = new HashMap<>();
+        for (Tuple tuple : searchResult) {
+            int artistId = tuple.get(artist.id);
+
+            //새로운 아티스트 정보를 lineup에 저장, songInfoMap의 Key로 추가
+            if (!songInfoMap.containsKey(artistId)) {
+                lineupList.add(new FestivalSetlistRes.ArtistInfo
+                        (artistId, tuple.get(artist.name), tuple.get(artist.pictureUrl)));
+                songInfoMap.put(artistId, new ArrayList<>());
+            }
+
+            //노래 정보 저장
+            List<FestivalSetlistRes.SongInfo> songInfoList = songInfoMap.get(artistId);
+            songInfoList.add(new FestivalSetlistRes.SongInfo
+                    (tuple.get(song.title), tuple.get(song.audioUrl), tuple.get(song.imageUrl)));
+        }
+
+        //셋리스트 정보 반환
         return FestivalSetlistRes.builder()
-                .artistInfoList(artistInfoList)
-                .songInfoList(songInfoList)
+                .lineupList(lineupList)
+                .songInfoMap(songInfoMap)
                 .build();
     }
 
-
-    public void checkIsEnded(int festivalId) {
-        Festival findFestival = getFestival(festivalId);
-        if (!findFestival.isEnded()) {
+    public void checkIsEnded(Festival findFestival) {
+        if (findFestival.isEnded()) {
             throw new CustomException(ErrorCode.FESTIVAL_IS_NOT_ENDED_ERROR);
         }
     }
 
-    public void checkIsScheduled(int festivalId) {
-        Festival findFestival = getFestival(festivalId);
+    public void checkIsScheduled(Festival findFestival) {
         if (findFestival.isEnded()) {
             throw new CustomException(ErrorCode.FESTIVAL_ALREADY_ENDED_ERROR);
         }

@@ -46,8 +46,7 @@ public class ArtistService {
                 .select(Projections.constructor(ArtistInfoRes.class,
                         artist.name, artist.pictureUrl, artistLike.isLiked))
                 .from(artist)
-                .leftJoin(artistLike)
-                .on(artist.id.eq(artistLike.artist.id))
+                .leftJoin(artistLike).on(artist.id.eq(artistLike.artist.id))
                 .where(artist.id.eq(artistId))
                 .fetchOne();
 
@@ -55,8 +54,7 @@ public class ArtistService {
         List<String> genreList = jpaQueryFactory
                 .select(genre.name)
                 .from(artistGenre)
-                .innerJoin(genre)
-                .on(artistGenre.genre.id.eq(genre.id))
+                .innerJoin(genre).on(artistGenre.genre.id.eq(genre.id))
                 .where(artistGenre.artist.id.eq(artistId))
                 .fetch();
 
@@ -65,9 +63,9 @@ public class ArtistService {
                 .select(Projections.constructor(ArtistInfoRes.Performance.class,
                         festival.id, festival.name, festival.posterUrl))
                 .from(festivalLineup)
-                .innerJoin(festival)
-                .on(festivalLineup.festival.id.eq(festival.id))
+                .innerJoin(festival).on(festivalLineup.festival.id.eq(festival.id))
                 .where(festivalLineup.artist.id.eq(artistId))
+                .orderBy(festival.id.desc())
                 .fetch();
 
         artistInfo.setGenreAndPerformance(genreList, performanceList);
