@@ -16,22 +16,20 @@ const Google_Login = () => {
 
   const [params, setParams] = useSearchParams();
   const code = params.get('code');
+  const baseURL = `${import.meta.env.VITE_PUBLIC_API_SERVER}/login/oauth2/code/google`;
 
   const postLogin = async (code) => {
     // code url에서 받아오기
     // const data = { code: code };
     try {
       // 백으로 요청 보내기
-      const response = await fetch(
-        'http://localhost:8080/login/oauth2/code/google',
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'applicaion/json;charset-utf-8',
-          },
-          body: code,
-        }
-      ).then((res) => res.json());
+      const response = await fetch(baseURL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'applicaion/json;charset-utf-8',
+        },
+        body: code,
+      }).then((res) => res.json());
 
       // 토큰 저장
       localStorage.setItem('accessToken', response.data.accessToken);
@@ -42,8 +40,8 @@ const Google_Login = () => {
 
       // isSigUp으로 기존/신규 여부 판단
       response.data.signUp
-        ? handleHome()
-        : handleProfile(response.data);
+        ? handleProfile(response.data)
+        : handleHome();
     } catch (error) {
       console.log(error);
     }
