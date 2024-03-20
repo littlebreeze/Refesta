@@ -6,12 +6,12 @@ const Google_Login = () => {
 
   const handleHome = () => {
     nav('/', { replace: true });
-    //window.location.reload();
+    window.location.reload();
   };
 
   const handleProfile = (data) => {
     nav('/regist/profile', { state: { ...data }, replace: true });
-    //window.location.reload();
+    window.location.reload();
   };
 
   const [params, setParams] = useSearchParams();

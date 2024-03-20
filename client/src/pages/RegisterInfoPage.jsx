@@ -1,5 +1,6 @@
 import { useParams } from 'react-router-dom';
 import RegisterInfo from '../components/start/RegistInfo';
+
 const RegisterInfoPage = () => {
   const { step } = useParams();
 
