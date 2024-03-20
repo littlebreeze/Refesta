@@ -1,8 +1,12 @@
 package com.a601.refesta.member.domain;
 
 import com.a601.refesta.common.entity.BaseEntity;
+import com.a601.refesta.member.data.MemberRole;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.ArrayList;
+import java.util.Collection;
 
 @Entity
 @Getter
@@ -27,4 +31,13 @@ public class Member extends BaseEntity {
     @Column(nullable = false, length = 2100)
     private String profileUrl;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private MemberRole role = MemberRole.ROLE_MEMBER;
+
+    public Collection<String> getRoles() {
+        Collection<String> roles = new ArrayList<>();
+        roles.add(role.getValue());
+        return roles;
+    }
 }

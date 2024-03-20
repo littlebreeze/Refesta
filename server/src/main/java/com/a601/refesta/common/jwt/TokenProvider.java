@@ -65,7 +65,7 @@ public class TokenProvider {
         long now = (new Date()).getTime();
         //ACCESSTOKEN 생성
         String accessToken = Jwts.builder()
-                .claim(AUTHORITIES_KEY, "MEMBER")
+                .claim(AUTHORITIES_KEY, member.getRoles())
                 .signWith(key, SignatureAlgorithm.HS512)
                 .setAudience(AUD) //식별가능해야한다.
                 .setSubject(String.valueOf(member.getGoogleId()))
