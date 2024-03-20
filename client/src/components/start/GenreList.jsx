@@ -37,7 +37,7 @@ const GenreList = ({ setStep, stepParam }) => {
   };
 
   return (
-    <div className='grid w-full gap-y-5'>
+    <div className='grid gap-y-5'>
       <div>
         <div className='text-2xl font-bold leading-9 tracking-tight text-center text-ourIndigo'>
           선호 장르 선택하기

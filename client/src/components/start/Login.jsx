@@ -21,7 +21,7 @@ const Login = () => {
   };
 
   return (
-    <div className='grid w-full place-items-center'>
+    <div>
       <img src={logo} />
       <h3 className='text-2xl font-bold leading-9 tracking-tight text-center text-ourIndigo'>
         당신만을 위한 페스티벌

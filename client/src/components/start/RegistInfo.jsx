@@ -24,7 +24,7 @@ const RegisterInfo = ({ step }) => {
   // setStep 함수 넘겨주기
 
   return (
-    <div className='grid w-full place-items-center gap-y-5'>
+    <div>
       {steps === stepParam.step1 ? (
         <ProfileInfo setStep={setStep} stepParam={stepParam} />
       ) : steps === stepParam.step2 ? (

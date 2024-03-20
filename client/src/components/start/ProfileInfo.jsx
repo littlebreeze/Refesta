@@ -14,7 +14,7 @@ const ProfileInfo = ({ setStep, stepParam }) => {
   };
 
   return (
-    <div className='grid w-full gap-y-5'>
+    <div className='grid gap-y-5'>
       <div className='text-2xl font-bold leading-9 tracking-tight text-center text-ourIndigo'>
         프로필 설정하기
       </div>

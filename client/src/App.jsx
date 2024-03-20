@@ -28,7 +28,7 @@ function App() {
           <Route element={<SubLayout />}>
             <Route path='/login' element={<Login />} />
             <Route path='/google-login' element={<Google_Login />} />
-            <Route path='/regist' element={<RegisterInfo />} />
+            <Route path='/regist/:step' element={<RegisterInfo />} />
           </Route>
 
           <Route element={<MainLayout />}>
