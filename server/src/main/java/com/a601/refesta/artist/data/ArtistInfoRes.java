@@ -21,6 +21,11 @@ public class ArtistInfoRes {
 
     private List<Performance> performanceList;
 
+    public void setGenreAndPerformance(List<String> genreList, List<Performance> performanceList) {
+        this.genreList = genreList;
+        this.performanceList = performanceList;
+    }
+
     @Getter
     @AllArgsConstructor
     public class Performance {
@@ -30,10 +35,5 @@ public class ArtistInfoRes {
         private String name;
 
         private String posterUrl;
-    }
-
-    public void setGenreAndPerformance(List<String> genreList, List<Performance> performanceList) {
-        this.genreList = genreList;
-        this.performanceList = performanceList;
     }
 }
