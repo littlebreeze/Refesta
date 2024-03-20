@@ -1,13 +1,18 @@
 import Header from '../components/common/Header';
+import FestivalInfo from '../components/festivalDetail/FestivalInfo';
+import FestivalInfoDetail from '../components/festivalDetail/FestivalInfoDetail';
+import ReservationButton from '../components/festivalDetail/ReservationButton';
 
 // 페스티벌 상세 진행중
-const FestivalDetail = () => {
+const FestivalDetailPage = () => {
   return (
     <>
       <Header />
-      <h2>FestivalDetail</h2>
+      <FestivalInfo />
+      <FestivalInfoDetail />
+      <ReservationButton />
     </>
   );
 };
 
-export default FestivalDetail;
+export default FestivalDetailPage;
