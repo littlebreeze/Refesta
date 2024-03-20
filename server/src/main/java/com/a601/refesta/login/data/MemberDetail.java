@@ -6,6 +6,7 @@ import lombok.Getter;
 @Builder
 @Getter
 public class MemberDetail {
+
     private String googleId;
     private String email;
 }

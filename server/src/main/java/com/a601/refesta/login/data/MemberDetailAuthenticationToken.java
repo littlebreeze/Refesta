@@ -7,11 +7,10 @@ import java.util.Collection;
 
 public class MemberDetailAuthenticationToken extends AbstractAuthenticationToken {
 
-    private MemberDetail memberDetail;
+    private final MemberDetail memberDetail;
 
     public MemberDetailAuthenticationToken(Collection<? extends GrantedAuthority> authorities, MemberDetail memberDetail1) {
         super(authorities);
-
         this.memberDetail = memberDetail1;
     }
 

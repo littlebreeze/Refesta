@@ -1,9 +1,12 @@
 package com.a601.refesta.login.data;
 
-import lombok.Data;
+import lombok.Builder;
+import lombok.Getter;
 
-@Data
+@Builder
+@Getter
 public class GoogleOAuthTokenRes {
+
     private String access_token;
     private String expires_in;
     private String refresh_token;

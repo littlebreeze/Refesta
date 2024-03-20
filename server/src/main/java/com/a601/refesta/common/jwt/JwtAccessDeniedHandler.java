@@ -14,6 +14,7 @@ import java.io.IOException;
 @Component
 
 public class JwtAccessDeniedHandler implements AccessDeniedHandler {
+
     @Autowired
     private ObjectMapper objectMapper;
 

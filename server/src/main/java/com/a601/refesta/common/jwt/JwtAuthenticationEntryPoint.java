@@ -13,6 +13,7 @@ import java.io.IOException;
 
 @Component
 public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
+
     @Autowired
     private ObjectMapper objectMapper;
 

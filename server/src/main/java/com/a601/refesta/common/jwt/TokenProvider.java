@@ -28,6 +28,7 @@ import static java.time.LocalDateTime.now;
 @Slf4j
 @Component
 public class TokenProvider {
+
     private static final String AUTHORITIES_KEY = "auth";
     private static final String BEARER_TYPE = "bearer";
     private static final int ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 30; // 30분
@@ -36,7 +37,7 @@ public class TokenProvider {
     private static final String ISS = "https://j10a601.p.ssafy.io/";
     private final Key key;
     private static final String AUTHORIZATION_HEADER = "Authorization";
-    private static final String BEARER_PREFIX = "Bearer";
+
     @Autowired
     private MemberRepository memberRepository;
 
@@ -50,7 +51,7 @@ public class TokenProvider {
         long now = (new Date()).getTime();
         //ACCESSTOKEN 생성
         String accessToken = Jwts.builder()
-                .claim(AUTHORITIES_KEY, "USER")
+                .claim(AUTHORITIES_KEY, "MEMBER")
                 .signWith(key, SignatureAlgorithm.HS512)
                 .setAudience(AUD) //식별가능해야한다.
                 .setSubject(String.valueOf(member.getGoogleId()))
@@ -149,7 +150,7 @@ public class TokenProvider {
 
     //토큰에서 memberId 꺼내기
     public Integer getUserIdByToken(HttpServletRequest request) {
-        //검증은 끝난 것이라 예외처리 하지않음
+        //검증은 끝난 것이라 예외처리 하지 않음
         String accessToken = request.getHeader(AUTHORIZATION_HEADER).substring(7);
         //복호화를 통해 googleID로 memberId꺼내기
         Claims claims = parseClaims(accessToken);

@@ -1,11 +1,12 @@
 package com.a601.refesta.login.data;
 
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 
-@Data
 @Builder
+@Getter
 public class OauthTokenRes {
+
     private Integer memberId;
 
     private String tokenType;
@@ -23,5 +24,5 @@ public class OauthTokenRes {
     public void isSignUp(boolean signUp) {
         this.signUp = signUp;
     }
-    //여기에 user프로필사진이랑 이름 변수로 같이 보내기 or isSignUp이 true면 api 요청 한개 더 보내기(프로필사진이랑 이름 받는)
+
 }
