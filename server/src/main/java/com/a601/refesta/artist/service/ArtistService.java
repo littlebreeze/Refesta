@@ -65,6 +65,7 @@ public class ArtistService {
                 .from(festivalLineup)
                 .innerJoin(festival).on(festivalLineup.festival.id.eq(festival.id))
                 .where(festivalLineup.artist.id.eq(artistId))
+                .orderBy(festival.id.desc())
                 .fetch();
 
         artistInfo.setGenreAndPerformance(genreList, performanceList);
