@@ -15,6 +15,15 @@ export default {
       width: {
         myVw: '75vw',
       },
+      keyframes: {
+        slideInFromLeft: {
+          from: { transform: 'translateX(100%)' },
+          to: { transform: 'translateX(0)' },
+        },
+      },
+      animation: {
+        modalAnimation: 'slideInFromLeft 0.2s ease-in-out',
+      },
     },
   },
   plugins: [],
