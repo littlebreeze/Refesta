@@ -87,7 +87,7 @@ public class LoginService {
         HttpEntity<MultiValueMap<String, String>> req = new HttpEntity<>(headers);
 
         ResponseEntity<String> response = rt.exchange(
-                "https://www.googleapis.com/userinfo/v2/me?access_token="+accessToken,
+                "https://www.googleapis.com/userinfo/v2/me?access_token=" + accessToken,
                 HttpMethod.GET,
                 req,
                 String.class
@@ -104,8 +104,7 @@ public class LoginService {
         GoogleUserInfoRes googleUserInfoRes = getUserInfoByToken(oauthTokenData.getAccess_token());
 
         //받아온 사용자 정보(로그인/회원가입한 유저)로 우리 토큰 만들기
-        OauthTokenRes oauthTokenRes = generateTokenbyUserInfo(googleUserInfoRes);
-        return oauthTokenRes;
+        return generateTokenbyUserInfo(googleUserInfoRes);
     }
 
     private OauthTokenRes generateTokenbyUserInfo(GoogleUserInfoRes googleUserInfoRes) {
@@ -114,7 +113,7 @@ public class LoginService {
             Member newMember = Member.builder()
                     .googleId(googleUserInfoRes.getId())
                     .email(googleUserInfoRes.getEmail())
-                    .name(googleUserInfoRes.getName())
+                    .nickname(googleUserInfoRes.getName())
                     .profileUrl(googleUserInfoRes.getPicture())
                     .build();
             memberRepository.save(newMember);

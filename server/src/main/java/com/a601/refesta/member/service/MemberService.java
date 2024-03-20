@@ -14,7 +14,10 @@ public class MemberService {
     private final MemberRepository memberRepository;
 
     public Member getMember(String googleId) {
-        return memberRepository.findByGoogleId(googleId)
-                .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND_ERROR));
+        Member member = memberRepository.findByGoogleId(googleId);
+        if (member == null) {
+            throw new CustomException(ErrorCode.MEMBER_NOT_FOUND_ERROR);
+        }
+        return member;
     }
 }
