@@ -46,7 +46,7 @@ const GenreList = ({ setStep, stepParam }) => {
           3개까지 선택 가능
         </div>
       </div>
-      <div className='grid grid-cols-3'>
+      <div className='grid grid-cols-3 gap-y-3'>
         {lists.map((icon) => (
           <GenreItem key={icon.id} icon={icon} />
         ))}
