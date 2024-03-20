@@ -157,9 +157,6 @@ public class LoginService {
         }
         //Member 정보로 토큰 재발급
         OauthTokenRes oauthTokenRes = tokenProvider.generateTokenDto(member);
-        //원래 refreshtoken 만료 처리
-        refreshToken.setExpired();
-        refreshTokenRepository.save(refreshToken);
         //새로운 refreshtoken 저장 (일단 DB)
         RefreshToken newRefreshToken = RefreshToken.builder()
                 .member(member)
