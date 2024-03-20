@@ -149,7 +149,7 @@ public class TokenProvider {
     }
 
     //토큰에서 memberId 꺼내기
-    public Integer getUserIdByToken(HttpServletRequest request) {
+    public Integer getMemberIdByToken(HttpServletRequest request) {
         //검증은 끝난 것이라 예외처리 하지 않음
         String accessToken = request.getHeader(AUTHORIZATION_HEADER).substring(7);
         //복호화를 통해 googleID로 memberId꺼내기
