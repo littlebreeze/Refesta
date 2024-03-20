@@ -30,10 +30,13 @@ const Google_Login = () => {
       });
 
       // 토큰 저장
-      localStorage.setItem('accessToken', response.data.accessToken);
+      localStorage.setItem(
+        'accessToken',
+        response.data.data.accessToken
+      );
       localStorage.setItem(
         'refreshToken',
-        response.data.refreshToken
+        response.data.data.refreshToken
       );
 
       // isSigUp으로 기존/신규 여부 판단

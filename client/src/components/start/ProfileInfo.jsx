@@ -1,3 +1,5 @@
+import instance from '../../util/intercepter';
+
 import { useLocation } from 'react-router-dom';
 import defaultImg from '../../assets/default_img.jpg';
 import editPencil from '../../assets/edit_pencil.png';
@@ -6,6 +8,18 @@ import { useEffect } from 'react';
 const ProfileInfo = ({ setStep, stepParam }) => {
   // navigate로 값 받으려면 이거 사용
   const location = useLocation();
+
+  const getUserProfile = async () => {
+    try {
+      const response = await instance.get('/login');
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getUserProfile();
+  }, []);
 
   const onClickRegist = () => {
     alert('프로필 설정 완료');
