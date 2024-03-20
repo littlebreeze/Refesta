@@ -1,5 +1,12 @@
 const FestivalInfoDetail = () => {
-  return <h2>FestivalInfoDetail</h2>;
+  return (
+    <>
+      <img
+        src='https://mintpaper.s3.ap-northeast-2.amazonaws.com/78_LIVE_New_Link_f1797dd7d9.jpg'
+        alt=''
+      />
+    </>
+  );
 };
 
 export default FestivalInfoDetail;
