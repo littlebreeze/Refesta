@@ -5,37 +5,36 @@ import lombok.Builder;
 import lombok.Getter;
 
 import java.util.List;
+import java.util.Map;
 
 @Getter
 @Builder
 @AllArgsConstructor
 public class FestivalSetlistRes {
 
-    private List<ArtistInfo> artistInfoList;
+    private List<ArtistInfo> lineupList;
 
-    private List<SongInfo> songInfoList;
+    private Map<Integer, List<SongInfo>> songInfoMap;
 
     @Getter
     @AllArgsConstructor
-    public class ArtistInfo {
+    public static class ArtistInfo {
 
         private int id;
 
-        private String pictureUrl;
-
         private String name;
+
+        private String pictureUrl;
     }
 
     @Getter
     @AllArgsConstructor
-    public class SongInfo {
+    public static class SongInfo {
 
         private String title;
 
         private String audioUrl;
 
         private String imageUrl;
-
-        private String singer;
     }
 }
