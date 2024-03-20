@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 
@@ -19,17 +20,14 @@ const Google_Login = () => {
   const baseURL = `${import.meta.env.VITE_PUBLIC_API_SERVER}/login/oauth2/code/google`;
 
   const postLogin = async (code) => {
-    // code url에서 받아오기
-    // const data = { code: code };
+    const headers = {
+      'Content-Type': 'text/plain;charset=utf-8',
+    };
+
     try {
-      // 백으로 요청 보내기
-      const response = await fetch(baseURL, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'applicaion/json;charset-utf-8',
-        },
-        body: code,
-      }).then((res) => res.json());
+      const response = await axios.post(baseURL, code, {
+        headers: headers,
+      });
 
       // 토큰 저장
       localStorage.setItem('accessToken', response.data.accessToken);

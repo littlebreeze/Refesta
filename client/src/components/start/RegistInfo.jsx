@@ -20,35 +20,6 @@ const RegisterInfo = ({ step }) => {
   const [steps, setStep] = useState(step);
 
   // 이 페이지로 이동했을 때, 토큰으로 사용자 정보 요청
-  // 인데 이거는 리프레시토큰 요청입니다
-  const baseURL = `${import.meta.env.VITE_PUBLIC_API_SERVER}/login/oauth/token`;
-
-  const getRegenerateToken = async () => {
-    try {
-      // 백으로 요청 보내기
-      const response = await fetch(baseURL, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'applicaion/json;charset-utf-8',
-        },
-        body: refreshToken,
-      }).then((res) => res.json());
-
-      console.log(response);
-      // 토큰 저장
-      localStorage.setItem('accessToken', response.data.accessToken);
-      localStorage.setItem(
-        'refreshToken',
-        response.data.refreshToken
-      );
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  useEffect(() => {
-    getRegenerateToken();
-  }, []);
 
   useEffect(() => {
     nav(`/regist/${steps}`, { replace: true });
