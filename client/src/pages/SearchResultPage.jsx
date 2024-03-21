@@ -1,5 +1,11 @@
+import SearchResultContainer from '../components/search/SearchResultContainer';
+
 const SearchResult = () => {
-  return <h2>SearchResult</h2>;
+  return (
+    <>
+      <SearchResultContainer />
+    </>
+  );
 };
 
 export default SearchResult;
