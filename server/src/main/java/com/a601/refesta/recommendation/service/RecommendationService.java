@@ -93,7 +93,7 @@ public class RecommendationService {
      * 사용자 추천 아티스트 조회
      *
      * @param memberId
-     * @param pageNo - 조회 페이지 번호(client 새로고침 횟수)
+     * @param pageNo   - 조회 페이지 번호(client 새로고침 횟수)
      * @return ArtistRecommendationREs - 아이디, 이름, 사진 Url
      */
     public ArtistRecommendationRes getArtistRecommendation(int memberId, int pageNo) {
@@ -119,10 +119,52 @@ public class RecommendationService {
 
     /**
      * 예정 페스티벌 전체 조회
+     *
      * @param memberId
      * @return List<EntireFestivalInfoRes> - 아이디, 이름, 날짜, 장소, 포스터 Url, 라인업
      */
     public List<EntireFestivalInfoRes> getEntireScheduledFestival(int memberId) {
+        List<MemberFestival> findRecommendation = memberFestivalRepository.findAllByMember_Id(memberId);
+
+        List<EntireFestivalInfoRes> festivalInfoList = new ArrayList<>();
+        for (MemberFestival memberFestival : findRecommendation) {
+            Festival findFestival = memberFestival.getFestival();
+
+            //예정 페스티벌 저장
+            if (!findFestival.isEnded()) {
+                //페스티벌 라인업에서 추천 아티스트 조회(4명)
+                List<String> findLineup = jpaQueryFactory.select(artist.name)
+                        .from(memberArtist)
+                        .innerJoin(festivalLineup).on(festivalLineup.artist.id.eq(memberArtist.artist.id)
+                                .and(festivalLineup.festival.id.eq(findFestival.getId())))
+                        .innerJoin(artist).on(artist.id.eq(memberArtist.artist.id))
+                        .where(memberArtist.member.id.eq(memberId))
+                        .limit(4)
+                        .fetch();
+
+                //라인업 StringBuilder로 변환
+                StringBuilder lineup = new StringBuilder();
+                for (String artistName : findLineup) {
+                    lineup.append(artistName).append(",");
+                }
+                lineup.deleteCharAt(lineup.length() - 1);
+
+                //정보 저장
+                festivalInfoList.add(new EntireFestivalInfoRes(findFestival.getId(), findFestival.getName(),
+                        findFestival.getDate(), findFestival.getLocation(), findFestival.getPosterUrl(), lineup.toString()));
+            }
+        }
+
+        return festivalInfoList;
+    }
+
+    /**
+     * 종료 페스티벌 전체 조회
+     *
+     * @param memberId
+     * @return List<EntireFestivalInfoRes> - 아이디, 이름, 날짜, 장소, 포스터 Url, 라인업
+     */
+    public List<EntireFestivalInfoRes> getEntireEndedFestival(int memberId) {
         List<MemberFestival> findRecommendation = memberFestivalRepository.findAllByMember_Id(memberId);
 
         List<EntireFestivalInfoRes> festivalInfoList = new ArrayList<>();
