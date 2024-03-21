@@ -4,6 +4,7 @@ import com.a601.refesta.artist.data.ArtistInfoRes;
 import com.a601.refesta.artist.service.ArtistService;
 import com.a601.refesta.common.response.SuccessResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,9 +22,9 @@ public class ArtistController {
     }
 
     @PatchMapping
-    public SuccessResponse<Void> editArtistLike(String memberId, @RequestBody List<Integer> artistIdList) {
+    public SuccessResponse<HttpStatus> editArtistLike(String memberId, @RequestBody List<Integer> artistIdList) {
         //JWT 코드 추가 필요
         artistService.updateArtistLike(memberId, artistIdList);
-        return new SuccessResponse<>(null);
+        return new SuccessResponse<>(HttpStatus.OK);
     }
 }

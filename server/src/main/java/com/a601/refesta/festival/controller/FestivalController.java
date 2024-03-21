@@ -7,6 +7,7 @@ import com.a601.refesta.festival.data.FestivalReviewRes;
 import com.a601.refesta.festival.service.FestivalService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -34,9 +35,9 @@ public class FestivalController {
     }
 
     @PatchMapping
-    public SuccessResponse<Void> editFestivalLike(HttpServletRequest request, @RequestBody List<Integer> festivalIdList) {
+    public SuccessResponse<HttpStatus> editFestivalLike(HttpServletRequest request, @RequestBody List<Integer> festivalIdList) {
         //JWT 코드 추가 필요
         festivalService.updateFestivalLike("", festivalIdList);
-        return new SuccessResponse<>(null);
+        return new SuccessResponse<>(HttpStatus.OK);
     }
 }
