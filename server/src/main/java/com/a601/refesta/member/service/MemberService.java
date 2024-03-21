@@ -11,7 +11,11 @@ import com.a601.refesta.member.domain.join.PreferGenre;
 import com.a601.refesta.member.repository.MemberRepository;
 import com.a601.refesta.member.repository.PreferGenreRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
@@ -54,13 +58,28 @@ public class MemberService {
 
     public void getPreferGenre(int memberId, PreferGenreReq genres) {
         Member member = getMember(memberId);
-        for (Integer genreId : genres.getPreferGenres()) {
-            PreferGenre preferGenre =
-                    PreferGenre.builder()
-                            .genre(genreRepository.findById(genreId).orElseThrow())
-                            .member(member)
-                            .build();
-            preferGenreRepository.save(preferGenre);
+        if (genres.getPreferGenres() != null && !genres.getPreferGenres().isEmpty()) {
+            for (Integer genreId : genres.getPreferGenres()) {
+                PreferGenre preferGenre =
+                        PreferGenre.builder()
+                                .genre(genreRepository.findById(genreId).orElseThrow())
+                                .member(member)
+                                .build();
+                preferGenreRepository.save(preferGenre);
+            }
         }
+
+        //추천 데이터 업데이트 요청
+        RestTemplate rt = new RestTemplate();
+        MultiValueMap<String, Integer> parameters = new LinkedMultiValueMap<>();
+        parameters.add("userId", memberId);
+
+        ResponseEntity<String> response = rt.postForEntity(
+                "http://localhost:5000/recommend",
+                parameters,
+                String.class
+        );
+        System.out.println(response.getBody());
+
     }
 }
