@@ -32,7 +32,7 @@ const ProfileInfo = ({ setStep, stepParam }) => {
       <div className='relative w-full p-2'>
         <img className='w-full rounded-full' src={defaultImg} />
         <div
-          className='absolute bottom-5 right-2 overflow-hidden flex justify-center bg-[#D9D9D9] rounded-full w-10 h-10 cursor-pointer'
+          className='absolute bottom-7 right-3 overflow-hidden flex justify-center bg-[#D9D9D9] rounded-full w-10 h-10 cursor-pointer'
           onClick={() => {
             alert('사진 선택');
           }}
