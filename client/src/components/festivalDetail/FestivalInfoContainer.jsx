@@ -31,15 +31,20 @@ const FestivalInfoContainer = () => {
           </button>
         </li>
       </ul>
-      <div className='flex flex-col min-w-0 text-3xl text-center break-words border-4 border-gray-500 h-[600px]'>
+      <div className='flex flex-col min-w-0 break-words h-[600px]'>
         <div className='flex-auto'>
           <div className='tab-content tab-space'>
-            <div className={openInfoTab === 1 ? 'block' : 'hidden'} id='link1'>
+            <div
+              className={openInfoTab === 1 ? 'block' : 'hidden'}
+              id='link1'
+            >
               1번 컴포넌트(셋리스트)
               <SetListWrapper />
             </div>
-            <div className={openInfoTab === 2 ? 'block' : 'hidden'} id='link2'>
-              2번 컴포넌트(후기)
+            <div
+              className={openInfoTab === 2 ? 'block' : 'hidden'}
+              id='link2'
+            >
               <ReviewWrapper />
             </div>
           </div>
