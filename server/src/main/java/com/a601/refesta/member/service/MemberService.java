@@ -17,15 +17,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class MemberService {
 
-    private final FestivalService festivalService;
-    private final ArtistService artistService;
-
     private final MemberRepository memberRepository;
-    private final MemberFestivalRepository memberFestivalRepository;
-    private final MemberArtistRepository memberArtistRepository;
-    private final FestivalLineupRepository festivalLineupRepository;
-
-    private final JPAQueryFactory jpaQueryFactory;
 
     public Member getMember(String googleId) {
         Member member = memberRepository.findByGoogleId(googleId);
