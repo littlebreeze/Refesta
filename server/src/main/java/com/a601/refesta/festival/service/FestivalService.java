@@ -64,13 +64,13 @@ public class FestivalService {
     /**
      * 페스티벌(공통) 좋아요 업데이트
      *
-     * @param memberId       - 구글 식별 ID
+     * @param memberId
      * @param festivalIdList
      */
-    public void updateFestivalLike(String memberId, List<Integer> festivalIdList) {
+    public void updateFestivalLike(int memberId, List<Integer> festivalIdList) {
         for (int festivalId : festivalIdList) {
             Optional<FestivalLike> optFindLike = festivalLikeRepository
-                    .findByMember_GoogleIdAndFestival_Id(memberId, festivalId);
+                    .findByMember_IdAndFestival_Id(memberId, festivalId);
 
             //DB에 없으면 추가
             if (optFindLike.isEmpty()) {
@@ -179,18 +179,34 @@ public class FestivalService {
                 .build();
     }
 
+    /**
+     * 페스티벌 종료 여부 확인
+     *
+     * @param findFestival
+     */
     public void checkIsEnded(Festival findFestival) {
         if (findFestival.isEnded()) {
             throw new CustomException(ErrorCode.FESTIVAL_IS_NOT_ENDED_ERROR);
         }
     }
 
+    /**
+     * 페스티벌 예정 여부 확인
+     *
+     * @param findFestival
+     */
     public void checkIsScheduled(Festival findFestival) {
         if (findFestival.isEnded()) {
             throw new CustomException(ErrorCode.FESTIVAL_ALREADY_ENDED_ERROR);
         }
     }
 
+    /**
+     * 페스티벌 조회
+     *
+     * @param festivalId
+     * @return Festival
+     */
     public Festival getFestival(int festivalId) {
         return festivalRepository.findById(festivalId)
                 .orElseThrow(() -> new CustomException(ErrorCode.FESTIVAL_NOT_FOUND_ERROR));

@@ -78,9 +78,9 @@ public class ArtistService {
      * @param memberId     - 구글 식별 ID
      * @param artistIdList
      */
-    public void updateArtistLike(String memberId, List<Integer> artistIdList) {
+    public void updateArtistLike(int memberId, List<Integer> artistIdList) {
         for (int artistId : artistIdList) {
-            Optional<ArtistLike> optFindLike = artistLikeRepository.findByMember_GoogleIdAndArtist_Id(memberId, artistId);
+            Optional<ArtistLike> optFindLike = artistLikeRepository.findByMember_IdAndArtist_Id(memberId, artistId);
 
             //DB에 없으면 추가
             if (optFindLike.isEmpty()) {
@@ -102,6 +102,11 @@ public class ArtistService {
         }
     }
 
+    /**
+     * 아트스트 조회
+     * @param artistId
+     * @return Artist
+     */
     public Artist getArtist(int artistId) {
         return artistRepository.findById(artistId)
                 .orElseThrow(() -> new CustomException(ErrorCode.ARTIST_NOT_FOUND_ERROR));
