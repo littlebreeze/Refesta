@@ -132,26 +132,8 @@ public class RecommendationService {
 
             //예정 페스티벌 저장
             if (!findFestival.isEnded()) {
-                //페스티벌 라인업에서 추천 아티스트 조회(4명)
-                List<String> findLineup = jpaQueryFactory.select(artist.name)
-                        .from(memberArtist)
-                        .innerJoin(festivalLineup).on(festivalLineup.artist.id.eq(memberArtist.artist.id)
-                                .and(festivalLineup.festival.id.eq(findFestival.getId())))
-                        .innerJoin(artist).on(artist.id.eq(memberArtist.artist.id))
-                        .where(memberArtist.member.id.eq(memberId))
-                        .limit(4)
-                        .fetch();
-
-                //라인업 StringBuilder로 변환
-                StringBuilder lineup = new StringBuilder();
-                for (String artistName : findLineup) {
-                    lineup.append(artistName).append(",");
-                }
-                lineup.deleteCharAt(lineup.length() - 1);
-
-                //정보 저장
                 festivalInfoList.add(new EntireFestivalInfoRes(findFestival.getId(), findFestival.getName(),
-                        findFestival.getDate(), findFestival.getLocation(), findFestival.getPosterUrl(), lineup.toString()));
+                        findFestival.getDate(), findFestival.getLocation(), findFestival.getPosterUrl(), getLineup(memberId, findFestival.getId())));
             }
         }
 
@@ -173,31 +155,46 @@ public class RecommendationService {
 
             //예정 페스티벌 저장
             if (findFestival.isEnded()) {
-                //페스티벌 라인업에서 추천 아티스트 조회(4명)
-                List<String> findLineup = jpaQueryFactory.select(artist.name)
-                        .from(memberArtist)
-                        .innerJoin(festivalLineup).on(festivalLineup.artist.id.eq(memberArtist.artist.id)
-                                .and(festivalLineup.festival.id.eq(findFestival.getId())))
-                        .innerJoin(artist).on(artist.id.eq(memberArtist.artist.id))
-                        .where(memberArtist.member.id.eq(memberId))
-                        .limit(4)
-                        .fetch();
-
-                //라인업 StringBuilder로 변환
-                StringBuilder lineup = new StringBuilder();
-                for (String artistName : findLineup) {
-                    lineup.append(artistName).append(",");
-                }
-                lineup.deleteCharAt(lineup.length() - 1);
-
-                //정보 저장
                 festivalInfoList.add(new EntireFestivalInfoRes(findFestival.getId(), findFestival.getName(),
-                        findFestival.getDate(), findFestival.getLocation(), findFestival.getPosterUrl(), lineup.toString()));
+                        findFestival.getDate(), findFestival.getLocation(), findFestival.getPosterUrl(), getLineup(memberId, findFestival.getId())));
             }
         }
 
         return festivalInfoList;
     }
+
+    /**
+     * 사용자 추천 페스티벌 라인업 조회
+     *
+     * @param memberId
+     * @param festivalId
+     * @return "lineup"
+     */
+    public String getLineup(int memberId, int festivalId) {
+        //페스티벌 라인업에서 추천 아티스트 조회(4명)
+        List<String> findLineup = jpaQueryFactory.select(artist.name)
+                .from(memberArtist)
+                .innerJoin(festivalLineup).on(festivalLineup.artist.id.eq(memberArtist.artist.id)
+                        .and(festivalLineup.festival.id.eq(festivalId)))
+                .innerJoin(artist).on(artist.id.eq(memberArtist.artist.id))
+                .where(memberArtist.member.id.eq(memberId))
+                .limit(4)
+                .fetch();
+
+        if (findLineup.isEmpty()) {
+            throw new CustomException(ErrorCode.FESTIVAL_LINEUP_NOT_READY_ERROR);
+        }
+
+        //라인업 StringBuilder로 변환
+        StringBuilder lineup = new StringBuilder();
+        for (String artistName : findLineup) {
+            lineup.append(artistName).append(",");
+        }
+        lineup.deleteCharAt(lineup.length() - 1);
+
+        return lineup.toString();
+    }
+
 
     public List<MemberFestival> getMemberFestival(int memberId) {
         List<MemberFestival> findRecommendation = memberFestivalRepository.findAllByMember_Id(memberId);
