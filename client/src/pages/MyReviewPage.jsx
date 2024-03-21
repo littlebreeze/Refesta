@@ -1,5 +1,7 @@
+import ReviewList from './../components/mypage/ReviewList';
+
 const MyReview = () => {
-  return <h2>MyReview</h2>;
+  return <ReviewList />;
 };
 
 export default MyReview;

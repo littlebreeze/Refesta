@@ -17,6 +17,7 @@ import LikeArtist from './pages/LikeArtistPage';
 import LikeFestival from './pages/LikeFestivalPage';
 import Search from './pages/SearchPage';
 import SearchResult from './pages/SearchResultPage';
+import MyReview from './pages/MyReviewPage';
 import MainLayout from './layout/MainLayout';
 import SearchLayout from './layout/SearchLayout';
 import SubLayout from './layout/SubLayout';
@@ -29,14 +30,29 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route element={<SubLayout />}>
-            <Route path='/login' element={<Login />} />
-            <Route path='/google-login' element={<Google_Login />} />
-            <Route path='/regist/:step' element={<RegisterInfo />} />
+            <Route
+              path='/login'
+              element={<Login />}
+            />
+            <Route
+              path='/google-login'
+              element={<Google_Login />}
+            />
+            <Route
+              path='/regist'
+              element={<RegisterInfo />}
+            />
           </Route>
 
           <Route element={<MainLayout />}>
-            <Route path='/' element={<Home />} />
-            <Route path='/festival-list' element={<FestivalList />} />
+            <Route
+              path='/'
+              element={<Home />}
+            />
+            <Route
+              path='/festival-list'
+              element={<FestivalList />}
+            />
             <Route
               path='/festival-detail'
               element={<FestivalDetail />}
@@ -45,23 +61,51 @@ function App() {
               path='/festival-detail-done'
               element={<FestivalDetailDone />}
             />
-            <Route path='/artist-detail' element={<ArtistDetail />} />
-            <Route path='/reservation' element={<Reservation />} />
+            <Route
+              path='/artist-detail'
+              element={<ArtistDetail />}
+            />
+            <Route
+              path='/reservation'
+              element={<Reservation />}
+            />
             <Route
               path='/reservation-result'
               element={<ReservationResult />}
             />
-            {/* <Route path='/reservation-detail' element={<ReservationDetail />} />
-            <Route path='/like-artist' element={<LikeArtist />} />
-            <Route path='/like-festival' element={<LikeArtist />} /> */}
+            <Route
+              path='/reservation-detail'
+              element={<ReservationDetail />}
+            />
+            <Route
+              path='/like-artist'
+              element={<LikeArtist />}
+            />
+            <Route
+              path='/like-festival'
+              element={<LikeFestival />}
+            />
+            <Route
+              path='my-review'
+              element={<MyReview />}
+            />
           </Route>
 
           <Route element={<SearchLayout />}>
-            <Route path='/search' element={<Search />} />
-            <Route path='/search-result' element={<SearchResult />} />
+            <Route
+              path='/search'
+              element={<Search />}
+            />
+            <Route
+              path='/search-result'
+              element={<SearchResult />}
+            />
           </Route>
 
-          <Route path='*' element={<Notfound />} />
+          <Route
+            path='*'
+            element={<Notfound />}
+          />
         </Routes>
       </BrowserRouter>
     </div>
