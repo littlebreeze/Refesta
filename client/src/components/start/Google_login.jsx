@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 
@@ -6,39 +7,42 @@ const Google_Login = () => {
 
   const handleHome = () => {
     nav('/', { replace: true });
-    //window.location.reload();
+    window.location.reload();
   };
 
-  const handleProfile = () => {
-    nav('/regist', { replace: true });
-    //window.location.reload();
+  const handleProfile = (data) => {
+    nav('/regist/profile', { state: { ...data }, replace: true });
+    window.location.reload();
   };
 
   const [params, setParams] = useSearchParams();
   const code = params.get('code');
+  const baseURL = `${import.meta.env.VITE_PUBLIC_API_SERVER}/login/oauth2/code/google`;
 
   const postLogin = async (code) => {
-    // code url에서 받아오기
-    const data = { code: code };
-    try {
-      // 백으로 요청 보내기
-      const response = await fetch(
-        'https://jsonplaceholder.typicode.com/comments'
-      ).then((res) => res.json());
+    const headers = {
+      'Content-Type': 'text/plain;charset=utf-8',
+    };
 
-      // 토큰 저장 - 정하기
-      console.log(response);
-      // localStorage.setItem(
-      //   'accessToken',
-      //   response.data.data.accessToken
-      // );
-      // localStorage.setItem(
-      //   'refreshToken',
-      //   response.data.data.refreshToken
-      // );
+    try {
+      const response = await axios.post(baseURL, code, {
+        headers: headers,
+      });
+
+      // 토큰 저장
+      localStorage.setItem(
+        'accessToken',
+        response.data.data.accessToken
+      );
+      localStorage.setItem(
+        'refreshToken',
+        response.data.data.refreshToken
+      );
 
       // isSigUp으로 기존/신규 여부 판단
-      response.isSignUp ? handleHome() : handleProfile();
+      response.data.signUp
+        ? handleProfile(response.data)
+        : handleHome();
     } catch (error) {
       console.log(error);
     }

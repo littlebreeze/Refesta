@@ -1,11 +1,11 @@
 const PosterImage = () => {
   const imgurl =
-    "https://cdnticket.melon.co.kr/resource/image/upload/product/2024/01/202401251756175728e950-d021-46ae-9b3d-d48593846055.png/melon/resize/180x254/strip/true/quality/90/optimize";
+    "https://cdn.imweb.me/upload/S20200106a105fd03f4b57/40ff2b61f79dc.jpg";
 
   return (
-    <div className="relative h-myVh w-full flex justify-center">
+    <div className="relative flex justify-center w-full h-myVh">
       <div
-        className="w-full opacity-30 overflow-hidden flex justify-center"
+        className="flex justify-center w-full overflow-hidden opacity-30"
         style={{
           backgroundImage: `url(${imgurl})`,
           backgroundSize: "cover",
@@ -13,8 +13,8 @@ const PosterImage = () => {
           width: "100%",
         }}
       ></div>
-      <div className="absolute w-myVw h-myVh overflow-hidden flex justify-center">
-        <img className="h-full object-cover" src={imgurl} />
+      <div className="absolute flex justify-center overflow-hidden w-myVw h-myVh">
+        <img className="object-cover h-full" src={imgurl} />
       </div>
     </div>
   );

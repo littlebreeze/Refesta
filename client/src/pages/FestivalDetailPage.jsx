@@ -7,7 +7,6 @@ import ReservationButton from '../components/festivalDetail/ReservationButton';
 const FestivalDetailPage = () => {
   return (
     <>
-      <Header />
       <FestivalInfo />
       <FestivalInfoDetail />
       <ReservationButton />
