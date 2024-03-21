@@ -1,5 +1,6 @@
 package com.a601.refesta.festival.controller;
 
+import com.a601.refesta.common.jwt.TokenProvider;
 import com.a601.refesta.common.response.SuccessResponse;
 import com.a601.refesta.festival.data.FestivalDetailRes;
 import com.a601.refesta.festival.data.FestivalInfoRes;
@@ -18,6 +19,7 @@ import java.util.List;
 public class FestivalController {
 
     private final FestivalService festivalService;
+    private final TokenProvider tokenProvider;
 
     @GetMapping("/{festival_id}")
     public SuccessResponse<FestivalInfoRes> getFestivalInfo(@PathVariable(name = "festival_id") int festivalId) {
@@ -36,8 +38,8 @@ public class FestivalController {
 
     @PatchMapping
     public SuccessResponse<HttpStatus> editFestivalLike(HttpServletRequest request, @RequestBody List<Integer> festivalIdList) {
-        //JWT 코드 추가 필요
-        festivalService.updateFestivalLike("", festivalIdList);
+        int memberId = tokenProvider.getMemberIdByToken(request);
+        festivalService.updateFestivalLike(memberId, festivalIdList);
         return new SuccessResponse<>(HttpStatus.OK);
     }
 }

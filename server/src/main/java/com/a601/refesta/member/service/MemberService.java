@@ -17,14 +17,6 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final S3Util s3Util;
 
-    public Member getMember(String googleId) {
-        Member member = memberRepository.findByGoogleId(googleId);
-        if (member == null) {
-            throw new CustomException(ErrorCode.MEMBER_NOT_FOUND_ERROR);
-        }
-        return member;
-    }
-
     public Member getMember(int memberId) {
         return memberRepository.findById(memberId).orElseThrow();
     }

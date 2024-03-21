@@ -64,13 +64,13 @@ public class FestivalService {
     /**
      * 페스티벌(공통) 좋아요 업데이트
      *
-     * @param memberId       - 구글 식별 ID
+     * @param memberId
      * @param festivalIdList
      */
-    public void updateFestivalLike(String memberId, List<Integer> festivalIdList) {
+    public void updateFestivalLike(int memberId, List<Integer> festivalIdList) {
         for (int festivalId : festivalIdList) {
             Optional<FestivalLike> optFindLike = festivalLikeRepository
-                    .findByMember_GoogleIdAndFestival_Id(memberId, festivalId);
+                    .findByMember_IdAndFestival_Id(memberId, festivalId);
 
             //DB에 없으면 추가
             if (optFindLike.isEmpty()) {
