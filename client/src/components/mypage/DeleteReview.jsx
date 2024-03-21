@@ -1,4 +1,4 @@
-import useReviewStore from '../store/reviewStore';
+import useReviewStore from '../store/myReviewStore';
 
 const DeleteReview = ({ isOpen, onClose, id }) => {
   const { removeReview } = useReviewStore();
