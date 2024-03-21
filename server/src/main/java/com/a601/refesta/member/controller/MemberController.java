@@ -3,6 +3,7 @@ package com.a601.refesta.member.controller;
 import com.a601.refesta.common.jwt.TokenProvider;
 import com.a601.refesta.common.response.SuccessResponse;
 import com.a601.refesta.member.data.MemberProfileRes;
+import com.a601.refesta.member.data.PreferGenreReq;
 import com.a601.refesta.member.service.MemberService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -32,5 +33,11 @@ public class MemberController {
         return new SuccessResponse<>(HttpStatus.SC_OK);
     }
 
+    @PostMapping("/genres")
+    public SuccessResponse<Integer> getPreferGenre(HttpServletRequest request, @RequestBody PreferGenreReq genres) {
+        int memberId=tokenProvider.getMemberIdByToken(request);
+        memberService.getPreferGenre(memberId, genres);
+        return new SuccessResponse<>(HttpStatus.SC_OK);
+    }
 
 }
