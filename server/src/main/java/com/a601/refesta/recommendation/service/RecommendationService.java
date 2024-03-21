@@ -21,7 +21,7 @@ import java.util.List;
 
 import static com.a601.refesta.artist.domain.QArtist.artist;
 import static com.a601.refesta.festival.domain.join.QFestivalLineup.festivalLineup;
-import static com.a601.refesta.member.domain.join.QMemberArtist.memberArtist;
+import static com.a601.refesta.recommendation.domain.QMemberArtist.memberArtist;
 
 @Service
 @RequiredArgsConstructor
