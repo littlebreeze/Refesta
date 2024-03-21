@@ -1,18 +1,9 @@
-import axios from 'axios';
+import instance from '../../util/token_interceptor';
 
 import { useEffect, useRef, useState } from 'react';
 
 import defaultImg from '../../assets/default_img.jpg';
 import editPencil from '../../assets/edit_pencil.png';
-
-// Authorization
-
-const baseURL = `${import.meta.env.VITE_PUBLIC_API_SERVER}/members`;
-const accessToken = `Bearer ${localStorage.getItem('accessToken')}`;
-const headers = {
-  'Content-Type': 'application/json',
-  Authorization: accessToken,
-};
 
 const ProfileInfo = ({ setStep, stepParam }) => {
   const [nickname, setNickname] = useState('');
@@ -23,28 +14,19 @@ const ProfileInfo = ({ setStep, stepParam }) => {
 
   // 페이지에 들어왔을 때 토큰으로 사용자 정보 가져오기
   const getUserProfile = async () => {
-    try {
-      // 이걸 보내기 전에 토큰이 유효한지 확인
-      // 자 이제 진짜 interceptor...가 와야할 순간이야...
+    const response = await instance.get('/members');
 
-      const response = await axios.get(baseURL, {
-        headers: headers,
-        withCredentials: true,
-      });
-      if (response.data.status == 'success') {
-        const nickname = response.data.data.nickname;
-        const url = response.data.data.profileUrl;
-        setNickname(nickname ? nickname : '');
-        //setImgURL(url ? url : defaultImg);
-        setImgInfo({ ...imgInfo, url: url });
-      } else {
-        console.log('성공아냐');
-        console.log(response);
-      }
-    } catch (error) {
-      console.log('토큰 재발급이 필요합니다');
-      console.log(error);
+    if (response.data.status == 'success') {
+      const nickname = response.data.data.nickname;
+      const url = response.data.data.profileUrl;
+      setNickname(nickname ? nickname : '');
+      //setImgURL(url ? url : defaultImg);
+      setImgInfo({ ...imgInfo, url: url });
     }
+    // else {
+    //   alert('로그인 정보가 유효하지 않습니다!');
+    //   window.location.replace('/login');
+    // }
   };
 
   useEffect(() => {
@@ -93,7 +75,7 @@ const ProfileInfo = ({ setStep, stepParam }) => {
         />
         <img
           className='object-cover w-full border rounded-full border-zinc-300'
-          src={imgInfo.url}
+          src={imgInfo.url ? imgInfo.url : defaultImg}
         />
         <div
           className='absolute bottom-7 right-3 overflow-hidden flex justify-center bg-[#D9D9D9] rounded-full w-10 h-10 cursor-pointer'
