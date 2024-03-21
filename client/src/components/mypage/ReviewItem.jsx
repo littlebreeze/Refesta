@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import ReactPlayer from 'react-player';
-import useReviewStore from '../store/reviewStore';
 import DeleteReview from './DeleteReview';
 
 const ReviewItem = ({ review }) => {
@@ -29,7 +28,7 @@ const ReviewItem = ({ review }) => {
         </button>
       </div>
       <div className='flex items-center justify-center mt-2 overflow-hidden w-80 h-80'>
-        {review.type === 'IMAGE' ? (
+        {type === 'IMAGE' ? (
           <img
             className='object-cover w-full h-full'
             src={attachmentUrl}
