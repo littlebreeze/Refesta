@@ -25,80 +25,80 @@ function App() {
   const [count, setCount] = useState(0);
 
   return (
-    <div className="flex flex-col h-full">
+    <div className='flex flex-col h-full'>
       <BrowserRouter>
         <Routes>
           <Route element={<SubLayout />}>
             <Route
-              path="/login"
+              path='/login'
               element={<Login />}
             />
             <Route
-              path="/google-login"
+              path='/google-login'
               element={<Google_Login />}
             />
             <Route
-              path="/regist"
+              path='/regist'
               element={<RegisterInfo />}
             />
           </Route>
 
           <Route element={<MainLayout />}>
             <Route
-              path="/"
+              path='/'
               element={<Home />}
             />
             <Route
-              path="/festival-list"
+              path='/festival-list'
               element={<FestivalList />}
             />
             <Route
-              path="/festival-detail"
+              path='/festival-detail'
               element={<FestivalDetail />}
             />
             <Route
-              path="/festival-detail-done"
+              path='/festival-detail-done'
               element={<FestivalDetailDone />}
             />
             <Route
-              path="/artist-detail"
+              path='/artist-detail'
               element={<ArtistDetail />}
             />
             <Route
-              path="/reservation"
+              path='/reservation'
               element={<Reservation />}
             />
             <Route
-              path="/reservation-result"
+              path='/reservation-result'
               element={<ReservationResult />}
             />
             <Route
-              path="/reservation-detail"
+              path='/reservation-detail'
               element={<ReservationDetail />}
             />
             <Route
-              path="/like-artist"
+              path='/like-artist'
               element={<LikeArtist />}
             />
             <Route
-              path="/like-festival"
+              path='/like-festival'
               element={<LikeFestival />}
             />
           </Route>
 
           <Route element={<SearchLayout />}>
             <Route
-              path="/search"
+              path='/search'
               element={<Search />}
             />
             <Route
-              path="/search-result"
+              path='/search-result'
               element={<SearchResult />}
             />
           </Route>
 
           <Route
-            path="*"
+            path='*'
             element={<Notfound />}
           />
         </Routes>

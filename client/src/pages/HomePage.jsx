@@ -3,8 +3,9 @@ import Header from '../components/common/Header';
 const Home = () => {
   return (
     <div>
-      <div className='p-4 text-white bg-blue-500'>
-        <h4>홈페이지</h4>
+      <div className=''>
+        <h2>Home</h2>
+        <h4>이제 페스티벌 리스트를 받아야해용</h4>
       </div>
     </div>
   );

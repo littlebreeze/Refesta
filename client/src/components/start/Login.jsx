@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 
 import logo from '../../assets/refesta_logo.png';
-import glogo from '../../assets/Google__G__logo.svg.png';
+import glogo from '../../assets/google_small_logo.png';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -21,7 +21,7 @@ const Login = () => {
   };
 
   return (
-    <div className='grid w-full place-items-center'>
+    <div>
       <img src={logo} />
       <h3 className='text-2xl font-bold leading-9 tracking-tight text-center text-ourIndigo'>
         당신만을 위한 페스티벌
