@@ -26,7 +26,6 @@ public class ArtistInfoRes {
         this.performanceList = performanceList;
     }
 
-    @Getter
     @AllArgsConstructor
     public class Performance {
 

@@ -7,5 +7,5 @@ import java.util.Optional;
 
 public interface FestivalLikeRepository extends JpaRepository<FestivalLike, Integer> {
 
-    Optional<FestivalLike> findByMember_GoogleIdAndFestival_Id(String memberId, int festivalId);
+    Optional<FestivalLike> findByMember_GoogleIdAndFestival_Id(String memberId, Integer festivalId);
 }
