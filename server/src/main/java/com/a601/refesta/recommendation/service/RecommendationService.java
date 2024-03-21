@@ -13,6 +13,7 @@ import com.a601.refesta.recommendation.repository.MemberArtistRepository;
 import com.a601.refesta.recommendation.repository.MemberFestivalRepository;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -55,26 +56,9 @@ public class RecommendationService {
 
             //종료 페스티벌 저장(8개)
             else if (findFestival.isEnded() && endedFestivalList.size() < 8) {
-                //페스티벌 라인업에서 추천 아티스트 조회(4명)
-                List<String> findLineup = jpaQueryFactory.select(artist.name)
-                        .from(memberArtist)
-                        .innerJoin(festivalLineup).on(festivalLineup.artist.id.eq(memberArtist.artist.id)
-                                .and(festivalLineup.festival.id.eq(findFestival.getId())))
-                        .innerJoin(artist).on(artist.id.eq(memberArtist.artist.id))
-                        .where(memberArtist.member.id.eq(memberId))
-                        .limit(4)
-                        .fetch();
-
-                //라인업 StringBuilder로 변환
-                StringBuilder lineup = new StringBuilder();
-                for (String artistName : findLineup) {
-                    lineup.append(artistName).append(",");
-                }
-                lineup.deleteCharAt(lineup.length() - 1);
-
                 //정보 저장
                 endedFestivalList.add(new FestivalRecommendationRes.EndedFestival(findFestival.getId(), findFestival.getName(),
-                        findFestival.getDate(), findFestival.getPosterUrl(), lineup.toString()));
+                        findFestival.getDate(), findFestival.getPosterUrl(), getLineup(memberId, findFestival.getId())));
             }
 
             //페스티벌 예정, 종료 8개씩 찾고 종료
@@ -98,7 +82,8 @@ public class RecommendationService {
      */
     public ArtistRecommendationRes getArtistRecommendation(int memberId, int pageNo) {
         Pageable pageable = PageRequest.of(pageNo, 8);
-        List<MemberArtist> findRecommendation = memberArtistRepository.findAllByMember_Id(memberId, pageable);
+
+        Page<MemberArtist> findRecommendation = memberArtistRepository.findAllByMember_Id(memberId, pageable);
 
         if (findRecommendation.isEmpty()) {
             throw new CustomException(ErrorCode.RECOMMENDATION_NOT_READY_ERROR);
