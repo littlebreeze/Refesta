@@ -74,7 +74,9 @@ instance.interceptors.response.use(
         return axios(originRequest);
       } catch (error) {
         // 리프레시 토큰으로 재발급이 안된거니까 로그인 다시!
-        console.log('재로그인');
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('refreshToken');
+        window.location.replace('/login');
       }
     }
     return Promise.reject(error);
