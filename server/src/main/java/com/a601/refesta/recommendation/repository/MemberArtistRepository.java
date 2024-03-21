@@ -1,7 +1,6 @@
-package com.a601.refesta.member.repository;
+package com.a601.refesta.recommendation.repository;
 
-import com.a601.refesta.member.domain.join.MemberArtist;
-import org.springframework.data.domain.Page;
+import com.a601.refesta.recommendation.domain.MemberArtist;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 

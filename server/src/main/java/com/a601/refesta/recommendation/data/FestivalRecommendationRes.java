@@ -1,4 +1,4 @@
-package com.a601.refesta.member.data;
+package com.a601.refesta.recommendation.data;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

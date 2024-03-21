@@ -1,4 +1,4 @@
-package com.a601.refesta.member.domain.join;
+package com.a601.refesta.recommendation.domain;
 
 import com.a601.refesta.common.entity.BaseEntity;
 import com.a601.refesta.festival.domain.Festival;

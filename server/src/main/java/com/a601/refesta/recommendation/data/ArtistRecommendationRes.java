@@ -1,7 +1,5 @@
-package com.a601.refesta.member.data;
+package com.a601.refesta.recommendation.data;
 
-import com.a601.refesta.artist.domain.Artist;
-import com.a601.refesta.festival.data.FestivalSetlistRes;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
