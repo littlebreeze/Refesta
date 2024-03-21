@@ -55,13 +55,13 @@ const RegisterReview = ({ isOpen, onClose, selectedFile }) => {
             <div className='flex items-center justify-center h-10 text-lg font-bold py-7 border-y-2'>후기 작성</div>
             <section className='flex flex-col'>
               <div className='flex my-5 px-7'>
-                <div className='overflow-hidden w-9'>
+                <div className='overflow-hidden h-14 w-9'>
                   <img
                     className='object-cover h-full'
                     src='https://www.seouljazz.co.kr/data/editor/2312/20231205173920_7006427c7339d61b9ea55f8db36041fc_9r59.jpg'
                   />
                 </div>
-                <div className='flex flex-col px-3'>
+                <div className='flex flex-col justify-center px-3'>
                   <div className='font-bold'>제 15회 서울 재즈 페스티벌</div>
                   <div className='flex text-gray-500'>
                     <div>2023.07.07</div>
