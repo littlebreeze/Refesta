@@ -1,5 +1,3 @@
-import instance from '../../util/intercepter';
-
 import { useLocation } from 'react-router-dom';
 import defaultImg from '../../assets/default_img.jpg';
 import editPencil from '../../assets/edit_pencil.png';
@@ -11,7 +9,7 @@ const ProfileInfo = ({ setStep, stepParam }) => {
 
   const getUserProfile = async () => {
     try {
-      const response = await instance.get('/login');
+      //const response = await instance.get('/login');
     } catch (error) {
       console.log(error);
     }
@@ -34,7 +32,7 @@ const ProfileInfo = ({ setStep, stepParam }) => {
       <div className='relative w-full p-2'>
         <img className='w-full rounded-full' src={defaultImg} />
         <div
-          className='absolute bottom-5 right-2 overflow-hidden flex justify-center bg-[#D9D9D9] rounded-full w-12 h-12 cursor-pointer'
+          className='absolute bottom-5 right-2 overflow-hidden flex justify-center bg-[#D9D9D9] rounded-full w-10 h-10 cursor-pointer'
           onClick={() => {
             alert('사진 선택');
           }}
