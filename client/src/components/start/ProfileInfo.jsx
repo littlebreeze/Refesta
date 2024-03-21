@@ -24,6 +24,9 @@ const ProfileInfo = ({ setStep, stepParam }) => {
   // 페이지에 들어왔을 때 토큰으로 사용자 정보 가져오기
   const getUserProfile = async () => {
     try {
+      // 이걸 보내기 전에 토큰이 유효한지 확인
+      // 자 이제 진짜 interceptor...가 와야할 순간이야...
+
       const response = await axios.get(baseURL, {
         headers: headers,
         withCredentials: true,
@@ -39,7 +42,7 @@ const ProfileInfo = ({ setStep, stepParam }) => {
         console.log(response);
       }
     } catch (error) {
-      // 401 에러가 났으면 리프레시 토큰 보내서 재발급
+      console.log('토큰 재발급이 필요합니다');
       console.log(error);
     }
   };
