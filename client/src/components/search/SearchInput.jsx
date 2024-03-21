@@ -12,8 +12,8 @@ const SearchInput = () => {
   };
 
   return (
-    <header className='py-4 bg-ourIndigo'>
-      <div className='flex items-center'>
+    <header className='h-[70px] py-4 bg-ourIndigo'>
+      <div className='flex items-center h-full'>
         {/* 뒤로 가기 버튼 */}
         <div className='w-5 h-5 ml-5'>
           <Link to='/' className='cursor-pointer'>
@@ -21,15 +21,15 @@ const SearchInput = () => {
           </Link>
         </div>
         {/* 검색 인풋 */}
-        <div className='relative w-full px-5'>
+        <div className='relative w-full h-full px-5'>
           <input
             type='text'
             value={keyword}
             onChange={onChangeKeyword}
             placeholder='검색어를 입력하세요'
-            className='bg-[#102B6A] w-full rounded-full text-white pl-5 pr-8'
+            className='bg-[#102B6A] w-full h-full rounded-full text-white pl-5 pr-8'
           />
-          <img className='absolute bottom-1 right-8' src={x_btn} />
+          <img className='absolute bottom-3 right-8' src={x_btn} />
         </div>
       </div>
     </header>
