@@ -35,6 +35,14 @@ public class Member extends BaseEntity {
     @Column(nullable = false)
     private MemberRole role = MemberRole.ROLE_MEMBER;
 
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public void setProfileUrl(String profileUrl) {
+        this.profileUrl = profileUrl;
+    }
+
     public Collection<String> getRoles() {
         Collection<String> roles = new ArrayList<>();
         roles.add(role.getValue());
