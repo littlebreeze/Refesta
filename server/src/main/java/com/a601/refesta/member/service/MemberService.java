@@ -56,7 +56,7 @@ public class MemberService {
         memberRepository.save(member);
     }
 
-    public void getPreferGenre(int memberId, PreferGenreReq genres) {
+    public void createPreferGenre(int memberId, PreferGenreReq genres) {
         Member member = getMember(memberId);
         if (genres.getPreferGenres() != null && !genres.getPreferGenres().isEmpty()) {
             for (Integer genreId : genres.getPreferGenres()) {

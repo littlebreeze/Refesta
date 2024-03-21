@@ -34,9 +34,9 @@ public class MemberController {
     }
 
     @PostMapping("/genres")
-    public SuccessResponse<Integer> getPreferGenre(HttpServletRequest request, @RequestBody PreferGenreReq genres) {
+    public SuccessResponse<Integer> addPreferGenre(HttpServletRequest request, @RequestBody PreferGenreReq genres) {
         int memberId=tokenProvider.getMemberIdByToken(request);
-        memberService.getPreferGenre(memberId, genres);
+        memberService.createPreferGenre(memberId, genres);
         return new SuccessResponse<>(HttpStatus.SC_OK);
     }
 
