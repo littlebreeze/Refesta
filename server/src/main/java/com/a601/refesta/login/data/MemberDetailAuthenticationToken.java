@@ -12,6 +12,7 @@ public class MemberDetailAuthenticationToken extends AbstractAuthenticationToken
     public MemberDetailAuthenticationToken(Collection<? extends GrantedAuthority> authorities, MemberDetail memberDetail1) {
         super(authorities);
         this.memberDetail = memberDetail1;
+        super.setAuthenticated(true);
     }
 
     @Override

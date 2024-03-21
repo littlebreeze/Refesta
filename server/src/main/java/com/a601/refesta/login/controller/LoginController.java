@@ -19,8 +19,8 @@ public class LoginController {
     }
 
     @PostMapping("/oauth/token") //accessToken 만료 시 refreshToken으로 토큰 재발급
-    public SuccessResponse<OauthTokenRes> regenerateToken(@RequestBody String refreshTokenReq) {
-        OauthTokenRes oauthTokenRes = loginService.regenerateToken(refreshTokenReq);
+    public SuccessResponse<OauthTokenRes> regenerateToken(@RequestBody String refreshToken) {
+        OauthTokenRes oauthTokenRes = loginService.regenerateToken(refreshToken);
         return new SuccessResponse<>(oauthTokenRes);
     }
 }

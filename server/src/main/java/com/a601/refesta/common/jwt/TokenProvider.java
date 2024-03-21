@@ -5,7 +5,9 @@ import com.a601.refesta.common.exception.ErrorCode;
 import com.a601.refesta.login.data.MemberDetail;
 import com.a601.refesta.login.data.MemberDetailAuthenticationToken;
 import com.a601.refesta.login.data.OauthTokenRes;
+import com.a601.refesta.login.repository.RefreshTokenRepository;
 import com.a601.refesta.member.domain.Member;
+import com.a601.refesta.member.domain.RefreshToken;
 import com.a601.refesta.member.repository.MemberRepository;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
@@ -22,6 +24,7 @@ import java.security.Key;
 import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 import static java.time.LocalDateTime.now;
 
@@ -41,17 +44,28 @@ public class TokenProvider {
     @Autowired
     private MemberRepository memberRepository;
 
+    @Autowired
+    private RefreshTokenRepository refreshTokenRepository;
+
     public TokenProvider(@Value("${spring.security.oauth2.jwt.secret}") String secret) {
         byte[] keyBytes = Decoders.BASE64.decode(secret);
         this.key = Keys.hmacShaKeyFor(keyBytes);
     }
 
     public OauthTokenRes generateTokenDto(Member member) {
+        // 이미 있는 refreshToken 만료 처리 로직
+        List<RefreshToken> list = refreshTokenRepository.findAllByToken();
+        if (list != null) {
+            for (RefreshToken rt : list) {
+                rt.setExpired();
+                refreshTokenRepository.save(rt);
+            }
+        }
 
         long now = (new Date()).getTime();
         //ACCESSTOKEN 생성
         String accessToken = Jwts.builder()
-                .claim(AUTHORITIES_KEY, "MEMBER")
+                .claim(AUTHORITIES_KEY, member.getRoles())
                 .signWith(key, SignatureAlgorithm.HS512)
                 .setAudience(AUD) //식별가능해야한다.
                 .setSubject(String.valueOf(member.getGoogleId()))
@@ -149,7 +163,7 @@ public class TokenProvider {
     }
 
     //토큰에서 memberId 꺼내기
-    public Integer getUserIdByToken(HttpServletRequest request) {
+    public Integer getMemberIdByToken(HttpServletRequest request) {
         //검증은 끝난 것이라 예외처리 하지 않음
         String accessToken = request.getHeader(AUTHORIZATION_HEADER).substring(7);
         //복호화를 통해 googleID로 memberId꺼내기
