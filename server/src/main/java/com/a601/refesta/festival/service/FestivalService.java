@@ -179,18 +179,34 @@ public class FestivalService {
                 .build();
     }
 
+    /**
+     * 페스티벌 종료 여부 확인
+     *
+     * @param findFestival
+     */
     public void checkIsEnded(Festival findFestival) {
         if (findFestival.isEnded()) {
             throw new CustomException(ErrorCode.FESTIVAL_IS_NOT_ENDED_ERROR);
         }
     }
 
+    /**
+     * 페스티벌 예정 여부 확인
+     *
+     * @param findFestival
+     */
     public void checkIsScheduled(Festival findFestival) {
         if (findFestival.isEnded()) {
             throw new CustomException(ErrorCode.FESTIVAL_ALREADY_ENDED_ERROR);
         }
     }
 
+    /**
+     * 페스티벌 조회
+     *
+     * @param festivalId
+     * @return Festival
+     */
     public Festival getFestival(int festivalId) {
         return festivalRepository.findById(festivalId)
                 .orElseThrow(() -> new CustomException(ErrorCode.FESTIVAL_NOT_FOUND_ERROR));

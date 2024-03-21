@@ -195,7 +195,12 @@ public class RecommendationService {
         return lineup.toString();
     }
 
-
+    /**
+     * 사용자 추천 페스티벌 테이블 조회
+     *
+     * @param memberId
+     * @return List<MemberFestival>
+     */
     public List<MemberFestival> getMemberFestival(int memberId) {
         List<MemberFestival> findRecommendation = memberFestivalRepository.findAllByMember_Id(memberId);
 

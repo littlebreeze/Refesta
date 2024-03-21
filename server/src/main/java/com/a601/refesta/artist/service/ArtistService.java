@@ -102,6 +102,11 @@ public class ArtistService {
         }
     }
 
+    /**
+     * 아트스트 조회
+     * @param artistId
+     * @return Artist
+     */
     public Artist getArtist(int artistId) {
         return artistRepository.findById(artistId)
                 .orElseThrow(() -> new CustomException(ErrorCode.ARTIST_NOT_FOUND_ERROR));
