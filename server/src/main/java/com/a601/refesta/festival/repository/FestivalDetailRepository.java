@@ -7,5 +7,5 @@ import java.util.Optional;
 
 public interface FestivalDetailRepository extends JpaRepository<FestivalDetail, Integer> {
 
-    Optional<FestivalDetail> findByFestival_Id(int festivalId);
+    Optional<FestivalDetail> findByFestival_Id(Integer festivalId);
 }
