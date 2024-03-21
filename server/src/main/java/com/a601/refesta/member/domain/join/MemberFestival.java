@@ -1,5 +1,7 @@
 package com.a601.refesta.member.domain.join;
 
+import com.a601.refesta.common.entity.BaseEntity;
+import com.a601.refesta.festival.domain.Festival;
 import com.a601.refesta.member.domain.Member;
 import jakarta.persistence.*;
 import lombok.*;
@@ -9,16 +11,17 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class FestivalRecommendation {
+public class MemberFestival extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer Id;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @Column(nullable = false, length = 16000)
-    private String festivalRecommended;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "festival_id")
+    private Festival festival;
 }

@@ -1,5 +1,8 @@
 package com.a601.refesta.member.domain.join;
 
+import com.a601.refesta.artist.domain.Artist;
+import com.a601.refesta.common.entity.BaseEntity;
+import com.a601.refesta.festival.domain.Festival;
 import com.a601.refesta.member.domain.Member;
 import jakarta.persistence.*;
 import lombok.*;
@@ -9,7 +12,7 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class ArtistRecommendation {
+public class MemberArtist extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,6 +22,7 @@ public class ArtistRecommendation {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @Column(nullable = false, length = 16000)
-    private String artistRecommended;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "artist_id")
+    private Artist artist;
 }
