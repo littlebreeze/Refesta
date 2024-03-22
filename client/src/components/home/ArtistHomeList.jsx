@@ -41,7 +41,7 @@ const ArtistHomeList = () => {
     },
   ];
   return (
-    <div className='h-[263px]'>
+    <div className='h-[283px]'>
       <ListTitle
         title={'추천 아티스트'}
         description={'아티스트가 참여한 페스티벌을 알아보세요!'}
