@@ -17,6 +17,7 @@ import LikeArtist from './pages/LikeArtistPage';
 import LikeFestival from './pages/LikeFestivalPage';
 import Search from './pages/SearchPage';
 import SearchResult from './pages/SearchResultPage';
+import MyReview from './pages/MyReviewPage';
 import MainLayout from './layout/MainLayout';
 import SearchLayout from './layout/SearchLayout';
 import SubLayout from './layout/SubLayout';
@@ -32,7 +33,7 @@ function App() {
           <Route element={<SubLayout />}>
             <Route path='/login' element={<Login />} />
             <Route path='/google-login' element={<Google_Login />} />
-            <Route path='/regist' element={<RegisterInfo />} />
+            <Route path='/regist/:step' element={<RegisterInfo />} />
             <Route path='/test' element={<TestPage />} />
           </Route>
 
@@ -47,6 +48,7 @@ function App() {
             <Route path='/reservation-detail' element={<ReservationDetail />} />
             <Route path='/like-artist' element={<LikeArtist />} />
             <Route path='/like-festival' element={<LikeFestival />} />
+            <Route path='my-review' element={<MyReview />} />
           </Route>
 
           <Route element={<SearchLayout />}>

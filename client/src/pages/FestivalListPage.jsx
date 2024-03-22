@@ -1,5 +1,10 @@
+import FestivalViewAllList from '../components/home/FestivalViewAllList';
 const FestivalList = () => {
-  return <h2>FestivalList</h2>;
+  return (
+    <div>
+      <FestivalViewAllList />
+    </div>
+  );
 };
 
 export default FestivalList;
