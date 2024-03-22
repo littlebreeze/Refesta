@@ -1,29 +1,30 @@
 import { create } from 'zustand';
+import axios from 'axios';
+
+const token =
+  'eyJhbGciOiJIUzUxMiJ9.eyJhdXRoIjpbIlJPTEVfQURNSU4iXSwiYXVkIjoiaHR0cHM6Ly9qMTBhNjAxLnAuc3NhZnkuaW8vIiwic3ViIjoiMTA3OTQ4MDU4MzM1NzA4NjY1MjYwIiwiaXNzIjoiaHR0cHM6Ly9qMTBhNjAxLnAuc3NhZnkuaW8vIiwiaWF0IjoxNzExMDA0MzM2LCJleHAiOjE3MTI4MDQzMzZ9.vZzSd4v5rA1pGDeWNpkFt5HpMzYzAdFZUJIHKKwIl80KaI6rheI1fXiaQIQV9RGvDDdy-snwVOSmmZ2a0CAoUA';
+const accessToken = `Bearer ${token}`;
+const headers = {
+  'Content-Type': 'application/json',
+  Authorization: accessToken,
+};
+const baseURL = `${import.meta.env.VITE_PUBLIC_API_SERVER}`;
 
 const useReviewStore = create((set) => ({
-  reviewList: [
-    {
-      writer: '닉네임입니다',
-      profileUrl: 'https://pds.joongang.co.kr/news/component/htmlphoto_mmdata/201509/22/htm_2015092295240299783.jpg',
-      attachmentUrl: 'https://img.gqkorea.co.kr/gq/2023/05/style_645dce9d6929c-800x521.png',
-      mediaType: 'IMAGE',
-      contents: '나락도 락이다!!!!!!!!!!!',
-    },
-    {
-      writer: '닉네임입니다',
-      profileUrl: 'https://pds.joongang.co.kr/news/component/htmlphoto_mmdata/201509/22/htm_2015092295240299783.jpg',
-      attachmentUrl: 'https://d1b632bso7m0wd.cloudfront.net/112.mp4',
-      mediaType: 'VIDEO',
-      contents: '영상 게시글 테스트입니다 테스트테스트',
-    },
-    {
-      writer: '닉네임입니다',
-      profileUrl: 'https://pds.joongang.co.kr/news/component/htmlphoto_mmdata/201509/22/htm_2015092295240299783.jpg',
-      attachmentUrl: 'https://img.gqkorea.co.kr/gq/2023/05/style_645dce9d6929c-800x521.png',
-      mediaType: 'IMAGE',
-      contents: '나123213321락325ㅅ135ㅅ도 락이다!!!!!!!!!!!',
-    },
-  ],
+  reviewList: [],
+  addReviews: async (festivalId) => {
+    try {
+      const res = await axios.get(`${baseURL}/festivals/${festivalId}/reviews`, {
+        headers: headers,
+        withCredentials: true,
+      });
+      set((state) => ({
+        reviewList: [...state.reviewList, ...res.data.data],
+      }));
+    } catch (e) {
+      console.log(e);
+    }
+  },
 }));
 
 export default useReviewStore;
