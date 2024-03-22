@@ -11,4 +11,3 @@
 🌱 add(fe): 파일 추가한 경우
 
 headwind extension으로 tailwind css 코드 자동 정렬
-탭바 사용을 위해 flowbite 사용
