@@ -20,14 +20,6 @@ import FestivalInfoContainer from '../components/festivalDetail/FestivalInfoCont
 // 페스티벌 상세 완료
 const FestivalDetailDonePage = () => {
   const { id } = useParams();
-  const getUserProfile = async () => {
-    const response = await instance.get('/members');
-
-    if (response.data.status == 'success') {
-      console.log(response);
-    }
-  };
-  getUserProfile();
 
   return (
     <>

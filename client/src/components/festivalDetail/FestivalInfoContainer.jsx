@@ -35,11 +35,9 @@ const FestivalInfoContainer = ({ id }) => {
       <div className='flex flex-col min-w-0 mx-6 mt-4 text-center break-words  h-[600px]'>
         <div className='flex-auto'>
           <div className={openInfoTab === 1 ? 'block' : 'hidden'}>
-            1번 컴포넌트(셋리스트)
             <SetListWrapper />
           </div>
           <div className={openInfoTab === 2 ? 'block' : 'hidden'}>
-            2번 컴포넌트(후기)
             <ReviewWrapper />
           </div>
         </div>
