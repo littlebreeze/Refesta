@@ -1,4 +1,4 @@
-import img404 from '../assets/404/memphis-404-error-on-computer-screen.png';
+import img404 from '../assets/404img.png';
 import { Link } from 'react-router-dom';
 
 const Notfound = () => {
