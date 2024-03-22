@@ -21,6 +21,7 @@ import static com.a601.refesta.member.domain.QMember.member;
 import static com.a601.refesta.member.domain.join.QArtistLike.artistLike;
 import static com.a601.refesta.member.domain.join.QFestivalLike.festivalLike;
 import static com.a601.refesta.reservation.domain.QReservation.reservation;
+import static com.a601.refesta.review.domain.QReview.review;
 
 @Service
 @RequiredArgsConstructor
@@ -95,5 +96,22 @@ public class MemberService {
                 .innerJoin(member).on(reservation.member.id.eq(memberId))
                 .where(member.id.eq(memberId))
                 .fetch();
+    }
+
+
+    public List<ReviewRes> getReviews(int memberId) {
+
+        return jpaQueryFactory.select(Projections.constructor(
+                        ReviewRes.class, review.id, festival.name,
+                        festival.festivalDate, festival.location, review.contents,
+                        review.attachmentUrl, review.mediaType))
+                .from(review)
+                .innerJoin(member)
+                .on(review.member.id.eq(member.id))
+                .innerJoin(festival)
+                .on(review.festival.id.eq(festival.id))
+                .where(member.id.eq(memberId))
+                .fetch();
+
     }
 }

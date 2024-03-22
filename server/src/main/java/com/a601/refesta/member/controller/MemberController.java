@@ -67,4 +67,11 @@ public class MemberController {
         return new SuccessResponse<>(data);
     }
 
+    @GetMapping("/reviews")
+    public SuccessResponse<Map<String, List<ReviewRes>>> getReviews(HttpServletRequest request){
+        int memberId = tokenProvider.getMemberIdByToken(request);
+        Map<String, List<ReviewRes>> data = new TreeMap<>();
+        data.put("reviewList", memberService.getReviews(memberId));
+        return new SuccessResponse<>(data);
+    }
 }
