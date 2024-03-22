@@ -19,9 +19,15 @@ const Home = () => {
     <div>
       <div>
         <Carousel />
-        <FestivalHomeList />
-        <ArtistHomeList />
-        <SetListHomeList />
+        <div className='pt-7 pl-7'>
+          <FestivalHomeList />
+        </div>
+        <div className='pt-7 pl-7'>
+          <ArtistHomeList />
+        </div>
+        <div className='py-7 pl-7'>
+          <SetListHomeList />
+        </div>
       </div>
     </div>
   );
