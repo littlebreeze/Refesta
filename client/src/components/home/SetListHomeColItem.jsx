@@ -1,9 +1,10 @@
 import SetListHomeItem from './SetListHomeItem';
-const SetListHomeColItem = ({ item }) => {
+const SetListHomeColItem = ({ chunkItem }) => {
   return (
     <div className='grid gap-y-5'>
-      <SetListHomeItem {...item} />
-      <SetListHomeItem {...item} />
+      {chunkItem.map((item) => (
+        <SetListHomeItem key={item.id} {...item} />
+      ))}
     </div>
   );
 };

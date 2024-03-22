@@ -8,7 +8,7 @@ const ArtistHomeItem = ({ id, name, pictureUrl }) => {
           src={pictureUrl}
         />
       </div>
-      <div className='absolute w-full text-white truncate bottom-2'>
+      <div className='absolute w-1/2 text-white truncate bottom-2 left-7'>
         {name}
       </div>
     </div>
