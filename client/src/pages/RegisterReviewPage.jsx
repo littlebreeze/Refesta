@@ -69,42 +69,42 @@ const RegisterReview = ({ isOpen, onClose, selectedFile }) => {
                   </div>
                 </div>
               </div>
-              <div className='relative flex items-center justify-center w-full overflow-hidden h-72 px-7'>
-                <img
-                  ref={imageRef}
-                  className='object-cover w-full'
-                  src=''
-                />
-                <div
-                  className='absolute flex items-center justify-center w-12 h-12 bg-gray-300 rounded-full bottom-3 right-10'
-                  onClick={handleImageChange}
-                >
+              <div className='flex flex-col items-center'>
+                <div className='relative flex items-center justify-center w-full overflow-hidden h-72 px-7'>
                   <img
-                    className='w-2/3'
-                    src={picture}
+                    ref={imageRef}
+                    className='object-cover w-full'
+                    src=''
+                  />
+                  <div
+                    className='absolute flex items-center justify-center w-12 h-12 bg-gray-300 rounded-full bottom-3 right-10'
+                    onClick={handleImageChange}
+                  >
+                    <img
+                      className='w-2/3'
+                      src={picture}
+                    />
+                  </div>
+                  <input
+                    ref={inputFileRef}
+                    className='hidden'
+                    type='file'
+                    name='file'
+                    accept='image/*'
+                    onChange={handleFileChange}
                   />
                 </div>
-                <input
-                  ref={inputFileRef}
-                  className='hidden'
-                  type='file'
-                  name='file'
-                  accept='image/*'
-                  onChange={handleFileChange}
-                />
+                <textarea
+                  className='w-full h-40 mt-5 overflow-y-scroll px-7 mx-7 focus:outline-none scrollbar-hide'
+                  name=''
+                  id=''
+                  placeholder='문구 작성...'
+                ></textarea>
+                <button className='flex items-center justify-center w-11/12 mt-3 text-white rounded-md bg-ourIndigo h-14'>
+                  등록하기
+                </button>
               </div>
-              <textarea
-                className='h-40 mt-5 overflow-y-scroll mx-7'
-                name=''
-                id=''
-                cols='30'
-                rows='10'
-                placeholder='문구 작성...'
-              ></textarea>
             </section>
-            <button className='absolute flex items-center justify-center w-11/12 text-white rounded-md left-4 bottom-3 bg-ourIndigo h-14'>
-              등록하기
-            </button>
           </div>
         </div>
       )}
