@@ -4,10 +4,7 @@ import com.a601.refesta.common.exception.CustomException;
 import com.a601.refesta.common.exception.ErrorCode;
 import com.a601.refesta.common.util.S3Util;
 import com.a601.refesta.genre.repository.GenreRepository;
-import com.a601.refesta.member.data.LikeArtistRes;
-import com.a601.refesta.member.data.LikeFestivalRes;
-import com.a601.refesta.member.data.MemberProfileRes;
-import com.a601.refesta.member.data.PreferGenreReq;
+import com.a601.refesta.member.data.*;
 import com.a601.refesta.member.domain.Member;
 import com.a601.refesta.member.domain.join.PreferGenre;
 import com.a601.refesta.member.repository.MemberRepository;
@@ -25,6 +22,7 @@ import static com.a601.refesta.festival.domain.QFestival.festival;
 import static com.a601.refesta.member.domain.QMember.member;
 import static com.a601.refesta.member.domain.join.QArtistLike.artistLike;
 import static com.a601.refesta.member.domain.join.QFestivalLike.festivalLike;
+import static com.a601.refesta.reservation.domain.QReservation.reservation;
 
 @Service
 @RequiredArgsConstructor
@@ -96,6 +94,16 @@ public class MemberService {
                 .innerJoin(member).on(artistLike.member.id.eq(member.id))
                 .where(member.id.eq(memberId))
 //                .fetchJoin()
+                .fetch();
+    }
+
+    public List<ReservationRes> getReservations(int memberId) {
+
+        return jpaQueryFactory.select(Projections.constructor(ReservationRes.class, reservation.id, festival.name, festival.date, festival.location))
+                .from(festival)
+                .innerJoin(reservation).on(reservation.festival.id.eq(festival.id))
+                .innerJoin(member).on(reservation.member.id.eq(memberId))
+                .where(member.id.eq(memberId))
                 .fetch();
     }
 }

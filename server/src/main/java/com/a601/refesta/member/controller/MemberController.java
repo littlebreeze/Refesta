@@ -2,10 +2,7 @@ package com.a601.refesta.member.controller;
 
 import com.a601.refesta.common.jwt.TokenProvider;
 import com.a601.refesta.common.response.SuccessResponse;
-import com.a601.refesta.member.data.LikeArtistRes;
-import com.a601.refesta.member.data.LikeFestivalRes;
-import com.a601.refesta.member.data.MemberProfileRes;
-import com.a601.refesta.member.data.PreferGenreReq;
+import com.a601.refesta.member.data.*;
 import com.a601.refesta.member.service.MemberService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -61,4 +58,13 @@ public class MemberController {
         data.put("artistList", memberService.getLikeArtists(memberId));
         return new SuccessResponse<>(data);
     }
+
+    @GetMapping("/reservations")
+    public SuccessResponse<Map<String, List<ReservationRes>>> getReservations(HttpServletRequest request){
+        int memberId = tokenProvider.getMemberIdByToken(request);
+        Map<String, List<ReservationRes>> data = new TreeMap<>();
+        data.put("reservationList", memberService.getReservations(memberId));
+        return new SuccessResponse<>(data);
+    }
+
 }
