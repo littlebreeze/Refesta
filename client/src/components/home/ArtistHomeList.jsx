@@ -41,13 +41,13 @@ const ArtistHomeList = () => {
     },
   ];
   return (
-    <div className='bg-yellow-400 h-[271px]'>
+    <div className='h-[271px]'>
       <ListTitle
         title={'추천 아티스트'}
         description={'아티스트가 참여한 페스티벌을 알아보세요!'}
         btn={<button>새로고침</button>}
       />
-      <div className='flex overflow-x-scroll bg-blue-400 scrollbar-hide whitespace-nowrap gap-x-3'>
+      <div className='flex overflow-x-scroll gap-x-3 scrollbar-hide '>
         {dummyData.map((item) => (
           <ArtistHomeItem key={item.id} {...item} />
         ))}

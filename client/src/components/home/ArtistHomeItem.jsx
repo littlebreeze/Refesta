@@ -1,11 +1,16 @@
 const ArtistHomeItem = ({ id, name, pictureUrl }) => {
   return (
-    <div className='relative bg-red-400 w-[120px] h-[200px] text-center'>
-      <img
-        className='object-cover h-full rounded-full'
-        src={pictureUrl}
-      />
-      <div className='absolute bottom-0 w-full truncate '>{name}</div>
+    <div className='relative text-center'>
+      <div className='absolute w-full h-full rounded-full bg-gradient-to-t from-stone-800 to-25%'></div>
+      <div className='w-[120px] h-[200px] '>
+        <img
+          className='object-cover w-full h-full rounded-full '
+          src={pictureUrl}
+        />
+      </div>
+      <div className='absolute w-full text-white truncate bottom-2'>
+        {name}
+      </div>
     </div>
   );
 };
