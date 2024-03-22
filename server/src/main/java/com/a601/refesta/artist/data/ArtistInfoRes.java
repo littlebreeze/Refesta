@@ -21,13 +21,9 @@ public class ArtistInfoRes {
 
     private List<Performance> performanceList;
 
-    public void setGenreAndPerformance(List<String> genreList, List<Performance> performanceList) {
-        this.genreList = genreList;
-        this.performanceList = performanceList;
-    }
-
+    @Getter
     @AllArgsConstructor
-    public class Performance {
+    public static class Performance {
 
         private int id;
 
