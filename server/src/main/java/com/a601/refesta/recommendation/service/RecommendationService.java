@@ -51,14 +51,14 @@ public class RecommendationService {
             //예정 페스티벌 저장(8개)
             if (!findFestival.isEnded() && scheduledFestivalList.size() < 8) {
                 scheduledFestivalList.add(new FestivalRecommendationRes.ScheduledFestival(
-                        findFestival.getId(), findFestival.getName(), findFestival.getDate(), findFestival.getPosterUrl()));
+                        findFestival.getId(), findFestival.getName(), findFestival.getFestivalDate(), findFestival.getPosterUrl()));
             }
 
             //종료 페스티벌 저장(8개)
             else if (findFestival.isEnded() && endedFestivalList.size() < 8) {
                 //정보 저장
                 endedFestivalList.add(new FestivalRecommendationRes.EndedFestival(findFestival.getId(), findFestival.getName(),
-                        findFestival.getDate(), findFestival.getPosterUrl(), getLineup(memberId, findFestival.getId())));
+                        findFestival.getFestivalDate(), findFestival.getPosterUrl(), getLineup(memberId, findFestival.getId())));
             }
 
             //페스티벌 예정, 종료 8개씩 찾고 종료
@@ -118,7 +118,7 @@ public class RecommendationService {
             //예정 페스티벌 저장
             if (!findFestival.isEnded()) {
                 festivalInfoList.add(new EntireFestivalInfoRes(findFestival.getId(), findFestival.getName(),
-                        findFestival.getDate(), findFestival.getLocation(), findFestival.getPosterUrl(), getLineup(memberId, findFestival.getId())));
+                        findFestival.getFestivalDate(), findFestival.getLocation(), findFestival.getPosterUrl(), getLineup(memberId, findFestival.getId())));
             }
         }
 
@@ -141,7 +141,7 @@ public class RecommendationService {
             //예정 페스티벌 저장
             if (findFestival.isEnded()) {
                 festivalInfoList.add(new EntireFestivalInfoRes(findFestival.getId(), findFestival.getName(),
-                        findFestival.getDate(), findFestival.getLocation(), findFestival.getPosterUrl(), getLineup(memberId, findFestival.getId())));
+                        findFestival.getFestivalDate(), findFestival.getLocation(), findFestival.getPosterUrl(), getLineup(memberId, findFestival.getId())));
             }
         }
 
