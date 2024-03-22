@@ -27,7 +27,7 @@ const SearchInput = () => {
             value={keyword}
             onChange={onChangeKeyword}
             placeholder='검색어를 입력하세요'
-            className='bg-[#102B6A] w-full h-full rounded-full text-white pl-5 pr-8'
+            className='bg-[#102B6A] w-full h-full rounded-full text-white pl-5 pr-8 focus:outline-none'
           />
           <img className='absolute bottom-3 right-8' src={x_btn} />
         </div>
