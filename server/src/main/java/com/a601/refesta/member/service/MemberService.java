@@ -1,7 +1,5 @@
 package com.a601.refesta.member.service;
 
-import com.a601.refesta.common.exception.CustomException;
-import com.a601.refesta.common.exception.ErrorCode;
 import com.a601.refesta.common.util.S3Util;
 import com.a601.refesta.genre.repository.GenreRepository;
 import com.a601.refesta.member.data.*;
@@ -91,7 +89,7 @@ public class MemberService {
 
     public List<ReservationRes> getReservations(int memberId) {
 
-        return jpaQueryFactory.select(Projections.constructor(ReservationRes.class, reservation.id, festival.name, festival.date, festival.location))
+        return jpaQueryFactory.select(Projections.constructor(ReservationRes.class, reservation.id, festival.name, festival.festivalDate, festival.location))
                 .from(festival)
                 .innerJoin(reservation).on(reservation.festival.id.eq(festival.id))
                 .innerJoin(member).on(reservation.member.id.eq(memberId))
