@@ -1,11 +1,9 @@
 import { useState } from 'react';
-import useReviewStore from '../store/reviewStore';
 import ReactPlayer from 'react-player';
 
 const ReviewItem = ({ review }) => {
   const { writer, profileUrl, attachmentUrl, mediaType, contents } = review;
   const [isPlaying, setPlaying] = useState(true);
-  console.log(writer);
   return (
     <div className='flex flex-col pb-5 mx-5 mb-5 border-b-2'>
       <div className='flex items-center'>
