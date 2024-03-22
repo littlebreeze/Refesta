@@ -40,8 +40,8 @@ const Google_Login = () => {
       );
 
       // isSigUp으로 기존/신규 여부 판단
-      response.data.signUp
-        ? handleProfile(response.data)
+      response.data.data.signUp
+        ? handleProfile(response.data.data)
         : handleHome();
     } catch (error) {
       console.log(error);
