@@ -25,12 +25,19 @@ public class S3Util {
     private String baseUrl;
 
     public String uploadFile(MultipartFile file) {
+
         try {
+            String type = file.getContentType();
+            assert type != null;
+            if (type.startsWith("video")) {
+                type = "video/mp4";
+            }
             String fileName = file.getOriginalFilename();
             String fileUrl = baseUrl + fileName;
             ObjectMetadata metadata = new ObjectMetadata();
-            metadata.setContentType(file.getContentType());
+            metadata.setContentType(type);
             metadata.setContentLength(file.getSize());
+
 
             PutObjectRequest putObjectRequest = new PutObjectRequest(
                     bucket, fileName, file.getInputStream(), metadata
