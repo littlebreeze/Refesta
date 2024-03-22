@@ -8,6 +8,7 @@ import com.a601.refesta.login.data.GoogleUserInfoRes;
 import com.a601.refesta.login.data.MemberDetail;
 import com.a601.refesta.login.data.OauthTokenRes;
 import com.a601.refesta.login.repository.RefreshTokenRepository;
+import com.a601.refesta.member.data.MemberRole;
 import com.a601.refesta.member.domain.Member;
 import com.a601.refesta.member.domain.RefreshToken;
 import com.a601.refesta.member.repository.MemberRepository;
@@ -115,6 +116,7 @@ public class LoginService {
                     .email(googleUserInfoRes.getEmail())
                     .nickname(googleUserInfoRes.getName())
                     .profileUrl(googleUserInfoRes.getPicture())
+                    .role(MemberRole.ROLE_MEMBER)
                     .build();
             memberRepository.save(newMember);
             signUp = true;
