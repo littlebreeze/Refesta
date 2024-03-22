@@ -120,7 +120,6 @@ public class FestivalService {
     public FestivalSetlistRes getFestivalSetlist(int festivalId) {
         checkIsEnded(getFestival(festivalId));
 
-        //setList에 없는 노래도 다 긁어옴
         List<Tuple> searchResult = jpaQueryFactory
                 .select(song.title, song.audioUrl, song.imageUrl, artist.id, artist.name, artist.pictureUrl)
                 .from(festivalSetlist)
