@@ -1,11 +1,16 @@
+import { useEffect } from 'react';
 import useReviewStore from '../store/reviewStore';
 import ReviewItem from './ReviewItem';
 
 const ReviewList = () => {
-  const { reviewList } = useReviewStore();
+  const { addReviews, reviewList } = useReviewStore();
+
+  useEffect(() => {
+    addReviews('1');
+  }, [addReviews]);
 
   return (
-    <div className='flex flex-col'>
+    <div className='flex flex-col items-center'>
       {reviewList && reviewList.length > 0 ? (
         reviewList.map((review, index) => (
           <ReviewItem
