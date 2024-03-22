@@ -3,7 +3,7 @@ import SetListWrapper from './SetListWrapper';
 import ReviewWrapper from './ReviewWrapper';
 
 // 완료된 페스티벌 탭(셋리스트/후기게시판)
-const FestivalInfoContainer = () => {
+const FestivalInfoContainer = ({ id }) => {
   const [openInfoTab, setOpenInfoTab] = useState(1);
 
   return (
