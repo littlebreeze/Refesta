@@ -41,12 +41,12 @@ public class ArtistService {
      * 아티스트 정보 조회
      *
      * @param artistId
-     * @return ArtistInfoRes - 이름, 사진, 좋아요 여부, 장르, 참가 페스티벌(아이디, 이름, 포스터)
+     * @return ArtistInfoRes - 아이디, 이름, 사진, 좋아요 여부, 장르, 참가 페스티벌(아이디, 이름, 포스터)
      */
     public ArtistInfoRes getArtistInfo(int artistId) {
         //이름, 사진, 좋아요 여부 조회
         Tuple infoTuple = jpaQueryFactory
-                .select(artist.name, artist.pictureUrl, artistLike.isLiked)
+                .select(artist.id, artist.name, artist.pictureUrl, artistLike.isLiked)
                 .from(artist)
                 .leftJoin(artistLike).on(artist.id.eq(artistLike.artist.id))
                 .where(artist.id.eq(artistId))
@@ -71,6 +71,7 @@ public class ArtistService {
                 .fetch();
 
         return ArtistInfoRes.builder()
+                .id(infoTuple.get(artist.id))
                 .name(infoTuple.get(artist.name))
                 .pictureUrl(infoTuple.get(artist.pictureUrl))
                 .isLiked(infoTuple.get(artistLike.isLiked) == null ? false : infoTuple.get(artistLike.isLiked))

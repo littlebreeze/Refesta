@@ -54,9 +54,8 @@ public class FestivalService {
     public FestivalInfoRes getFestivalInfo(int festivalId) {
         //기본 정보 반환
         return jpaQueryFactory
-                .select(Projections.constructor(FestivalInfoRes.class,
-                        festival.name, festival.festivalDate, festival.location, festival.posterUrl, festival.price, festival.isEnded,
-                        festivalLike.isLiked))
+                .select(Projections.constructor(FestivalInfoRes.class, festival.id, festival.name, festival.festivalDate,
+                        festival.location, festival.posterUrl, festival.price, festival.isEnded, festivalLike.isLiked))
                 .from(festival)
                 .leftJoin(festivalLike).on(festival.id.eq(festivalLike.festival.id))
                 .where(festival.id.eq(festivalId))

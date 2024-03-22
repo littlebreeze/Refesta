@@ -11,6 +11,8 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class FestivalInfoRes {
 
+    private int id;
+
     private String name;
 
     private LocalDate date;
