@@ -7,5 +7,5 @@ import java.util.Optional;
 
 public interface ArtistLikeRepository extends JpaRepository<ArtistLike, Integer> {
 
-    Optional<ArtistLike> findByMember_GoogleIdAndArtist_Id(String memberId, Integer artistId);
+    Optional<ArtistLike> findByMember_IdAndArtist_Id(Integer memberId, Integer artistId);
 }

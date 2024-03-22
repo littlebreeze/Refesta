@@ -8,9 +8,11 @@ import com.a601.refesta.common.exception.ErrorCode;
 import com.a601.refesta.member.domain.join.ArtistLike;
 import com.a601.refesta.member.repository.ArtistLikeRepository;
 import com.a601.refesta.member.service.MemberService;
+import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,6 +25,7 @@ import static com.a601.refesta.festival.domain.join.QFestivalLineup.festivalLine
 import static com.a601.refesta.genre.domain.QGenre.genre;
 import static com.a601.refesta.member.domain.join.QArtistLike.artistLike;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ArtistService {
@@ -41,16 +44,15 @@ public class ArtistService {
      * @return ArtistInfoRes - 이름, 사진, 좋아요 여부, 장르, 참가 페스티벌(아이디, 이름, 포스터)
      */
     public ArtistInfoRes getArtistInfo(int artistId) {
-        //이름, 사진, 좋아요 여부
-        ArtistInfoRes artistInfo = jpaQueryFactory
-                .select(Projections.constructor(ArtistInfoRes.class,
-                        artist.name, artist.pictureUrl, artistLike.isLiked))
+        //이름, 사진, 좋아요 여부 조회
+        Tuple infoTuple = jpaQueryFactory
+                .select(artist.name, artist.pictureUrl, artistLike.isLiked)
                 .from(artist)
                 .leftJoin(artistLike).on(artist.id.eq(artistLike.artist.id))
                 .where(artist.id.eq(artistId))
                 .fetchOne();
 
-        //장르 리스트(0~3개)
+        //장르 리스트(0~3개) 조회
         List<String> genreList = jpaQueryFactory
                 .select(genre.name)
                 .from(artistGenre)
@@ -58,7 +60,7 @@ public class ArtistService {
                 .where(artistGenre.artist.id.eq(artistId))
                 .fetch();
 
-        //참가 페스티벌 리스트
+        //참가 페스티벌 리스트 조회
         List<ArtistInfoRes.Performance> performanceList = jpaQueryFactory
                 .select(Projections.constructor(ArtistInfoRes.Performance.class,
                         festival.id, festival.name, festival.posterUrl))
@@ -68,8 +70,13 @@ public class ArtistService {
                 .orderBy(festival.id.desc())
                 .fetch();
 
-        artistInfo.setGenreAndPerformance(genreList, performanceList);
-        return artistInfo;
+        return ArtistInfoRes.builder()
+                .name(infoTuple.get(artist.name))
+                .pictureUrl(infoTuple.get(artist.pictureUrl))
+                .isLiked(infoTuple.get(artistLike.isLiked) == null ? false : infoTuple.get(artistLike.isLiked))
+                .genreList(genreList)
+                .performanceList(performanceList)
+                .build();
     }
 
     /**
@@ -78,9 +85,9 @@ public class ArtistService {
      * @param memberId     - 구글 식별 ID
      * @param artistIdList
      */
-    public void updateArtistLike(String memberId, List<Integer> artistIdList) {
+    public void updateArtistLike(int memberId, List<Integer> artistIdList) {
         for (int artistId : artistIdList) {
-            Optional<ArtistLike> optFindLike = artistLikeRepository.findByMember_GoogleIdAndArtist_Id(memberId, artistId);
+            Optional<ArtistLike> optFindLike = artistLikeRepository.findByMember_IdAndArtist_Id(memberId, artistId);
 
             //DB에 없으면 추가
             if (optFindLike.isEmpty()) {
@@ -102,6 +109,11 @@ public class ArtistService {
         }
     }
 
+    /**
+     * 아트스트 조회
+     * @param artistId
+     * @return Artist
+     */
     public Artist getArtist(int artistId) {
         return artistRepository.findById(artistId)
                 .orElseThrow(() -> new CustomException(ErrorCode.ARTIST_NOT_FOUND_ERROR));
