@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import SearchResultWrapper from './SearchResultWrapper';
 import FestivalSearchWrapper from './FestivalSearchWrapper';
 import ArtistSearchWrapper from './ArtistSearchWrapper';
@@ -65,6 +65,7 @@ const artistListData = [
 // 검색 결과 탭(통합검색/페스티벌/아티스트)
 const SearchResultContainer = () => {
   const [openSearchTab, setOpenSearchTab] = useState(1);
+  const [isTotal, setIsTotal] = useState(true);
 
   return (
     <div className=''>
@@ -75,6 +76,7 @@ const SearchResultContainer = () => {
             className={'w-full h-full text-xs px-2 py-2'}
             onClick={() => {
               setOpenSearchTab(1);
+              setIsTotal(true);
             }}
           >
             <span className={openSearchTab === 1 ? 'text-ourIndigo' : 'text-gray-400'}>통합검색</span>
@@ -86,6 +88,7 @@ const SearchResultContainer = () => {
             className={'w-full h-full text-xs px-5 py-2'}
             onClick={() => {
               setOpenSearchTab(2);
+              setIsTotal(false);
             }}
           >
             <span className={openSearchTab === 2 ? 'text-ourIndigo' : 'text-gray-400'}>페스티벌</span>
@@ -97,25 +100,29 @@ const SearchResultContainer = () => {
             className={'w-full h-full text-xs px-5 py-2'}
             onClick={() => {
               setOpenSearchTab(3);
+              setIsTotal(false);
             }}
           >
             <span className={openSearchTab === 3 ? 'text-ourIndigo' : 'text-gray-400'}>아티스트</span>
           </button>
         </li>
       </ul>
-      <div className='h-full min-w-0 mx-6 mt-4 text-center break-words'>
+      <div className='h-full min-w-0 mx-4 mt-4 break-words'>
         <div className='flex-auto'>
           <div className={openSearchTab === 1 ? 'block' : 'hidden'}>
-            1번 컴포넌트(통합검색)
-            <SearchResultWrapper festivalListData={festivalListData} artistListData={artistListData} />
+            <SearchResultWrapper
+              festivalListData={festivalListData}
+              artistListData={artistListData}
+              isTotal={isTotal}
+              openSearchTab={openSearchTab}
+              setOpenSearchTab={setOpenSearchTab}
+            />
           </div>
           <div className={openSearchTab === 2 ? 'block' : 'hidden'}>
-            2번 컴포넌트(페스티벌상세)
-            <FestivalSearchWrapper festivalListData={festivalListData} />
+            <FestivalSearchWrapper festivalListData={festivalListData} isTotal={isTotal} />
           </div>
           <div className={openSearchTab === 3 ? 'block' : 'hidden'}>
-            3번 컴포넌트(아티스트상세)
-            <ArtistSearchWrapper artistListData={artistListData} />
+            <ArtistSearchWrapper artistListData={artistListData} isTotal={isTotal} />
           </div>
         </div>
       </div>
