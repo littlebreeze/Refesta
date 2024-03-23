@@ -1,15 +1,25 @@
 import React from 'react';
-import axios from 'axios';
 import FestivalSearchList from './FestivalSearchList';
 import ArtistSearchList from './ArtistSearchList';
 
 // 통합검색 결과
-const SearchResultWrapper = ({ festivalListData, artistSearchList }) => {
+const SearchResultWrapper = ({ festivalListData, artistListData, isTotal, openSearchTab, setOpenSearchTab }) => {
   return (
     <>
-      <div>SearchResultWrapper</div>
-      <FestivalSearchList festivalListData={festivalListData} />
-      <ArtistSearchList artistSearchList={artistSearchList} />
+      <div className='flex flex-col'>
+        <FestivalSearchList
+          festivalListData={festivalListData}
+          isTotal={isTotal}
+          openSearchTab={openSearchTab}
+          setOpenSearchTab={setOpenSearchTab}
+        />
+        <ArtistSearchList
+          artistListData={artistListData}
+          isTotal={isTotal}
+          openSearchTab={openSearchTab}
+          setOpenSearchTab={setOpenSearchTab}
+        />
+      </div>
     </>
   );
 };

@@ -34,7 +34,7 @@ function App() {
             <Route path='/login' element={<Login />} />
             <Route path='/google-login' element={<Google_Login />} />
             <Route path='/regist/:step' element={<RegisterInfo />} />
-            {/* <Route path='/test' element={<TestPage />} /> */}
+            <Route path='/test' element={<TestPage />} />
           </Route>
 
           <Route element={<MainLayout />}>
