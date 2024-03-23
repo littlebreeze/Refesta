@@ -1,24 +1,61 @@
-import { useLocation } from 'react-router-dom';
+import instance from '../../util/token_interceptor';
+
+import { useEffect, useRef, useState } from 'react';
+
 import defaultImg from '../../assets/default_img.jpg';
 import editPencil from '../../assets/edit_pencil.png';
-import { useEffect } from 'react';
 
 const ProfileInfo = ({ setStep, stepParam }) => {
-  // navigate로 값 받으려면 이거 사용
-  const location = useLocation();
+  const [nickname, setNickname] = useState('');
+  const [imgInfo, setImgInfo] = useState({
+    url: '',
+    file: null,
+  });
 
+  // 페이지에 들어왔을 때 토큰으로 사용자 정보 가져오기
   const getUserProfile = async () => {
-    try {
-      //const response = await instance.get('/login');
-    } catch (error) {
-      console.log(error);
+    const response = await instance.get('/members');
+
+    if (response.data.status == 'success') {
+      const nickname = response.data.data.nickname;
+      const url = response.data.data.profileUrl;
+      setNickname(nickname ? nickname : '');
+      //setImgURL(url ? url : defaultImg);
+      setImgInfo({ ...imgInfo, url: url });
     }
+    // else {
+    //   alert('로그인 정보가 유효하지 않습니다!');
+    //   window.location.replace('/login');
+    // }
   };
 
   useEffect(() => {
     getUserProfile();
   }, []);
 
+  // 닉네임 변경
+  const onChangeNickName = (e) => {
+    setNickname(e.target.value);
+  };
+
+  // 파일 변경
+  const inputFile = useRef();
+  // 연필을 눌렀을 때, 파일 인풋 누른것 처럼 동작
+  const onClickInputFile = (e) => {
+    e.preventDefault(); // 혹시 모르니 기존 동작 막고
+    inputFile.current.click(); // 파일인풋 클릭
+  };
+  // 이미지 변경되었을 때, 미리보기
+  const onChangeImgFile = (e) => {
+    setImgInfo((preState) => {
+      return {
+        url: URL.createObjectURL(e.target.files[0]),
+        file: e.target.files[0],
+      };
+    });
+  };
+
+  // 사용자 입력 정보 서버로 전달
   const onClickRegist = () => {
     alert('프로필 설정 완료');
     setStep(stepParam.step2);
@@ -29,13 +66,20 @@ const ProfileInfo = ({ setStep, stepParam }) => {
       <div className='text-2xl font-bold leading-9 tracking-tight text-center text-ourIndigo'>
         프로필 설정하기
       </div>
-      <div className='relative w-full p-2'>
-        <img className='w-full rounded-full' src={defaultImg} />
+      <div className='relative w-full'>
+        <input
+          type='file'
+          ref={inputFile}
+          className='hidden'
+          onChange={onChangeImgFile}
+        />
+        <img
+          className='object-cover w-full border rounded-full border-zinc-300'
+          src={imgInfo.url ? imgInfo.url : defaultImg}
+        />
         <div
-          className='absolute bottom-5 right-2 overflow-hidden flex justify-center bg-[#D9D9D9] rounded-full w-10 h-10 cursor-pointer'
-          onClick={() => {
-            alert('사진 선택');
-          }}
+          className='absolute bottom-7 right-3 overflow-hidden flex justify-center bg-[#D9D9D9] rounded-full w-10 h-10 cursor-pointer'
+          onClick={onClickInputFile}
         >
           <img
             className='object-contain w-1/2 h-full'
@@ -47,6 +91,8 @@ const ProfileInfo = ({ setStep, stepParam }) => {
         className='flex items-center justify-center w-full pl-5 rounded-md bg-ourBrightGray h-14'
         type='text'
         placeholder='닉네임 입력'
+        value={nickname}
+        onChange={onChangeNickName}
       />
       <button
         className='flex items-center justify-center w-full text-white rounded-md bg-ourIndigo h-14'

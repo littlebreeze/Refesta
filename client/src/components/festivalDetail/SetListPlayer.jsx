@@ -2,10 +2,7 @@ import React from 'react';
 import { useState, useRef } from 'react';
 import ReactPlayer from 'react-player';
 
-// const _ReactPlayer = ({ props }) => {
-const _ReactPlayer = () => {
-  // const { playing, setPlaying, playlist } = props; // 상위 컴포넌트에 playing, setPlaying true로 정의
-  // const playerRef = useRef(null);
+const SetListPlayer = () => {
   const [ready, setReady] = useState(false);
   const [playing, setPlaying] = useState(false);
   const [curr, setCurr] = useState([
@@ -72,4 +69,4 @@ const _ReactPlayer = () => {
   );
 };
 
-export default _ReactPlayer;
+export default SetListPlayer;

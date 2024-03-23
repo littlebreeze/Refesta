@@ -21,6 +21,7 @@ import MyReview from './pages/MyReviewPage';
 import MainLayout from './layout/MainLayout';
 import SearchLayout from './layout/SearchLayout';
 import SubLayout from './layout/SubLayout';
+import TestPage from './pages/TestPage';
 
 function App() {
   const [count, setCount] = useState(0);
@@ -30,82 +31,32 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route element={<SubLayout />}>
-            <Route
-              path='/login'
-              element={<Login />}
-            />
-            <Route
-              path='/google-login'
-              element={<Google_Login />}
-            />
-            <Route
-              path='/regist'
-              element={<RegisterInfo />}
-            />
+            <Route path='/login' element={<Login />} />
+            <Route path='/google-login' element={<Google_Login />} />
+            <Route path='/regist/:step' element={<RegisterInfo />} />
+            <Route path='/test' element={<TestPage />} />
           </Route>
 
           <Route element={<MainLayout />}>
-            <Route
-              path='/'
-              element={<Home />}
-            />
-            <Route
-              path='/festival-list'
-              element={<FestivalList />}
-            />
-            <Route
-              path='/festival-detail'
-              element={<FestivalDetail />}
-            />
-            <Route
-              path='/festival-detail-done'
-              element={<FestivalDetailDone />}
-            />
-            <Route
-              path='/artist-detail'
-              element={<ArtistDetail />}
-            />
-            <Route
-              path='/reservation'
-              element={<Reservation />}
-            />
-            <Route
-              path='/reservation-result'
-              element={<ReservationResult />}
-            />
-            <Route
-              path='/reservation-detail'
-              element={<ReservationDetail />}
-            />
-            <Route
-              path='/like-artist'
-              element={<LikeArtist />}
-            />
-            <Route
-              path='/like-festival'
-              element={<LikeFestival />}
-            />
-            <Route
-              path='my-review'
-              element={<MyReview />}
-            />
+            <Route path='/' element={<Home />} />
+            <Route path='/festival/list' element={<FestivalList />} />
+            <Route path='/festival/:id' element={<FestivalDetail />} />
+            <Route path='/festival/done/:id' element={<FestivalDetailDone />} />
+            <Route path='/artist/:id' element={<ArtistDetail />} />
+            <Route path='/reservation' element={<Reservation />} />
+            <Route path='/reservation/result' element={<ReservationResult />} />
+            <Route path='/reservation/detail/:id' element={<ReservationDetail />} />
+            <Route path='/like/artist' element={<LikeArtist />} />
+            <Route path='/like/festival' element={<LikeFestival />} />
+            <Route path='my-review' element={<MyReview />} />
           </Route>
 
           <Route element={<SearchLayout />}>
-            <Route
-              path='/search'
-              element={<Search />}
-            />
-            <Route
-              path='/search-result'
-              element={<SearchResult />}
-            />
+            <Route path='/search' element={<Search />} />
+            <Route path='/search/result' element={<SearchResult />} />
           </Route>
 
-          <Route
-            path='*'
-            element={<Notfound />}
-          />
+          <Route path='*' element={<Notfound />} />
         </Routes>
       </BrowserRouter>
     </div>

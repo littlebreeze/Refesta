@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import ReactPlayer from 'react-player';
-import useReviewStore from '../store/reviewStore';
 import DeleteReview from './DeleteReview';
 
 const ReviewItem = ({ review }) => {
@@ -23,13 +22,16 @@ const ReviewItem = ({ review }) => {
         </div>
         <button
           className='text-xs text-gray-400'
-          onClick={() => setModalOpen(true)}
+          onClick={(e) => {
+            e.stopPropagation();
+            setModalOpen(true);
+          }}
         >
           삭제
         </button>
       </div>
-      <div className='flex items-center justify-center mt-2 overflow-hidden w-80 h-80'>
-        {review.type === 'IMAGE' ? (
+      <div className='flex items-center justify-center w-full mt-2 overflow-hidden h-96'>
+        {type === 'IMAGE' ? (
           <img
             className='object-cover w-full h-full'
             src={attachmentUrl}
@@ -42,7 +44,7 @@ const ReviewItem = ({ review }) => {
             loop={true}
             controls={true}
             width='100%'
-            height='270px'
+            height='100%'
             className='bg-gray-800'
           />
         )}
