@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import useReviewStore from '../store/reviewStore';
+import useReviewStore from '../../store/reviewStore';
 import ReviewItem from './ReviewItem';
 
 const ReviewList = () => {
