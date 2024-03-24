@@ -2,7 +2,7 @@ import React from 'react';
 
 const FestivalSearchItem = ({ festival }) => {
   return (
-    <div className='w-[29%] mx-1 my-4'>
+    <div className='w-[29%] mx-1 my-2'>
       <div className=''>
         <img className='rounded-md aspect-square' src={festival.posterUrl} alt={festival.name} />
       </div>
