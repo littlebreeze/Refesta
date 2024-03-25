@@ -17,6 +17,7 @@ import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -31,6 +32,7 @@ import static com.a601.refesta.member.domain.join.QFestivalLike.festivalLike;
 import static com.a601.refesta.review.domain.QReview.review;
 import static com.a601.refesta.song.domain.QSong.song;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class FestivalService {
@@ -52,9 +54,8 @@ public class FestivalService {
     public FestivalInfoRes getFestivalInfo(int festivalId) {
         //기본 정보 반환
         return jpaQueryFactory
-                .select(Projections.constructor(FestivalInfoRes.class,
-                        festival.name, festival.festivalDate, festival.location, festival.posterUrl, festival.price, festival.isEnded,
-                        festivalLike.isLiked))
+                .select(Projections.constructor(FestivalInfoRes.class, festival.id, festival.name, festival.festivalDate,
+                        festival.location, festival.posterUrl, festival.price, festival.isEnded, festivalLike.isLiked))
                 .from(festival)
                 .leftJoin(festivalLike).on(festival.id.eq(festivalLike.festival.id))
                 .where(festival.id.eq(festivalId))
@@ -111,26 +112,6 @@ public class FestivalService {
     }
 
     /**
-     * 페스티벌(종료) 후기 조회
-     *
-     * @param festivalId
-     * @return List<FestivalReviewRes> - 작성자 닉네임, 작성자 프로필, 첨부파일 Url, 미디어타입, 내용
-     */
-    public List<FestivalReviewRes> getFestivalReview(int festivalId) {
-        checkIsEnded(getFestival(festivalId));
-
-        //작성자 정보, Review 정보 반환
-        return jpaQueryFactory
-                .select(Projections.constructor(FestivalReviewRes.class, member.nickname, member.profileUrl,
-                        review.attachmentUrl, review.mediaType, review.contents))
-                .from(review)
-                .innerJoin(member).on(review.member.id.eq(member.id))
-                .where(review.festival.id.eq(festivalId))
-                .orderBy(review.id.desc())
-                .fetch();
-    }
-
-    /**
      * 페스티벌(종료) 셋리스트 조회
      *
      * @param festivalId
@@ -143,7 +124,8 @@ public class FestivalService {
                 .select(song.title, song.audioUrl, song.imageUrl, artist.id, artist.name, artist.pictureUrl)
                 .from(festivalSetlist)
                 .innerJoin(festivalLineup).on(festivalSetlist.festival.id.eq(festivalLineup.festival.id))
-                .innerJoin(artistSong).on(festivalLineup.artist.id.eq(artistSong.artist.id))
+                .innerJoin(artistSong).on(festivalLineup.artist.id.eq(artistSong.artist.id)
+                        .and(artistSong.song.id.eq(festivalSetlist.song.id)))
                 .innerJoin(song).on(artistSong.song.id.eq(song.id))
                 .innerJoin(artist).on(artistSong.artist.id.eq(artist.id))
                 .where(festivalSetlist.festival.id.eq(festivalId))
@@ -180,12 +162,32 @@ public class FestivalService {
     }
 
     /**
+     * 페스티벌(종료) 후기 조회
+     *
+     * @param festivalId
+     * @return List<FestivalReviewRes> - 작성자 닉네임, 작성자 프로필, 첨부파일 Url, 미디어타입, 내용
+     */
+    public List<FestivalReviewRes> getFestivalReview(int festivalId) {
+        checkIsEnded(getFestival(festivalId));
+
+        //작성자 정보, Review 정보 반환
+        return jpaQueryFactory
+                .select(Projections.constructor(FestivalReviewRes.class, member.nickname, member.profileUrl,
+                        review.attachmentUrl, review.mediaType, review.contents))
+                .from(review)
+                .innerJoin(member).on(review.member.id.eq(member.id))
+                .where(review.festival.id.eq(festivalId).and(review.isDeleted.eq(false)))
+                .orderBy(review.id.desc())
+                .fetch();
+    }
+
+    /**
      * 페스티벌 종료 여부 확인
      *
      * @param findFestival
      */
     public void checkIsEnded(Festival findFestival) {
-        if (findFestival.isEnded()) {
+        if (!findFestival.isEnded()) {
             throw new CustomException(ErrorCode.FESTIVAL_IS_NOT_ENDED_ERROR);
         }
     }

@@ -3,9 +3,13 @@ spring:
     defer-datasource-initialization: true
     hibernate:
       ddl-auto: update
+#    show-sql: true
   jackson:
     property-naming-strategy: LOWER_CAMEL_CASE
-
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
 #아티스트 Pagination 설정
   data:
     web:
@@ -16,5 +20,4 @@ spring:
     include:
       - cors
       - secret
-
 

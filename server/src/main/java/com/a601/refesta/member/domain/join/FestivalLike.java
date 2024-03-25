@@ -28,7 +28,7 @@ public class FestivalLike extends BaseEntity {
 
     @Column(nullable = false)
     @ColumnDefault("true")
-    private boolean isLiked;
+    private Boolean isLiked;
 
     public void updateStatus() {
         this.isLiked = !isLiked;

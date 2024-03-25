@@ -5,6 +5,7 @@ import com.a601.refesta.common.response.SuccessResponse;
 import com.a601.refesta.festival.data.FestivalDetailRes;
 import com.a601.refesta.festival.data.FestivalInfoRes;
 import com.a601.refesta.festival.data.FestivalReviewRes;
+import com.a601.refesta.festival.data.FestivalSetlistRes;
 import com.a601.refesta.festival.service.FestivalService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +30,11 @@ public class FestivalController {
     @GetMapping("/{festival_id}/info")
     public SuccessResponse<FestivalDetailRes> getFestivalDetail(@PathVariable(name = "festival_id") int festivalId) {
         return new SuccessResponse<>(festivalService.getFestivalDetail(festivalId));
+    }
+
+    @GetMapping("/{festival_id}/songs")
+    public SuccessResponse<FestivalSetlistRes> getFestivalSetlist(@PathVariable(name = "festival_id") int festivalId) {
+        return new SuccessResponse<>(festivalService.getFestivalSetlist(festivalId));
     }
 
     @GetMapping("/{festival_id}/reviews")

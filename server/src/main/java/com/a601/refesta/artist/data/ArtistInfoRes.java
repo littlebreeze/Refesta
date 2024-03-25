@@ -11,6 +11,8 @@ import java.util.List;
 @AllArgsConstructor
 public class ArtistInfoRes {
 
+    private int id;
+
     private String name;
 
     private String pictureUrl;

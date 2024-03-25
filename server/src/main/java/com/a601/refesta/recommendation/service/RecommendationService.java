@@ -13,6 +13,7 @@ import com.a601.refesta.recommendation.repository.MemberArtistRepository;
 import com.a601.refesta.recommendation.repository.MemberFestivalRepository;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -25,6 +26,7 @@ import static com.a601.refesta.artist.domain.QArtist.artist;
 import static com.a601.refesta.festival.domain.join.QFestivalLineup.festivalLineup;
 import static com.a601.refesta.recommendation.domain.QMemberArtist.memberArtist;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class RecommendationService {
