@@ -131,7 +131,6 @@ public class FestivalService {
                 .where(festivalSetlist.festival.id.eq(festivalId))
                 .orderBy(festivalSetlist.id.asc())
                 .fetch();
-        log.info(searchResult.toString());
 
         if (searchResult.isEmpty()) {
             throw new CustomException(ErrorCode.FESTIVAL_SETLIST_NOT_READY_ERROR);
