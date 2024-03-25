@@ -47,6 +47,23 @@ const ProfileInfo = ({ setStep, stepParam }) => {
   };
   // 이미지 변경되었을 때, 미리보기
   const onChangeImgFile = (e) => {
+    if (!e.target.value) return;
+    // 파일 용량/확장자 체크하기
+    let maxSize = 10 * 1024 * 1024; // 10mb
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+
+    let type = e.target.files[0].type;
+    let size = e.target.files[0].size;
+
+    if (size > maxSize) {
+      alert('파일 용량이 큽니다');
+      return;
+    }
+    if (!allowedTypes.includes(type)) {
+      alert('허용되지 않는 파일 타입입니다.');
+      return;
+    }
+
     setImgInfo((preState) => {
       return {
         url: URL.createObjectURL(e.target.files[0]),
@@ -68,7 +85,6 @@ const ProfileInfo = ({ setStep, stepParam }) => {
     });
 
     if (response.data.status == 'success') {
-      console.log(response);
       alert('프로필 설정 완료');
     } else {
       alert('로그인 정보가 유효하지 않습니다!');
@@ -85,6 +101,7 @@ const ProfileInfo = ({ setStep, stepParam }) => {
         <form>
           <input
             type='file'
+            accept='image/*'
             ref={inputFile}
             className='hidden'
             onChange={onChangeImgFile}
