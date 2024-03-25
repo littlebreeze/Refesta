@@ -12,15 +12,11 @@ const ArtistHomeList = () => {
 
   // 추천 아티스트 정보 요청
   const getRecommendArtists = async () => {
-    //const response = await instance.get('recommendations/artists', {
-    const response = await instance.get(`artists/${page}`, {
+    const response = await instance.get('recommendations/artists', {
+      //const response = await instance.get(`artists/${page}`, {
       params: { page },
     });
-    setArtistData([
-      { ...response.data.data, id: 1 },
-      { ...response.data.data, id: 2 },
-      { ...response.data.data, id: 3 },
-    ]);
+    setArtistData(response.data.data.artistInfoList);
   };
 
   useEffect(() => {

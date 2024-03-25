@@ -2,7 +2,7 @@ import instance from '../../util/token_interceptor';
 import { useEffect, useState } from 'react';
 import FestivalViewAllItem from './FestivalViewAllItem';
 
-const FestivalViewAllList = () => {
+const FestivalViewAllList = ({ title, state }) => {
   const dummyData = [
     {
       id: 1,
@@ -64,11 +64,9 @@ const FestivalViewAllList = () => {
 
   // 추천 아티스트 정보 요청
   const getRecommendArtists = async () => {
-    //const response = await instance.get('recommendations/artists', {
     const response = await instance.get(
-      'recommendations/ended-festivals'
+      `recommendations/${state}-festivals`
     );
-    console.log(response.data.data);
     setFestivalData(response.data.data);
   };
 
@@ -79,7 +77,7 @@ const FestivalViewAllList = () => {
   return (
     <div className='px-4'>
       <div className='mt-2 text-2xl font-semibold text-center mb-7'>
-        예정 페스티벌
+        {title} 페스티벌
       </div>
       <div className='grid gap-y-7'>
         {festivalData.map((item) => (

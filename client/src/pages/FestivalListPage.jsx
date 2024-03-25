@@ -1,8 +1,17 @@
+import { useNavigate, useParams } from 'react-router';
 import FestivalViewAllList from '../components/home/FestivalViewAllList';
 const FestivalList = () => {
+  const nav = useNavigate();
+  const { state } = useParams();
   return (
     <div>
-      <FestivalViewAllList />
+      {state === 'scheduled' ? (
+        <FestivalViewAllList title={'예정'} state={state} />
+      ) : state === 'ended' ? (
+        <FestivalViewAllList title={'지난'} state={state} />
+      ) : (
+        window.location.replace('/404')
+      )}
     </div>
   );
 };
