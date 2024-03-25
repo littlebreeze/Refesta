@@ -17,9 +17,9 @@ const ArtistHomeList = () => {
       params: { page },
     });
     setArtistData([
-      response.data.data,
-      response.data.data,
-      response.data.data,
+      { ...response.data.data, id: 1 },
+      { ...response.data.data, id: 2 },
+      { ...response.data.data, id: 3 },
     ]);
   };
 
