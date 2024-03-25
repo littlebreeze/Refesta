@@ -27,11 +27,11 @@ const FestivalInfo = ({ id }) => {
         <div className='mt-2 border-b border-b-black'></div>
         <div className='p-2'>
           <div className='pb-1 text-sm'>장소</div>
-          <div className='pb-4 pl-1 text-xs text-gray-400'>페스티벌 장소</div>
+          <div className='pb-4 pl-1 text-xs'>페스티벌 장소</div>
           <div className='pb-1 text-sm '>날짜</div>
-          <div className='pb-4 pl-1 text-xs text-gray-400'>페스티벌 날짜</div>
+          <div className='pb-4 pl-1 text-xs'>페스티벌 날짜</div>
           <div className='pb-1 text-sm'>가격</div>
-          <div className='pb-4 pl-1 text-xs text-gray-400'>144,000 원</div>
+          <div className='pb-4 pl-1 text-xs'>144,000 원</div>
         </div>
         <div className='absolute bottom-0 right-0 flex justify-end pr-1'>
           <img className='' src={heart_full} alt='' />
