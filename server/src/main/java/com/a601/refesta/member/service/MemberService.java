@@ -141,7 +141,7 @@ public class MemberService {
                 .on(review.member.id.eq(member.id))
                 .innerJoin(festival)
                 .on(review.festival.id.eq(festival.id))
-                .where(member.id.eq(memberId))
+                .where(member.id.eq(memberId), review.isDeleted.eq(false))
                 .orderBy(review.createdDate.desc())
                 .fetch();
 
