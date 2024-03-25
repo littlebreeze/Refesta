@@ -51,7 +51,8 @@ public class S3Util {
         }
     }
 
-    public void deleteFile(String S3FileName) {
+    public void deleteFile(String FileName) {
+        String S3FileName = FileName.replaceAll(baseUrl, "");
         amazonS3Client.deleteObject(bucket, S3FileName);
     }
 
