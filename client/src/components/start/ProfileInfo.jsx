@@ -74,6 +74,11 @@ const ProfileInfo = ({ setStep, stepParam }) => {
 
   // 사용자 입력 정보 서버로 전달
   const onClickRegist = async () => {
+    if (!nickname) {
+      alert('닉네임은 비워둘 수 없습니다.');
+      return;
+    }
+
     const formData = new FormData();
     formData.append('file', imgInfo.file);
     formData.append('nickname', nickname);
