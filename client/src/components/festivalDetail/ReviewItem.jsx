@@ -34,7 +34,7 @@ const ReviewItem = ({ review }) => {
           />
         )}
       </div>
-      <div className='px-1 mt-2 text-sm'>{contents}</div>
+      <div className='px-1 mt-2 text-sm text-left'>{contents}</div>
     </div>
   );
 };

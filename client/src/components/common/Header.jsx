@@ -8,7 +8,7 @@ import menu from '../../assets/menu.png';
 const Header = () => {
   const [isModalOpen, setModalOpen] = useState(false);
   return (
-    <header className='py-4 bg-white-800 h-[70px]'>
+    <header className='sticky top-0 bg-white z-10 py-4 bg-white-800 h-[70px]'>
       <div className='container flex items-center justify-between mx-auto'>
         {/* 검색 버튼 */}
         <div className='flex text-center'>

@@ -14,11 +14,11 @@ const Mypage = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
 
   const handleGoLikeFesta = () => {
-    nav('/like-festival');
+    nav('/like/festival');
     onClose();
   };
   const handleGoLikeArtist = () => {
-    nav('/like-artist');
+    nav('/like/artist');
     onClose();
   };
   const handleGoMyReview = () => {

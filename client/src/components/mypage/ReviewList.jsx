@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import ReviewItem from './ReviewItem';
-import useReviewStore from '../store/myReviewStore';
+import useReviewStore from '../../store/myReviewStore';
 
 const ReviewList = () => {
   const { reviewList } = useReviewStore();
