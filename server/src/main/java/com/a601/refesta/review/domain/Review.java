@@ -31,9 +31,5 @@ public class Review {
     @Column(nullable = false)
     private String mediaType;
 
-    @Column(nullable = false)
-    @ColumnDefault("false")
-    private Boolean isDeleted;
-
     private String contents;
 }
