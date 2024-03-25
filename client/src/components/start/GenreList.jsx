@@ -1,4 +1,8 @@
+import instance from '../../util/token_interceptor';
+
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
+
 import GenreItem from './GenreItem';
 
 const lists = [
@@ -26,9 +30,27 @@ const lists = [
 const GenreList = ({ setStep, stepParam }) => {
   const nav = useNavigate();
 
-  const onClickStart = () => {
+  const [selectedGenre, setSelectedGenre] = useState([]);
+
+  const onClickGenre = (id) => {
+    if (selectedGenre.includes(id)) {
+      // 배열에서 제거
+      setSelectedGenre(selectedGenre.filter((item) => item != id));
+    } else {
+      setSelectedGenre([...selectedGenre, id]);
+    }
+  };
+
+  const onClickStart = async () => {
+    console.log(selectedGenre);
+    const response = await instance.post(
+      '/members/genres',
+      selectedGenre
+    );
+    console.log(response);
+
     alert('서비스를 시작합니다');
-    // 선택 데이터 백으로 보내주기
+
     nav('/', { replace: true });
   };
 
@@ -46,9 +68,13 @@ const GenreList = ({ setStep, stepParam }) => {
           3개까지 선택 가능
         </div>
       </div>
-      <div className='grid grid-cols-3 gap-y-3'>
+      <div className='grid grid-cols-3 gap-y-3 gap-x-4'>
         {lists.map((icon) => (
-          <GenreItem key={icon.id} icon={icon} />
+          <GenreItem
+            key={icon.id}
+            icon={icon}
+            onClickGenre={onClickGenre}
+          />
         ))}
       </div>
       <button
