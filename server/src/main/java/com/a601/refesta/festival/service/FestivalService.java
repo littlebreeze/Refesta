@@ -177,7 +177,7 @@ public class FestivalService {
                         review.attachmentUrl, review.mediaType, review.contents))
                 .from(review)
                 .innerJoin(member).on(review.member.id.eq(member.id))
-                .where(review.festival.id.eq(festivalId))
+                .where(review.festival.id.eq(festivalId).and(review.isDeleted.eq(false)))
                 .orderBy(review.id.desc())
                 .fetch();
     }
