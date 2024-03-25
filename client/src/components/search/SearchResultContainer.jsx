@@ -33,7 +33,7 @@ const festivalListData = [
   },
   {
     id: 7,
-    festivalName: '페스티벌7',
+    name: '페스티벌7',
     posterUrl: 'https://cdn.bokjitimes.com/news/photo/202211/33800_22771_5029.jpg',
   },
 ];

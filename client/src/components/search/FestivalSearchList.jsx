@@ -12,7 +12,7 @@ const FestivalSearchList = ({ festivalListData, isTotal, setOpenSearchTab }) => 
   };
 
   return (
-    <div>
+    <div className='mb-8'>
       <div className='text-base font-bold text-left'>
         <span>페스티벌 &nbsp;</span>
         <span className='text-lg font-bold text-ourPink'>{festivalListData.length}</span>
