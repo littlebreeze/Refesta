@@ -6,7 +6,7 @@ import RegisterInfo from './pages/RegisterInfoPage';
 import Home from './pages/HomePage';
 import FestivalList from './pages/FestivalListPage';
 import FestivalDetail from './pages/FestivalDetailPage';
-import FestivalDetailDone from './pages/FestivalDetailDonePage';
+// import FestivalDetailDone from './pages/FestivalDetailDonePage';
 import Notfound from './pages/NotfoundPage';
 import Google_Login from './components/start/Google_login';
 import ArtistDetail from './pages/ArtistDetailPage';
@@ -41,7 +41,7 @@ function App() {
             <Route path='/' element={<Home />} />
             <Route path='/festival/list' element={<FestivalList />} />
             <Route path='/festival/:id' element={<FestivalDetail />} />
-            <Route path='/festival/done/:id' element={<FestivalDetailDone />} />
+            {/* <Route path='/festival/done/:id' element={<FestivalDetailDone />} /> */}
             <Route path='/artist/:id' element={<ArtistDetail />} />
             <Route path='/reservation' element={<Reservation />} />
             <Route path='/reservation/result' element={<ReservationResult />} />
