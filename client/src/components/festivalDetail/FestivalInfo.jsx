@@ -1,10 +1,11 @@
 import heart from '../../assets/heart.png';
 import heart_full from '../../assets/heart_full.png';
+import instance from '../../util/token_interceptor';
 
 // 페스티벌 상세 정보
 // 1. 페스티벌 포스터
 // 2. 페스티벌 정보
-const FestivalInfo = () => {
+const FestivalInfo = ({ id }) => {
   return (
     <article className='flex m-6 min-h-60'>
       <div className='flex items-center flex-1'>

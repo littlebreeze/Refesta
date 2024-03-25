@@ -8,6 +8,19 @@ const RegisterReview = ({ isOpen, onClose, selectedFile }) => {
   const inputFileRef = useRef(null);
   const imageRef = useRef(null);
 
+  // 스크롤 막기
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isOpen, onClose]);
+
   useEffect(() => {
     if (selectedFile && isOpen) {
       const reader = new FileReader();

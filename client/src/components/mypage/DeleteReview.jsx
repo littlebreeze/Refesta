@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import useReviewStore from '../store/myReviewStore';
+import useReviewStore from '../../store/myReviewStore';
 
 const DeleteReview = ({ isOpen, onClose, id }) => {
   const { removeReview } = useReviewStore();
