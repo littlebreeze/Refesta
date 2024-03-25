@@ -36,7 +36,7 @@ public class Review extends BaseEntity {
 
     @Column(nullable = false)
     @ColumnDefault("false")
-    private boolean isDeleted;
+    private Boolean isDeleted;
 
     public void delete(){
         this.isDeleted=true;
