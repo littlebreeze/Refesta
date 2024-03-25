@@ -23,7 +23,7 @@ const SetListPlayer = () => {
 
     return (
       <>
-        <button onClick={onClickPlayButton} className='w-12'>
+        <button onClick={onClickPlayButton} className='w-6'>
           {playing ? <img src={pause_btn} /> : <img src={play_btn} />}
         </button>
       </>
@@ -36,7 +36,7 @@ const SetListPlayer = () => {
 
     return (
       <>
-        <button className='w-8'>
+        <button className='w-4'>
           <img src={next_btn} />
         </button>
       </>
@@ -49,7 +49,7 @@ const SetListPlayer = () => {
 
     return (
       <>
-        <button className='w-8'>
+        <button className='w-4'>
           <img src={previous_btn} />
         </button>
       </>
@@ -57,12 +57,19 @@ const SetListPlayer = () => {
   };
 
   return (
-    <>
-      <div>
+    <div className='flex justify-between mx-4 bg-white rounded-md'>
+      <div className='flex m-2'>
+        <div>이미지</div>
+        <div>
+          <div>노래명</div>
+          <div>가수명</div>
+        </div>
+      </div>
+      <div className='m-2'>
         <ReactPlayer
           className='react-player'
-          width='350px' // 플레이어 크기 (가로)
-          height='200px' // 플레이어 크기 (세로)
+          width='0px' // 플레이어 크기 (가로)
+          height='0px' // 플레이어 크기 (세로)
           url={curr}
           // muted={false}
           // width='1px' // 플레이어 크기 (가로)
@@ -71,12 +78,13 @@ const SetListPlayer = () => {
           controls={false} // 유튜브 재생 컨트롤바 노출 여부
         />
       </div>
-      <div>
+      <div>사운드바</div>
+      <div className='flex justify-between m-2 my-auto min-w-20'>
         <PrevButton />
         <PlayButton />
         <NextButton />
       </div>
-    </>
+    </div>
   );
 };
 

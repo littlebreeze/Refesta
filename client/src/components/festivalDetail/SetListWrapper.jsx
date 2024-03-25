@@ -5,7 +5,7 @@ import PlayList from '../festivalDetail/PlayList';
 const SetListWrapper = () => {
   return (
     <>
-      <div className='flex-col'>
+      <div className='min-h-[800px] bg-ourIndigo'>
         <ArtistList />
         <SetListPlayer />
         <PlayList />
