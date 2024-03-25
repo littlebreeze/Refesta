@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router';
 
-const SetListHomeItem = ({ id, posterUrl, name, date }) => {
+const SetListHomeItem = ({ id, posterUrl, name, date, lineup }) => {
   const nav = useNavigate();
 
   const onClickItem = () => {
@@ -15,9 +15,14 @@ const SetListHomeItem = ({ id, posterUrl, name, date }) => {
         />
       </div>
       <div className='w-[120px] whitespace-normal'>
-        <div className='overflow-clip'>{name}</div>
-        <div className='text-sm text-zinc-500'>
+        <div className='truncate' title={name}>
+          {name}
+        </div>
+        <div className='mb-2 text-sm text-zinc-500'>
           일시 : {new Date(date).toLocaleDateString()}
+        </div>
+        <div className='text-xs text-zinc-400 h-[50px] overflow-hidden'>
+          {lineup}
         </div>
       </div>
     </div>
