@@ -34,7 +34,7 @@ const FestivalDetailPage = () => {
   const getFestivalInfoDetailData = async () => {
     try {
       const response = await instance.get(`festivals/${id}/info`);
-      console.log(response.data.data.infoImgUrl);
+      setFestivalInfoDetailData(response.data.data.infoImgUrl);
     } catch (error) {
       console.error('Error:', error);
     }
@@ -64,7 +64,7 @@ const FestivalDetailPage = () => {
       {festivalInfoData && !festivalInfoData.ended ? (
         <div>
           <FestivalInfo festivalInfoData={festivalInfoData} />
-          <FestivalInfoDetail />
+          <FestivalInfoDetail festivalInfoDetailData={festivalInfoDetailData} />
           <ReservationButton />
         </div>
       ) : (

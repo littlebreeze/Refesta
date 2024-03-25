@@ -29,7 +29,7 @@ const FestivalInfo = ({ festivalInfoData }) => {
   };
 
   return (
-    <article className='m-6 min-h-60'>
+    <article className='m-6 mb-12 min-h-60'>
       {festivalInfoData && (
         <div className='flex'>
           <div className='flex items-center flex-1'>

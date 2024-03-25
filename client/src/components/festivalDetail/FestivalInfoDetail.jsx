@@ -1,7 +1,9 @@
-const FestivalInfoDetail = () => {
+const FestivalInfoDetail = ({ festivalInfoDetailData }) => {
+  console.log('여기');
+  console.log(festivalInfoDetailData);
   return (
     <>
-      <img src='https://mintpaper.s3.ap-northeast-2.amazonaws.com/78_LIVE_New_Link_f1797dd7d9.jpg' alt='' />
+      <img src={festivalInfoDetailData} alt='' />
       <div className='py-10'></div>
     </>
   );
