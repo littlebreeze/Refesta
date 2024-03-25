@@ -15,5 +15,6 @@ public class LikeFestivalRes {
     private String posterUrl;
     private String name;
     private boolean isLike;
+    private boolean isEnded;
 
 }

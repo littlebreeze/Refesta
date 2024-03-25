@@ -80,7 +80,7 @@ public class MemberService {
 
         return jpaQueryFactory.select(Projections.constructor(
                         LikeFestivalRes.class, festival.id, festival.posterUrl,
-                        festival.name, festivalLike.isLiked))
+                        festival.name, festivalLike.isLiked, festival.isEnded))
                 .from(festival)
                 .innerJoin(festivalLike).on(festivalLike.festival.id.eq(festival.id))
                 .innerJoin(member).on(festivalLike.member.id.eq(member.id))
