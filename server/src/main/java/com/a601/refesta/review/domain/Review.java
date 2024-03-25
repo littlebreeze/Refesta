@@ -4,6 +4,7 @@ import com.a601.refesta.festival.domain.Festival;
 import com.a601.refesta.member.domain.Member;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 
 @Entity
 @Getter
@@ -29,6 +30,10 @@ public class Review {
 
     @Column(nullable = false)
     private String mediaType;
+
+    @Column(nullable = false)
+    @ColumnDefault("false")
+    private Boolean isDeleted;
 
     private String contents;
 }
