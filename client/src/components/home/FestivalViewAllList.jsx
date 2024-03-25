@@ -1,6 +1,8 @@
+import instance from '../../util/token_interceptor';
+import { useEffect, useState } from 'react';
 import FestivalViewAllItem from './FestivalViewAllItem';
 
-const FestivalViewAllList = () => {
+const FestivalViewAllList = ({ title, state }) => {
   const dummyData = [
     {
       id: 1,
@@ -57,11 +59,28 @@ const FestivalViewAllList = () => {
       lineup: '박재범, 쌈디, 로꼬, 드비타',
     },
   ];
+
+  const [festivalData, setFestivalData] = useState([]);
+
+  // 추천 아티스트 정보 요청
+  const getRecommendArtists = async () => {
+    const response = await instance.get(
+      `recommendations/${state}-festivals`
+    );
+    setFestivalData(response.data.data);
+  };
+
+  useEffect(() => {
+    getRecommendArtists();
+  }, []);
+
   return (
-    <div className='px-5'>
-      <div>예정 페스티벌</div>
-      <div className='grid gap-y-5'>
-        {dummyData.map((item) => (
+    <div className='px-4'>
+      <div className='mt-2 text-2xl font-semibold text-center mb-7'>
+        {title} 페스티벌
+      </div>
+      <div className='grid gap-y-7'>
+        {festivalData.map((item) => (
           <FestivalViewAllItem key={item.id} {...item} />
         ))}
       </div>

@@ -1,6 +1,13 @@
+import { useNavigate } from 'react-router';
+
 const SetListHomeItem = ({ id, posterUrl, name, date }) => {
+  const nav = useNavigate();
+
+  const onClickItem = () => {
+    nav(`/festival/${id}`);
+  };
   return (
-    <div className='flex w-[240px]'>
+    <div className='flex w-[240px]' onClick={onClickItem}>
       <div className='w-[120px] h-[120px] mr-3'>
         <img
           className='object-cover w-full h-full rounded-md'
