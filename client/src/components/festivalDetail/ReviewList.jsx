@@ -1,13 +1,15 @@
 import { useEffect } from 'react';
 import useReviewStore from '../../store/reviewStore';
 import ReviewItem from './ReviewItem';
+import { useParams } from 'react-router';
 
 const ReviewList = () => {
   const { addReviews, reviewList } = useReviewStore();
+  const { id } = useParams();
 
   useEffect(() => {
-    addReviews('1');
-  }, [addReviews]);
+    addReviews(id);
+  }, [addReviews, id]);
 
   return (
     <div className='flex flex-col items-center'>

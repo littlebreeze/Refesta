@@ -39,9 +39,12 @@ function App() {
 
           <Route element={<MainLayout />}>
             <Route path='/' element={<Home />} />
-            <Route path='/festival/list' element={<FestivalList />} />
+            <Route path='/festival/list/:state' element={<FestivalList />} />
             <Route path='/festival/:id' element={<FestivalDetail />} />
-            {/* <Route path='/festival/done/:id' element={<FestivalDetailDone />} /> */}
+            {/* <Route
+              path='/festival/done/:id'
+              element={<FestivalDetailDone />}
+            /> */}
             <Route path='/artist/:id' element={<ArtistDetail />} />
             <Route path='/reservation' element={<Reservation />} />
             <Route path='/reservation/result' element={<ReservationResult />} />
