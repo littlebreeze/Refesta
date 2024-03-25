@@ -85,6 +85,7 @@ public class MemberService {
                 .innerJoin(festivalLike).on(festivalLike.festival.id.eq(festival.id))
                 .innerJoin(member).on(festivalLike.member.id.eq(member.id))
                 .where(member.id.eq(memberId))
+                .orderBy(festivalLike.createdDate.desc())
                 .fetch();
     }
 
@@ -102,6 +103,7 @@ public class MemberService {
                 .innerJoin(artistLike).on(artistLike.artist.id.eq(artist.id))
                 .innerJoin(member).on(artistLike.member.id.eq(member.id))
                 .where(member.id.eq(memberId))
+                .orderBy(artistLike.createdDate.desc())
                 .fetch();
     }
 
@@ -119,6 +121,7 @@ public class MemberService {
                 .innerJoin(reservation).on(reservation.festival.id.eq(festival.id))
                 .innerJoin(member).on(reservation.member.id.eq(memberId))
                 .where(member.id.eq(memberId))
+                .orderBy(festival.festivalDate.desc())
                 .fetch();
     }
 
@@ -138,7 +141,8 @@ public class MemberService {
                 .on(review.member.id.eq(member.id))
                 .innerJoin(festival)
                 .on(review.festival.id.eq(festival.id))
-                .where(member.id.eq(memberId))
+                .where(member.id.eq(memberId), review.isDeleted.eq(false))
+                .orderBy(review.createdDate.desc())
                 .fetch();
 
     }
