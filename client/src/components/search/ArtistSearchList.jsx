@@ -6,7 +6,6 @@ const ArtistSearchList = ({ artistListData, isTotal, setOpenSearchTab }) => {
   if (isTotal && renderArtistListData.length > 3) {
     renderArtistListData = artistListData.slice(0, 3);
   }
-  console.log(artistListData);
 
   const onClickTotalBtn = () => {
     setOpenSearchTab(3);

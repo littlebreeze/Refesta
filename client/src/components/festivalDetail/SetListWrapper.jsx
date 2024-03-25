@@ -5,9 +5,11 @@ import PlayList from '../festivalDetail/PlayList';
 const SetListWrapper = () => {
   return (
     <>
-      <ArtistList />
-      <SetListPlayer />
-      <PlayList />
+      <div className='min-h-[800px] bg-ourIndigo'>
+        <ArtistList />
+        <SetListPlayer />
+        <PlayList />
+      </div>
     </>
   );
 };

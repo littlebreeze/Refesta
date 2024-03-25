@@ -1,6 +1,10 @@
 import React from 'react';
 import { useState, useRef } from 'react';
 import ReactPlayer from 'react-player';
+import play_btn from '../../assets/play_btn.png';
+import pause_btn from '../../assets/pause_btn.png';
+import previous_btn from '../../assets/previous_btn.png';
+import next_btn from '../../assets/next_btn.png';
 
 const SetListPlayer = () => {
   const [ready, setReady] = useState(false);
@@ -19,53 +23,68 @@ const SetListPlayer = () => {
 
     return (
       <>
-        <button onClick={onClickPlayButton} className='bg-red-200'>
-          {playing ? 'Pause' : 'Play'}
+        <button onClick={onClickPlayButton} className='w-6'>
+          {playing ? <img src={pause_btn} /> : <img src={play_btn} />}
         </button>
       </>
     );
   };
 
+  // 다음 곡 재생 버튼
   const NextButton = () => {
     const onClickNextButton = () => {};
 
     return (
       <>
-        <button className='bg-blue-200'>이전</button>
+        <button className='w-4'>
+          <img src={next_btn} />
+        </button>
       </>
     );
   };
 
+  // 이전 곡 재생 버튼
   const PrevButton = () => {
     const onClickPrevButton = () => {};
 
     return (
       <>
-        <button className='bg-gray-200'>이후</button>
+        <button className='w-4'>
+          <img src={previous_btn} />
+        </button>
       </>
     );
   };
 
   return (
-    <>
-      <div className='player-wrapper'>
+    <div className='flex justify-between mx-4 bg-white rounded-md'>
+      <div className='flex m-2'>
+        <div>이미지</div>
+        <div>
+          <div>노래명</div>
+          <div>가수명</div>
+        </div>
+      </div>
+      <div className='m-2'>
         <ReactPlayer
           className='react-player'
-          width='350px' // 플레이어 크기 (가로)
-          height='200px' // 플레이어 크기 (세로)
+          width='0px' // 플레이어 크기 (가로)
+          height='0px' // 플레이어 크기 (세로)
           url={curr}
           // muted={false}
-
           // width='1px' // 플레이어 크기 (가로)
           // height='1px' // 플레이어 크기 (세로)
           playing={playing} // 재생
           controls={false} // 유튜브 재생 컨트롤바 노출 여부
         />
       </div>
-      <NextButton />
-      <PlayButton />
-      <PrevButton />
-    </>
+      <div>사운드바</div>
+      <div className='flex justify-between m-2 my-auto min-w-20'>
+        <PrevButton />
+        <PlayButton />
+        <NextButton />
+      </div>
+    </div>
   );
 };
 
