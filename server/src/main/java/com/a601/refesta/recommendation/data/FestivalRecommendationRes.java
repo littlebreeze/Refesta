@@ -16,6 +16,7 @@ public class FestivalRecommendationRes {
 
     private List<EndedFestival> endedFestivalList;
 
+    @Getter
     @AllArgsConstructor
     public static class ScheduledFestival {
 
@@ -28,6 +29,7 @@ public class FestivalRecommendationRes {
         private String posterUrl;
     }
 
+    @Getter
     @AllArgsConstructor
     public static class EndedFestival {
 
