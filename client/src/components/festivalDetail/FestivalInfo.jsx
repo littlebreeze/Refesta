@@ -1,3 +1,4 @@
+import React, { useEffect, useState } from 'react';
 import heart from '../../assets/heart.png';
 import heart_full from '../../assets/heart_full.png';
 import instance from '../../util/token_interceptor';
@@ -5,38 +6,57 @@ import instance from '../../util/token_interceptor';
 // 페스티벌 상세 정보
 // 1. 페스티벌 포스터
 // 2. 페스티벌 정보
-const FestivalInfo = ({ id }) => {
+const FestivalInfo = ({ festivalInfoData }) => {
+  const [likedFestival, setLikedFestival] = useState(festivalInfoData && festivalInfoData.liked); // 좋아요 상태를 저장하는 상태 변수
+
+  useEffect(() => {
+    // festivalInfoData가 변경될 때 likedFestival 상태 업데이트
+    if (festivalInfoData) {
+      setLikedFestival(festivalInfoData.liked);
+    }
+  }, [festivalInfoData]);
+
+  const handleLike = async () => {
+    const festivalIdList = [festivalInfoData.id];
+    try {
+      const response = await instance.patch(`festivals`, festivalIdList);
+      if (response.data.status === 'success') {
+        setLikedFestival((prevLiked) => !prevLiked);
+      }
+    } catch (error) {
+      console.error('페스티벌 좋아요 실패', error);
+    }
+  };
+
   return (
-    <article className='flex m-6 min-h-60'>
-      <div className='flex items-center flex-1'>
-        {/* 세로 이미지 */}
-        {/* <img
-          className='object-fill min-h-64'
-          src='https://www.hbnews.kr/news/photo/202210/23161_26078_5317.jpg'
-          alt=''
-        /> */}
-        {/* 1*1이미지 */}
-        <img
-          className='object-fill h-60'
-          src='https://street.co.kr/wp-content/uploads/2024/02/%EC%A0%95%EB%B0%A9%ED%98%95-hpf-main-poster-final2402183-scaled.jpg'
-          alt=''
-        />
-      </div>
-      <div className='relative items-start flex-1 ml-2'>
-        <div className='text-sm font-semibold'>워터밤 서울 2024 - 1일차가 되었습니다</div>
-        <div className='mt-2 border-b border-b-black'></div>
-        <div className='p-2'>
-          <div className='pb-1 text-sm'>장소</div>
-          <div className='pb-4 pl-1 text-xs'>페스티벌 장소</div>
-          <div className='pb-1 text-sm '>날짜</div>
-          <div className='pb-4 pl-1 text-xs'>페스티벌 날짜</div>
-          <div className='pb-1 text-sm'>가격</div>
-          <div className='pb-4 pl-1 text-xs'>144,000 원</div>
+    <article className='m-6 min-h-60'>
+      {festivalInfoData && (
+        <div className='flex'>
+          <div className='flex items-center flex-1'>
+            <img className='object-fill h-60' src={festivalInfoData.posterUrl} alt='' />
+          </div>
+          <div className='relative items-start flex-1 ml-2'>
+            <div className='text-sm font-semibold'>{festivalInfoData.name}</div>
+            <div className='mt-2 border-b border-b-black'></div>
+            <div className='p-2'>
+              <div className='pb-1 text-sm'>장소</div>
+              <div className='pb-4 pl-1 text-xs'>{festivalInfoData.location}</div>
+              <div className='pb-1 text-sm '>날짜</div>
+              <div className='pb-4 pl-1 text-xs'>{festivalInfoData.date}</div>
+              <div className='pb-1 text-sm'>가격</div>
+              <div className='pb-4 pl-1 text-xs'>{festivalInfoData.price.toLocaleString()}원</div>
+            </div>
+            <div className='absolute bottom-0 right-0 flex justify-end pr-1'>
+              <img
+                className=''
+                src={likedFestival ? heart_full : heart}
+                alt='페스티벌 좋아요 버튼'
+                onClick={handleLike}
+              />
+            </div>
+          </div>
         </div>
-        <div className='absolute bottom-0 right-0 flex justify-end pr-1'>
-          <img className='' src={heart_full} alt='' />
-        </div>
-      </div>
+      )}
     </article>
   );
 };

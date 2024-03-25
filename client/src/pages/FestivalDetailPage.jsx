@@ -1,29 +1,79 @@
-import Header from '../components/common/Header';
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import instance from '../util/token_interceptor';
 import FestivalInfo from '../components/festivalDetail/FestivalInfo';
 import FestivalInfoDetail from '../components/festivalDetail/FestivalInfoDetail';
 import ReservationButton from '../components/festivalDetail/ReservationButton';
-
-// 예정 페스티벌 상세 더미데이터
-const festivalData = [
-  {
-    date: '2024-03-16',
-    ended: false,
-    liked: false,
-    location: '일산 킨텍스 제2전시장 10홀',
-    name: '스카 페스티벌 < Spin-off > 2024',
-    posterUrl: 'https://image.toast.com/aaaaab/ticketlink/TKL_10/main0216(2).jpg',
-    price: 121000,
-  },
-];
+import FestivalInfoContainer from '../components/festivalDetail/FestivalInfoContainer';
 
 // 페스티벌 상세 진행중
 const FestivalDetailPage = () => {
+  const { id } = useParams();
+  const [festivalInfoData, setFestivalInfoData] = useState(null);
+  const [festivalInfoDetailData, setFestivalInfoDetailData] = useState(null);
+
+  // 페이지가 처음 렌더링 될 때 페스티벌 정보를 가져옴
+  useEffect(() => {
+    const getFestivalInfoData = async () => {
+      try {
+        const response = await instance.get(`festivals/${id}`);
+        if (response.data.status === 'success') {
+          setFestivalInfoData(response.data.data);
+        }
+      } catch (error) {
+        console.error('Error fetching festival info:', error);
+      }
+    };
+
+    getFestivalInfoData();
+  }, []);
+
+  console.log(festivalInfoData);
+
+  // 페스티벌이 진행 예정일 때 실행될 함수
+  const getFestivalInfoDetailData = async () => {
+    try {
+      const response = await instance.get(`festivals/${id}/info`);
+      console.log(response.data.data.infoImgUrl);
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+
+  // 페스티벌이 완료되었을 때 실행될 함수
+  const test2 = async () => {
+    try {
+      const response = await instance.get(`test2`);
+      console.log(response.data);
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+
+  // 페스티벌의 완료 여부에 따라 실행될 함수 분기처리
+  useEffect(() => {
+    if (festivalInfoData && !festivalInfoData.ended) {
+      getFestivalInfoDetailData();
+    } else if (festivalInfoData && festivalInfoData.ended) {
+      test2();
+    }
+  }, [festivalInfoData]);
+
   return (
-    <>
-      <FestivalInfo />
-      <FestivalInfoDetail />
-      <ReservationButton />
-    </>
+    <div>
+      {festivalInfoData && !festivalInfoData.ended ? (
+        <div>
+          <FestivalInfo festivalInfoData={festivalInfoData} />
+          <FestivalInfoDetail />
+          <ReservationButton />
+        </div>
+      ) : (
+        <div>
+          <FestivalInfo festivalInfoData={festivalInfoData} />
+          <FestivalInfoContainer />
+        </div>
+      )}
+    </div>
   );
 };
 

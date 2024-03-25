@@ -40,7 +40,7 @@ const FestivalInfoContainer = ({ id }) => {
           </button>
         </li>
       </ul>
-      <div className='flex flex-col min-w-0 mx-6 mt-4 text-center break-words  h-[600px]'>
+      <div className='flex flex-col h-full min-w-0 mx-4 mt-4 text-center break-words'>
         <div className='flex-auto'>
           <div className={openInfoTab === 1 ? 'block' : 'hidden'}>
             <SetListWrapper />
