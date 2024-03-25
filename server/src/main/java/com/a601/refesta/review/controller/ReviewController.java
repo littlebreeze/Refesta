@@ -6,10 +6,7 @@ import com.a601.refesta.review.service.ReviewService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.apache.http.HttpStatus;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
@@ -30,5 +27,10 @@ public class ReviewController {
         return new SuccessResponse<>(HttpStatus.SC_CREATED);
     }
 
-
+    @DeleteMapping("/{review_id}")
+    public SuccessResponse<Integer> deleteReview(HttpServletRequest request, @PathVariable(name = "review_id") Integer reviewId) {
+        int memberId = tokenProvider.getMemberIdByToken(request);
+        reviewService.deleteReview(memberId, reviewId);
+        return new SuccessResponse<>(HttpStatus.SC_OK);
+    }
 }
