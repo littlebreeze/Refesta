@@ -56,8 +56,23 @@ const ProfileInfo = ({ setStep, stepParam }) => {
   };
 
   // 사용자 입력 정보 서버로 전달
-  const onClickRegist = () => {
-    alert('프로필 설정 완료');
+  const onClickRegist = async () => {
+    const formData = new FormData();
+    formData.append('file', imgInfo.file);
+    formData.append('nickname', nickname);
+
+    const response = await instance.post('/members', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+
+    if (response.data.status == 'success') {
+      console.log(response);
+      alert('프로필 설정 완료');
+    } else {
+      alert('로그인 정보가 유효하지 않습니다!');
+    }
     setStep(stepParam.step2);
   };
 
@@ -67,25 +82,27 @@ const ProfileInfo = ({ setStep, stepParam }) => {
         프로필 설정하기
       </div>
       <div className='relative w-full'>
-        <input
-          type='file'
-          ref={inputFile}
-          className='hidden'
-          onChange={onChangeImgFile}
-        />
-        <img
-          className='object-cover w-full border rounded-full border-zinc-300'
-          src={imgInfo.url ? imgInfo.url : defaultImg}
-        />
-        <div
-          className='absolute bottom-7 right-3 overflow-hidden flex justify-center bg-[#D9D9D9] rounded-full w-10 h-10 cursor-pointer'
-          onClick={onClickInputFile}
-        >
-          <img
-            className='object-contain w-1/2 h-full'
-            src={editPencil}
+        <form>
+          <input
+            type='file'
+            ref={inputFile}
+            className='hidden'
+            onChange={onChangeImgFile}
           />
-        </div>
+          <img
+            className='object-cover w-full border rounded-full border-zinc-300'
+            src={imgInfo.url ? imgInfo.url : defaultImg}
+          />
+          <div
+            className='absolute bottom-7 right-3 overflow-hidden flex justify-center bg-[#D9D9D9] rounded-full w-10 h-10 cursor-pointer'
+            onClick={onClickInputFile}
+          >
+            <img
+              className='object-contain w-1/2 h-full'
+              src={editPencil}
+            />
+          </div>
+        </form>
       </div>
       <input
         className='flex items-center justify-center w-full pl-5 rounded-md bg-ourBrightGray h-14'
