@@ -41,12 +41,13 @@ const GenreList = ({ setStep, stepParam }) => {
     }
   };
 
+  useEffect(() => {
+    console.log(selectedGenre);
+  }, [selectedGenre]);
+
   const onClickStart = async () => {
     console.log(selectedGenre);
-    const response = await instance.post(
-      '/members/genres',
-      selectedGenre
-    );
+    const response = await instance.post('/members/genres', selectedGenre);
     console.log(response);
 
     alert('서비스를 시작합니다');
@@ -61,20 +62,12 @@ const GenreList = ({ setStep, stepParam }) => {
   return (
     <div className='grid gap-y-5'>
       <div>
-        <div className='text-2xl font-bold leading-9 tracking-tight text-center text-ourIndigo'>
-          선호 장르 선택하기
-        </div>
-        <div className='mb-5 text-sm text-center'>
-          3개까지 선택 가능
-        </div>
+        <div className='text-2xl font-bold leading-9 tracking-tight text-center text-ourIndigo'>선호 장르 선택하기</div>
+        <div className='mb-5 text-sm text-center'>3개까지 선택 가능</div>
       </div>
       <div className='grid grid-cols-3 gap-y-3 gap-x-4'>
         {lists.map((icon) => (
-          <GenreItem
-            key={icon.id}
-            icon={icon}
-            onClickGenre={onClickGenre}
-          />
+          <GenreItem key={icon.id} icon={icon} onClickGenre={onClickGenre} selectedGenre={selectedGenre} />
         ))}
       </div>
       <button
@@ -83,10 +76,7 @@ const GenreList = ({ setStep, stepParam }) => {
       >
         시작하기
       </button>
-      <div
-        className='text-center underline cursor-pointer'
-        onClick={onClickSkip}
-      >
+      <div className='text-center underline cursor-pointer' onClick={onClickSkip}>
         건너뛰기
       </div>
     </div>
