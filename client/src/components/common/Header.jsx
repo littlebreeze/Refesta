@@ -12,7 +12,10 @@ const Header = () => {
       <div className='container flex items-center justify-between mx-auto'>
         {/* 검색 버튼 */}
         <div className='flex text-center'>
-          <Link to='/search' className='cursor-pointer'>
+          <Link
+            to='/search?searchkeyword='
+            className='cursor-pointer'
+          >
             <img src={search} alt='Logo' className='w-5 h-5 ml-5' />
           </Link>
         </div>
@@ -25,10 +28,16 @@ const Header = () => {
         </div>
 
         {/* 햄버거 버튼 */}
-        <div className='flex items-center' onClick={() => setModalOpen(true)}>
+        <div
+          className='flex items-center'
+          onClick={() => setModalOpen(true)}
+        >
           <img src={menu} alt='Logo' className='w-5 h-5 mr-5' />
         </div>
-        <Mypage isOpen={isModalOpen} onClose={() => setModalOpen(false)} />
+        <Mypage
+          isOpen={isModalOpen}
+          onClose={() => setModalOpen(false)}
+        />
       </div>
     </header>
   );
