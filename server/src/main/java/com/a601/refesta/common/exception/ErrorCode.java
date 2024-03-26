@@ -34,7 +34,12 @@ public enum ErrorCode {
     REVIEW_MEMBER_NOT_EQUAL(404, "REW001", "작성자와 회원정보가 일치하지 않습니다."),
 
     //KakaoPay
-    KAKAOPAY_FAILED_ERROR(400, "PAY001", "결제 승인에 실패했습니다.");
+    KAKAOPAY_FAILED_ERROR(400, "PAY001", "결제 승인에 실패했습니다."),
+
+    //Reservation
+    RESERVATION_MEMBER_NOT_EQUAL(404, "REV001", "예매자와 회원정보가 일치하지 않습니다."),
+    RESERVATION_NOT_FOUND_ERROR(404, "REV002", "존재하지 않는 예매내역입니다.");
+
     private final int status;
 
     private final String code;
