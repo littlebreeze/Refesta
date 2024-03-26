@@ -8,9 +8,12 @@ import com.a601.refesta.member.repository.MemberRepository;
 import com.a601.refesta.reservation.data.ApproveRes;
 import com.a601.refesta.reservation.data.PayRes;
 import com.a601.refesta.reservation.data.ReservationReq;
+import com.a601.refesta.reservation.data.ReservationRes;
 import com.a601.refesta.reservation.domain.Reservation;
 import com.a601.refesta.reservation.repository.ReservationRepository;
 import com.google.gson.Gson;
+import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.NumberExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,6 +24,7 @@ import org.springframework.web.client.RestTemplate;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.a601.refesta.festival.domain.QFestival.festival;
 import static com.a601.refesta.reservation.domain.QReservation.reservation;
 
 
@@ -127,5 +131,28 @@ public class ReservationService {
                 .where(reservation.member.id.eq(memberId), reservation.status.eq("READY"))
                 .orderBy(reservation.createdDate.desc()).limit(1)
                 .fetchOne();
+    }
+
+    public ReservationRes getReservation(int memberId, Integer reservationId) {
+
+        if (reservationRepository.findById(reservationId).orElseThrow().getMember().getId() != memberId) {
+            throw new CustomException(ErrorCode.RESERVATION_MEMBER_NOT_EQUAL);
+        }
+
+        NumberExpression<Integer> totalPrice = reservation.count.multiply(festival.price);
+
+        ReservationRes reservationRes = jpaQueryFactory.select(Projections.constructor(ReservationRes.class,
+                        festival.posterUrl, festival.name, festival.festivalDate,
+                        festival.location, reservation.count, totalPrice))
+                .from(festival)
+                .innerJoin(reservation).on(reservation.festival.id.eq(festival.id))
+                .where(reservation.id.eq(reservationId), reservation.status.eq("SUCCESS"))
+                .fetchOne();
+
+        if (reservationRes == null) {
+            throw new CustomException(ErrorCode.RESERVATION_NOT_FOUND_ERROR);
+        }
+
+        return reservationRes;
     }
 }

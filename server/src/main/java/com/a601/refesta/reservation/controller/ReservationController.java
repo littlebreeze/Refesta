@@ -4,6 +4,7 @@ package com.a601.refesta.reservation.controller;
 import com.a601.refesta.common.jwt.TokenProvider;
 import com.a601.refesta.common.response.SuccessResponse;
 import com.a601.refesta.reservation.data.ReservationReq;
+import com.a601.refesta.reservation.data.ReservationRes;
 import com.a601.refesta.reservation.service.ReservationService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -36,5 +37,12 @@ public class ReservationController {
         return new SuccessResponse<>(data);
     }
 
+    @GetMapping("/{reservation_id}")
+    public SuccessResponse<ReservationRes> getReservation(HttpServletRequest request,
+                                                          @PathVariable("reservation_id") Integer reservationId) {
+        int memberId = tokenProvider.getMemberIdByToken(request);
+        ReservationRes reservationRes = reservationService.getReservation(memberId, reservationId);
+        return new SuccessResponse<>(reservationRes);
+    }
 
 }
