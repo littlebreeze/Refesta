@@ -47,7 +47,7 @@ const GenreList = ({ setStep, stepParam }) => {
 
   const onClickStart = async () => {
     console.log(selectedGenre);
-    const response = await instance.post('/members/genres', selectedGenre);
+    const response = await instance.post('members/genres', selectedGenre);
     console.log(response);
 
     alert('서비스를 시작합니다');
