@@ -31,8 +31,10 @@ public enum ErrorCode {
     ARTIST_NOT_FOUND_ERROR(404, "ART001", "존재하지 않는 아티스트입니다."),
 
     //Review 
-    REVIEW_MEMBER_NOT_EQUAL(404, "REW001", "작성자와 회원정보가 일치하지 않습니다.");
+    REVIEW_MEMBER_NOT_EQUAL(404, "REW001", "작성자와 회원정보가 일치하지 않습니다."),
 
+    //KakaoPay
+    KAKAOPAY_FAILED_ERROR(400, "PAY001", "결제 승인에 실패했습니다.");
     private final int status;
 
     private final String code;
