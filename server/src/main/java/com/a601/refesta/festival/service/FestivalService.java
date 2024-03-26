@@ -17,7 +17,6 @@ import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -28,11 +27,11 @@ import static com.a601.refesta.festival.domain.QFestival.festival;
 import static com.a601.refesta.festival.domain.join.QFestivalLineup.festivalLineup;
 import static com.a601.refesta.festival.domain.join.QFestivalSetlist.festivalSetlist;
 import static com.a601.refesta.member.domain.QMember.member;
+import static com.a601.refesta.member.domain.join.QArtistLike.artistLike;
 import static com.a601.refesta.member.domain.join.QFestivalLike.festivalLike;
 import static com.a601.refesta.review.domain.QReview.review;
 import static com.a601.refesta.song.domain.QSong.song;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
 public class FestivalService {
@@ -51,13 +50,14 @@ public class FestivalService {
      * @param festivalId
      * @return FestivalInfoRes - 이름, 날짜, 장소, 포스터 URL, 가격
      */
-    public FestivalInfoRes getFestivalInfo(int festivalId) {
+    public FestivalInfoRes getFestivalInfo(int memberId, int festivalId) {
         //기본 정보 반환
         return jpaQueryFactory
                 .select(Projections.constructor(FestivalInfoRes.class, festival.id, festival.name, festival.festivalDate,
                         festival.location, festival.posterUrl, festival.price, festival.isEnded, festivalLike.isLiked))
                 .from(festival)
-                .leftJoin(festivalLike).on(festival.id.eq(festivalLike.festival.id))
+                .leftJoin(festivalLike).on(festival.id.eq(festivalLike.festival.id)
+                        .and(artistLike.member.id.eq(memberId)))
                 .where(festival.id.eq(festivalId))
                 .fetchOne();
     }
