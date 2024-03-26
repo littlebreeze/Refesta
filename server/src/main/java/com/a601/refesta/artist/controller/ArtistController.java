@@ -26,10 +26,11 @@ public class ArtistController {
         return new SuccessResponse<>(artistService.getArtistInfo(memberId, artistId));
     }
 
-    @PatchMapping
-    public SuccessResponse<HttpStatus> editArtistLike(HttpServletRequest request, @RequestBody List<Integer> artistIdList) {
+    @PatchMapping("/{artist_id}")
+    public SuccessResponse<HttpStatus> editArtistLike(HttpServletRequest request,
+                                                      @PathVariable(name = "artist_id") int artistId) {
         int memberId = tokenProvider.getMemberIdByToken(request);
-        artistService.updateArtistLike(memberId, artistIdList);
+        artistService.updateArtistLike(memberId, artistId);
         return new SuccessResponse<>(HttpStatus.OK);
     }
 }

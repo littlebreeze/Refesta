@@ -83,30 +83,28 @@ public class ArtistService {
      * 아티스트 좋아요 업데이트
      *
      * @param memberId     - 구글 식별 ID
-     * @param artistIdList
+     * @param artistId
      */
-    public void updateArtistLike(int memberId, List<Integer> artistIdList) {
-        for (int artistId : artistIdList) {
-            Optional<ArtistLike> optFindLike = artistLikeRepository.findByMember_IdAndArtist_Id(memberId, artistId);
+    public void updateArtistLike(int memberId, int artistId) {
+        Optional<ArtistLike> optFindLike = artistLikeRepository.findByMember_IdAndArtist_Id(memberId, artistId);
 
-            //DB에 없으면 추가
-            if (optFindLike.isEmpty()) {
-                artistLikeRepository.save(ArtistLike.builder()
-                        .member(memberService.getMember(memberId))
-                        .artist(getArtist(artistId))
-                        .isLiked(true)
-                        .build()
-                );
+        //DB에 없으면 추가
+        if (optFindLike.isEmpty()) {
+            artistLikeRepository.save(ArtistLike.builder()
+                    .member(memberService.getMember(memberId))
+                    .artist(getArtist(artistId))
+                    .isLiked(true)
+                    .build()
+            );
 
-                continue;
-            }
-
-            //DB에 있으면 좋아요 상태 업데이트 후 저장
-            ArtistLike findLike = optFindLike.get();
-            findLike.updateStatus();
-
-            artistLikeRepository.save(findLike);
+            return;
         }
+
+        //DB에 있으면 좋아요 상태 업데이트 후 저장
+        ArtistLike findLike = optFindLike.get();
+        findLike.updateStatus();
+
+        artistLikeRepository.save(findLike);
     }
 
     /**

@@ -66,31 +66,29 @@ public class FestivalService {
      * 페스티벌(공통) 좋아요 업데이트
      *
      * @param memberId
-     * @param festivalIdList
+     * @param festivalId
      */
-    public void updateFestivalLike(int memberId, List<Integer> festivalIdList) {
-        for (int festivalId : festivalIdList) {
-            Optional<FestivalLike> optFindLike = festivalLikeRepository
-                    .findByMember_IdAndFestival_Id(memberId, festivalId);
+    public void updateFestivalLike(int memberId, int festivalId) {
+        Optional<FestivalLike> optFindLike = festivalLikeRepository
+                .findByMember_IdAndFestival_Id(memberId, festivalId);
 
-            //DB에 없으면 추가
-            if (optFindLike.isEmpty()) {
-                festivalLikeRepository.save(FestivalLike.builder()
-                        .member(memberService.getMember(memberId))
-                        .festival(getFestival(festivalId))
-                        .isLiked(true)
-                        .build()
-                );
+        //DB에 없으면 추가
+        if (optFindLike.isEmpty()) {
+            festivalLikeRepository.save(FestivalLike.builder()
+                    .member(memberService.getMember(memberId))
+                    .festival(getFestival(festivalId))
+                    .isLiked(true)
+                    .build()
+            );
 
-                continue;
-            }
-
-            //DB에 있으면 좋아요 상태 업데이트
-            FestivalLike findLike = optFindLike.get();
-            findLike.updateStatus();
-
-            festivalLikeRepository.save(findLike);
+            return;
         }
+
+        //DB에 있으면 좋아요 상태 업데이트
+        FestivalLike findLike = optFindLike.get();
+        findLike.updateStatus();
+
+        festivalLikeRepository.save(findLike);
     }
 
     /**
