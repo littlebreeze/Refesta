@@ -25,6 +25,7 @@ const SearchInput = () => {
 
   useEffect(() => {
     inputDiv.current.focus();
+    return changeSearchKeyword('');
   }, []);
 
   return (
