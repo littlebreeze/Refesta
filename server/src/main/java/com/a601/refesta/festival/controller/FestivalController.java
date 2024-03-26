@@ -44,10 +44,11 @@ public class FestivalController {
         return new SuccessResponse<>(festivalService.getFestivalReview(festivalId));
     }
 
-    @PatchMapping
-    public SuccessResponse<HttpStatus> editFestivalLike(HttpServletRequest request, @RequestBody List<Integer> festivalIdList) {
+    @PatchMapping("/{festival_id}")
+    public SuccessResponse<HttpStatus> editFestivalLike(HttpServletRequest request,
+                                                        @PathVariable(name = "festival_id") int festivalId) {
         int memberId = tokenProvider.getMemberIdByToken(request);
-        festivalService.updateFestivalLike(memberId, festivalIdList);
+        festivalService.updateFestivalLike(memberId, festivalId);
         return new SuccessResponse<>(HttpStatus.OK);
     }
 }
