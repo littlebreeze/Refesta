@@ -12,7 +12,6 @@ import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,7 +24,6 @@ import static com.a601.refesta.festival.domain.join.QFestivalLineup.festivalLine
 import static com.a601.refesta.genre.domain.QGenre.genre;
 import static com.a601.refesta.member.domain.join.QArtistLike.artistLike;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ArtistService {
@@ -43,12 +41,13 @@ public class ArtistService {
      * @param artistId
      * @return ArtistInfoRes - 아이디, 이름, 사진, 좋아요 여부, 장르, 참가 페스티벌(아이디, 이름, 포스터)
      */
-    public ArtistInfoRes getArtistInfo(int artistId) {
+    public ArtistInfoRes getArtistInfo(int memberId, int artistId) {
         //이름, 사진, 좋아요 여부 조회
         Tuple infoTuple = jpaQueryFactory
                 .select(artist.id, artist.name, artist.pictureUrl, artistLike.isLiked)
                 .from(artist)
-                .leftJoin(artistLike).on(artist.id.eq(artistLike.artist.id))
+                .leftJoin(artistLike).on(artist.id.eq(artistLike.artist.id)
+                        .and(artistLike.member.id.eq(memberId)))
                 .where(artist.id.eq(artistId))
                 .fetchOne();
 

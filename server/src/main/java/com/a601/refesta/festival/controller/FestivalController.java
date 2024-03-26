@@ -23,8 +23,10 @@ public class FestivalController {
     private final TokenProvider tokenProvider;
 
     @GetMapping("/{festival_id}")
-    public SuccessResponse<FestivalInfoRes> getFestivalInfo(@PathVariable(name = "festival_id") int festivalId) {
-        return new SuccessResponse<>(festivalService.getFestivalInfo(festivalId));
+    public SuccessResponse<FestivalInfoRes> getFestivalInfo(HttpServletRequest request,
+                                                            @PathVariable(name = "festival_id") int festivalId) {
+        int memberId = tokenProvider.getMemberIdByToken(request);
+        return new SuccessResponse<>(festivalService.getFestivalInfo(memberId, festivalId));
     }
 
     @GetMapping("/{festival_id}/info")
