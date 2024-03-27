@@ -48,12 +48,11 @@ public class SearchService {
      * @return AutoCompleteRes - 페스티벌 검색어(최대 3개) 리스트, 아티스트 검색어(최대 3개) 리스트
      */
     public AutoCompleteRes getAutoComplete(int memberId, String inputWord) {
-        //Todo: 검색 우선순위(완전 일치 >> 포함)
         List<String> festivalList;
         List<String> artistList;
 
         //검색어가 초성으로 끝나는 경우
-        if(checkEndsWithConsonant(inputWord)) {
+        if (checkEndsWithConsonant(inputWord)) {
             String[] fromToWords = setFromToWord(inputWord);
 
             String fromWord = fromToWords[0];
@@ -79,25 +78,71 @@ public class SearchService {
                     .limit(3)
                     .fetch();
         } else {
-            //검색어 포함 페스티벌 이름 조회
+            //검색어 일치 페스티벌 이름 조회
             festivalList = jpaQueryFactory
                     .select(festival.name)
                     .from(memberFestival)
                     .innerJoin(festival).on(memberFestival.festival.id.eq(festival.id)
                             .and(memberFestival.member.id.eq(memberId)))
-                    .where(festival.name.toLowerCase().contains(inputWord.toLowerCase()))
+                    .where(festival.name.toLowerCase().startsWith(inputWord.toLowerCase()))
                     .limit(3)
                     .fetch();
 
-            //검색어 포함 아티스트 이름 조회
+            //검색어 포함 페스티벌 이름 조회
+            if (festivalList.size() < 3) {
+                List<String> containResultList = jpaQueryFactory
+                        .select(festival.name)
+                        .from(memberFestival)
+                        .innerJoin(festival).on(memberFestival.festival.id.eq(festival.id)
+                                .and(memberFestival.member.id.eq(memberId)))
+                        .where(festival.name.toLowerCase().contains(inputWord.toLowerCase()))
+                        .limit(3)
+                        .fetch();
+
+                //festivalList에 중복되지 않는 포함 결과 추가
+                for (String result : containResultList) {
+                    if (!festivalList.contains(result)) {
+                        festivalList.add(result);
+
+                        if (festivalList.size() == 3) {
+                            break;
+                        }
+                    }
+                }
+            }
+
+            //검색어 일치 아티스트 이름 조회
             artistList = jpaQueryFactory
                     .select(artist.name)
                     .from(memberArtist)
                     .innerJoin(artist).on(memberArtist.artist.id.eq(artist.id)
                             .and(memberArtist.member.id.eq(memberId)))
-                    .where(artist.name.toLowerCase().contains(inputWord.toLowerCase()))
+                    .where(artist.name.toLowerCase().startsWith(inputWord.toLowerCase()))
                     .limit(3)
                     .fetch();
+
+            //검색어 포함 아티스트 이름 조회
+            if (artistList.size() < 3) {
+                List<String> containResultList = jpaQueryFactory
+                        .select(artist.name)
+                        .from(memberArtist)
+                        .innerJoin(artist).on(memberArtist.artist.id.eq(artist.id)
+                                .and(memberArtist.member.id.eq(memberId)))
+                        .where(artist.name.toLowerCase().contains(inputWord.toLowerCase()))
+                        .limit(3)
+                        .fetch();
+
+                //artistList에 중복되지 않는 포함 검색 결과 추가
+                for (String result : containResultList) {
+                    if (!artistList.contains(result)) {
+                        artistList.add(result);
+
+                        if (artistList.size() == 3) {
+                            break;
+                        }
+                    }
+                }
+            }
         }
 
         //조회 정보 반환
@@ -119,7 +164,7 @@ public class SearchService {
         List<SearchResultRes.FestivalResult> festivalResultList;
         List<SearchResultRes.ArtistResult> artistResultList;
 
-        if(checkEndsWithConsonant(searchWord)) {
+        if (checkEndsWithConsonant(searchWord)) {
             String[] fromToWords = setFromToWord(searchWord);
 
             String fromWord = fromToWords[0];
@@ -165,8 +210,8 @@ public class SearchService {
                     .where(artist.name.toLowerCase().contains(searchWord.toLowerCase()))
                     .fetch();
 
-            for(int genreIdx = 1; genreIdx < genreMap.size(); genreIdx++) {
-                if(genreMap.get(genreIdx).contains(searchWord.toLowerCase())) {
+            for (int genreIdx = 1; genreIdx < genreMap.size(); genreIdx++) {
+                if (genreMap.get(genreIdx).contains(searchWord.toLowerCase())) {
                     //페스티벌 조회(장르)
                     List<SearchResultRes.FestivalResult> festivalGenreResult = jpaQueryFactory
                             .select(Projections.constructor(SearchResultRes.FestivalResult.class,
@@ -199,7 +244,7 @@ public class SearchService {
             }
         }
 
-        for(SearchResultRes.ArtistResult artistResult : artistResultList) {
+        for (SearchResultRes.ArtistResult artistResult : artistResultList) {
             //아티스트 장르 조회
             List<String> genreList = jpaQueryFactory
                     .select(genre.name)
@@ -221,8 +266,8 @@ public class SearchService {
      * @param word
      * @return true/false
      */
-    public boolean checkEndsWithConsonant (String word) {
-        if(word == null || word.equals("")) {
+    public boolean checkEndsWithConsonant(String word) {
+        if (word == null || word.equals("")) {
             throw new CustomException(ErrorCode.SEARCH_WORD_NULL_ERROR);
         }
 
@@ -235,6 +280,7 @@ public class SearchService {
 
     /**
      * 초성 검색 시작, 끝 지정
+     *
      * @param word
      * @return String[] - fromWord, toWord
      */
