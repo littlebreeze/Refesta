@@ -13,7 +13,7 @@ const Google_Login = () => {
   };
 
   const handleProfile = (data) => {
-    nav('/regist/profile', { state: { ...data }, replace: true });
+    nav('/regist', { state: { ...data }, replace: true });
     window.location.reload();
   };
 
