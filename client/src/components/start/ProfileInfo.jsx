@@ -4,8 +4,12 @@ import { useEffect, useRef, useState } from 'react';
 
 import defaultImg from '../../assets/default_img.jpg';
 import editPencil from '../../assets/edit_pencil.png';
+import { useLocation, useNavigate } from 'react-router';
 
 const ProfileInfo = ({ setStep, stepParam }) => {
+  const nav = useNavigate();
+  const { state } = useLocation();
+
   const [nickname, setNickname] = useState('');
   const [imgInfo, setImgInfo] = useState({
     url: '',
@@ -30,6 +34,10 @@ const ProfileInfo = ({ setStep, stepParam }) => {
   };
 
   useEffect(() => {
+    if (!state) {
+      alert('잘못된 접근입니다.');
+      nav('/', { replace: true });
+    }
     getUserProfile();
   }, []);
 
@@ -99,18 +107,10 @@ const ProfileInfo = ({ setStep, stepParam }) => {
 
   return (
     <div className='grid gap-y-5'>
-      <div className='text-2xl font-bold leading-9 tracking-tight text-center text-ourIndigo'>
-        프로필 설정하기
-      </div>
+      <div className='text-2xl font-bold leading-9 tracking-tight text-center text-ourIndigo'>프로필 설정하기</div>
       <div className='relative w-full'>
         <form>
-          <input
-            type='file'
-            accept='image/*'
-            ref={inputFile}
-            className='hidden'
-            onChange={onChangeImgFile}
-          />
+          <input type='file' accept='image/*' ref={inputFile} className='hidden' onChange={onChangeImgFile} />
           <img
             className='object-cover w-full border rounded-full border-zinc-300'
             src={imgInfo.url ? imgInfo.url : defaultImg}
@@ -119,10 +119,7 @@ const ProfileInfo = ({ setStep, stepParam }) => {
             className='absolute bottom-7 right-3 overflow-hidden flex justify-center bg-[#D9D9D9] rounded-full w-10 h-10 cursor-pointer'
             onClick={onClickInputFile}
           >
-            <img
-              className='object-contain w-1/2 h-full'
-              src={editPencil}
-            />
+            <img className='object-contain w-1/2 h-full' src={editPencil} />
           </div>
         </form>
       </div>
@@ -137,7 +134,7 @@ const ProfileInfo = ({ setStep, stepParam }) => {
         className='flex items-center justify-center w-full text-white rounded-md bg-ourIndigo h-14'
         onClick={onClickRegist}
       >
-        회원가입 완료
+        설정 완료
       </button>
     </div>
   );
