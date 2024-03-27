@@ -16,6 +16,7 @@ public class FestivalSetlistRes {
 
     private Map<Integer, List<SongInfo>> songInfoMap;
 
+    @Getter
     @AllArgsConstructor
     public static class ArtistInfo {
 
@@ -26,6 +27,7 @@ public class FestivalSetlistRes {
         private String pictureUrl;
     }
 
+    @Getter
     @AllArgsConstructor
     public static class SongInfo {
 

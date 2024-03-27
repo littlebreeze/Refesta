@@ -1,5 +1,6 @@
 package com.a601.refesta.reservation.domain;
 
+import com.a601.refesta.common.entity.BaseEntity;
 import com.a601.refesta.festival.domain.Festival;
 import com.a601.refesta.member.domain.Member;
 import jakarta.persistence.*;
@@ -10,7 +11,7 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Reservation {
+public class Reservation extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,4 +27,18 @@ public class Reservation {
 
     @Column(nullable = false)
     private Integer count;
+
+    @Column(nullable = false)
+    private String tid;
+
+    @Column(nullable = false)
+    private String status;
+
+    public void statusSuccess() {
+        this.status = "SUCCESS";
+    }
+
+    public void statusFail() {
+        this.status = "FAIL";
+    }
 }

@@ -11,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
@@ -25,12 +26,19 @@ public class S3Util {
     private String baseUrl;
 
     public String uploadFile(MultipartFile file) {
+
         try {
-            String fileName = file.getOriginalFilename();
+            String type = file.getContentType();
+            assert type != null;
+            if (type.startsWith("video")) {
+                type = "video/mp4";
+            }
+            String fileName = UUID.randomUUID() + "-" +file.getOriginalFilename();
             String fileUrl = baseUrl + fileName;
             ObjectMetadata metadata = new ObjectMetadata();
-            metadata.setContentType(file.getContentType());
+            metadata.setContentType(type);
             metadata.setContentLength(file.getSize());
+
 
             PutObjectRequest putObjectRequest = new PutObjectRequest(
                     bucket, fileName, file.getInputStream(), metadata
@@ -44,7 +52,8 @@ public class S3Util {
         }
     }
 
-    public void deleteFile(String S3FileName) {
+    public void deleteFile(String FileName) {
+        String S3FileName = FileName.replaceAll(baseUrl, "");
         amazonS3Client.deleteObject(bucket, S3FileName);
     }
 

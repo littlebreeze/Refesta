@@ -49,14 +49,14 @@ public class FestivalService {
      * @param festivalId
      * @return FestivalInfoRes - 이름, 날짜, 장소, 포스터 URL, 가격
      */
-    public FestivalInfoRes getFestivalInfo(int festivalId) {
+    public FestivalInfoRes getFestivalInfo(int memberId, int festivalId) {
         //기본 정보 반환
         return jpaQueryFactory
-                .select(Projections.constructor(FestivalInfoRes.class,
-                        festival.name, festival.date, festival.location, festival.posterUrl, festival.price, festival.isEnded,
-                        festivalLike.isLiked))
+                .select(Projections.constructor(FestivalInfoRes.class, festival.id, festival.name, festival.festivalDate,
+                        festival.location, festival.posterUrl, festival.price, festival.isEnded, festivalLike.isLiked))
                 .from(festival)
-                .leftJoin(festivalLike).on(festival.id.eq(festivalLike.festival.id))
+                .leftJoin(festivalLike).on(festival.id.eq(festivalLike.festival.id)
+                        .and(festivalLike.member.id.eq(memberId)))
                 .where(festival.id.eq(festivalId))
                 .fetchOne();
     }
@@ -64,32 +64,30 @@ public class FestivalService {
     /**
      * 페스티벌(공통) 좋아요 업데이트
      *
-     * @param memberId       - 구글 식별 ID
-     * @param festivalIdList
+     * @param memberId
+     * @param festivalId
      */
-    public void updateFestivalLike(String memberId, List<Integer> festivalIdList) {
-        for (int festivalId : festivalIdList) {
-            Optional<FestivalLike> optFindLike = festivalLikeRepository
-                    .findByMember_GoogleIdAndFestival_Id(memberId, festivalId);
+    public void updateFestivalLike(int memberId, int festivalId) {
+        Optional<FestivalLike> optFindLike = festivalLikeRepository
+                .findByMember_IdAndFestival_Id(memberId, festivalId);
 
-            //DB에 없으면 추가
-            if (optFindLike.isEmpty()) {
-                festivalLikeRepository.save(FestivalLike.builder()
-                        .member(memberService.getMember(memberId))
-                        .festival(getFestival(festivalId))
-                        .isLiked(true)
-                        .build()
-                );
+        //DB에 없으면 추가
+        if (optFindLike.isEmpty()) {
+            festivalLikeRepository.save(FestivalLike.builder()
+                    .member(memberService.getMember(memberId))
+                    .festival(getFestival(festivalId))
+                    .isLiked(true)
+                    .build()
+            );
 
-                continue;
-            }
-
-            //DB에 있으면 좋아요 상태 업데이트
-            FestivalLike findLike = optFindLike.get();
-            findLike.updateStatus();
-
-            festivalLikeRepository.save(findLike);
+            return;
         }
+
+        //DB에 있으면 좋아요 상태 업데이트
+        FestivalLike findLike = optFindLike.get();
+        findLike.updateStatus();
+
+        festivalLikeRepository.save(findLike);
     }
 
     /**
@@ -111,26 +109,6 @@ public class FestivalService {
     }
 
     /**
-     * 페스티벌(종료) 후기 조회
-     *
-     * @param festivalId
-     * @return List<FestivalReviewRes> - 작성자 닉네임, 작성자 프로필, 첨부파일 Url, 미디어타입, 내용
-     */
-    public List<FestivalReviewRes> getFestivalReview(int festivalId) {
-        checkIsEnded(getFestival(festivalId));
-
-        //작성자 정보, Review 정보 반환
-        return jpaQueryFactory
-                .select(Projections.constructor(FestivalReviewRes.class, member.nickname, member.profileUrl,
-                        review.attachmentUrl, review.mediaType, review.contents))
-                .from(review)
-                .innerJoin(member).on(review.member.id.eq(member.id))
-                .where(review.festival.id.eq(festivalId))
-                .orderBy(review.id.desc())
-                .fetch();
-    }
-
-    /**
      * 페스티벌(종료) 셋리스트 조회
      *
      * @param festivalId
@@ -143,7 +121,8 @@ public class FestivalService {
                 .select(song.title, song.audioUrl, song.imageUrl, artist.id, artist.name, artist.pictureUrl)
                 .from(festivalSetlist)
                 .innerJoin(festivalLineup).on(festivalSetlist.festival.id.eq(festivalLineup.festival.id))
-                .innerJoin(artistSong).on(festivalLineup.artist.id.eq(artistSong.artist.id))
+                .innerJoin(artistSong).on(festivalLineup.artist.id.eq(artistSong.artist.id)
+                        .and(artistSong.song.id.eq(festivalSetlist.song.id)))
                 .innerJoin(song).on(artistSong.song.id.eq(song.id))
                 .innerJoin(artist).on(artistSong.artist.id.eq(artist.id))
                 .where(festivalSetlist.festival.id.eq(festivalId))
@@ -179,18 +158,54 @@ public class FestivalService {
                 .build();
     }
 
+    /**
+     * 페스티벌(종료) 후기 조회
+     *
+     * @param festivalId
+     * @return List<FestivalReviewRes> - 작성자 닉네임, 작성자 프로필, 첨부파일 Url, 미디어타입, 내용
+     */
+    public List<FestivalReviewRes> getFestivalReview(int festivalId) {
+        checkIsEnded(getFestival(festivalId));
+
+        //작성자 정보, Review 정보 반환
+        return jpaQueryFactory
+                .select(Projections.constructor(FestivalReviewRes.class, member.nickname, member.profileUrl,
+                        review.attachmentUrl, review.mediaType, review.contents))
+                .from(review)
+                .innerJoin(member).on(review.member.id.eq(member.id))
+                .where(review.festival.id.eq(festivalId).and(review.isDeleted.eq(false)))
+                .orderBy(review.id.desc())
+                .fetch();
+    }
+
+    /**
+     * 페스티벌 종료 여부 확인
+     *
+     * @param findFestival
+     */
     public void checkIsEnded(Festival findFestival) {
-        if (findFestival.isEnded()) {
+        if (!findFestival.isEnded()) {
             throw new CustomException(ErrorCode.FESTIVAL_IS_NOT_ENDED_ERROR);
         }
     }
 
+    /**
+     * 페스티벌 예정 여부 확인
+     *
+     * @param findFestival
+     */
     public void checkIsScheduled(Festival findFestival) {
         if (findFestival.isEnded()) {
             throw new CustomException(ErrorCode.FESTIVAL_ALREADY_ENDED_ERROR);
         }
     }
 
+    /**
+     * 페스티벌 조회
+     *
+     * @param festivalId
+     * @return Festival
+     */
     public Festival getFestival(int festivalId) {
         return festivalRepository.findById(festivalId)
                 .orElseThrow(() -> new CustomException(ErrorCode.FESTIVAL_NOT_FOUND_ERROR));

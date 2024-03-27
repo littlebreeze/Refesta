@@ -33,7 +33,8 @@ public class SecurityConfig {
         http.authorizeHttpRequests(
                 request -> request.requestMatchers(
                                 "/login/oauth2/code/google",
-                                "/login/oauth/token"
+                                "/login/oauth/token",
+                                "/reservations/success/{member_id}"
                         )
                         .permitAll()
                         .anyRequest().authenticated());//로그인 주소만 허용하면 된다.

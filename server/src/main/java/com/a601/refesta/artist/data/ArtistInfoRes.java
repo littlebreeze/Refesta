@@ -11,6 +11,8 @@ import java.util.List;
 @AllArgsConstructor
 public class ArtistInfoRes {
 
+    private int id;
+
     private String name;
 
     private String pictureUrl;
@@ -21,13 +23,9 @@ public class ArtistInfoRes {
 
     private List<Performance> performanceList;
 
-    public void setGenreAndPerformance(List<String> genreList, List<Performance> performanceList) {
-        this.genreList = genreList;
-        this.performanceList = performanceList;
-    }
-
+    @Getter
     @AllArgsConstructor
-    public class Performance {
+    public static class Performance {
 
         private int id;
 

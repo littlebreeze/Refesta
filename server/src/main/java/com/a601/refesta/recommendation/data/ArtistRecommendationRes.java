@@ -13,6 +13,7 @@ public class ArtistRecommendationRes {
 
     private List<ArtistInfo> artistInfoList;
 
+    @Getter
     @AllArgsConstructor
     public static class ArtistInfo {
 
