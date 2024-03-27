@@ -34,7 +34,7 @@ const ArtistHomeList = () => {
         description={'아티스트가 참여한 페스티벌을 알아보세요!'}
         btn={<button onClick={onClickRefresh}>새로고침</button>}
       />
-      <div className='flex overflow-x-scroll gap-x-3 scrollbar-hide '>
+      <div className='flex overflow-x-scroll gap-x-3 scrollbar-hide px-7'>
         {artistData.map((item) => (
           <ArtistHomeItem key={item.id} {...item} />
         ))}

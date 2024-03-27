@@ -3,7 +3,7 @@ import ReactPlayer from 'react-player';
 import DeleteReview from './DeleteReview';
 
 const ReviewItem = ({ review }) => {
-  const { id, name, date, location, contents, attachmentUrl, type } = review;
+  const { reviewId, name, date, location, contents, attachmentUrl, type } = review;
   const [isPlaying, setPlaying] = useState(true);
   const [isModalOpen, setModalOpen] = useState(false);
 
@@ -50,7 +50,7 @@ const ReviewItem = ({ review }) => {
       <DeleteReview
         isOpen={isModalOpen}
         onClose={() => setModalOpen(false)}
-        id={id}
+        id={reviewId}
       />
     </div>
   );

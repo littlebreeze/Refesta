@@ -23,7 +23,7 @@ const SetListHomeList = ({ setListData }) => {
           </Link>
         }
       />
-      <div className='flex overflow-x-scroll gap-x-4 scrollbar-hide whitespace-nowrap'>
+      <div className='flex overflow-x-scroll gap-x-4 scrollbar-hide whitespace-nowrap px-7'>
         {chunkArray(setListData, 2).map((chunkItem, idx) => (
           // 2개씩 끊어서 보내줘야지
           <SetListHomeColItem key={idx} chunkItem={chunkItem} />
