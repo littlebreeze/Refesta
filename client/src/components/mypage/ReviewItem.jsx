@@ -3,7 +3,7 @@ import ReactPlayer from 'react-player';
 import DeleteReview from './DeleteReview';
 
 const ReviewItem = ({ review }) => {
-  const { id, name, date, location, contents, attachmentUrl, type } = review;
+  const { reviewId, name, date, location, contents, attachmentUrl, type } = review;
   const [isPlaying, setPlaying] = useState(true);
   const [isModalOpen, setModalOpen] = useState(false);
 
@@ -11,17 +11,14 @@ const ReviewItem = ({ review }) => {
     <div className='flex flex-col pb-5 mx-5 mb-5 border-b-2'>
       <div className='flex justify-between'>
         <div className='flex flex-col'>
-          <div className='text-lg font-bold'>{name}</div>
-          <div className='flex text-sm text-gray-400'>
-            <div className='mr-3'>
-              {date.getFullYear()}-{date.getMonth() < 9 ? `0${date.getMonth() + 1}` : date.getMonth() + 1}-
-              {date.getDay() < 10 ? `0${date.getDay()}` : date.getDay()}
-            </div>
+          <div className='text-lg font-bold leading-5'>{name}</div>
+          <div className='flex my-2 text-sm text-gray-400'>
+            <div className='mr-3'>{review.festivalDate}</div>
             <div>| {location}</div>
           </div>
         </div>
         <button
-          className='text-xs text-gray-400'
+          className='w-16 text-xs text-center text-gray-400'
           onClick={(e) => {
             e.stopPropagation();
             setModalOpen(true);
@@ -53,7 +50,7 @@ const ReviewItem = ({ review }) => {
       <DeleteReview
         isOpen={isModalOpen}
         onClose={() => setModalOpen(false)}
-        id={id}
+        id={reviewId}
       />
     </div>
   );

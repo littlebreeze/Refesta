@@ -1,16 +1,20 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ReviewItem from './ReviewItem';
-import useReviewStore from '../../store/myReviewStore';
+import useReviewStore from '../../store/reviewStore';
 
 const ReviewList = () => {
-  const { reviewList } = useReviewStore();
+  const { myReviewList, addMyReviews } = useReviewStore();
+
+  useEffect(() => {
+    addMyReviews();
+  }, [addMyReviews]);
 
   return (
     <div className='flex flex-col'>
-      {reviewList && reviewList.length > 0 ? (
-        reviewList.map((review) => (
+      {myReviewList && myReviewList.length > 0 ? (
+        myReviewList.map((review) => (
           <ReviewItem
-            key={review.id}
+            key={review.reviewId}
             review={review}
           />
         ))

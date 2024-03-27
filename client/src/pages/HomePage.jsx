@@ -25,13 +25,13 @@ const Home = () => {
     <div>
       <div>
         <Carousel />
-        <div className='pt-7 pl-7'>
+        <div className='pt-7'>
           <FestivalHomeList festivalData={festivalData} />
         </div>
-        <div className='pt-7 pl-7'>
+        <div className='pt-7'>
           <ArtistHomeList />
         </div>
-        <div className='py-7 pl-7'>
+        <div className='py-7'>
           <SetListHomeList setListData={setListData} />
         </div>
       </div>

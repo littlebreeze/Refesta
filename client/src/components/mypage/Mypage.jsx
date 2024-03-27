@@ -1,16 +1,43 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import useUserStore from '../../store/userStore';
 import xBtn from './../../assets/x_bold.png';
-import defaultImg from './../../assets/default_img.jpg';
 import likeArtist from './../../assets/like_artist.png';
 import likeFesta from './../../assets/like_festa.png';
 import myReview from './../../assets/my_review.png';
 import dropdown from './../../assets/dropdown.png';
 import dropup from './../../assets/dropup.png';
 import wave from './../../assets/wave.png';
-const Mypage = ({ isOpen, onClose }) => {
+const Mypage = ({ isOpen, onClose, nickname, profileUrl }) => {
   const nav = useNavigate();
   const [toggle, setToggle] = useState(false);
+  const { bookingList, getBookingList } = useUserStore();
+
+  // 스크롤 막기
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isOpen, onClose]);
+
+  // 모달 닫힐 때 예약 내역 닫기
+  useEffect(() => {
+    if (!isOpen) {
+      setToggle(false);
+    }
+  }, [isOpen]);
+
+  // 예약내역 가져오기
+  useEffect(() => {
+    getBookingList();
+  }, [getBookingList]);
+
   if (!isOpen) return null;
 
   const handleGoLikeFesta = () => {
@@ -56,10 +83,10 @@ const Mypage = ({ isOpen, onClose }) => {
               <div className='w-12 h-12 mx-5 overflow-hidden rounded-full'>
                 <img
                   className='h-full'
-                  src={defaultImg}
+                  src={profileUrl}
                 />
               </div>
-              <div className='text-lg text-white'>홍길동</div>
+              <div className='text-lg text-white'>{nickname}</div>
             </header>
             <section>
               <div className='flex my-5'>
@@ -120,11 +147,15 @@ const Mypage = ({ isOpen, onClose }) => {
                 </div>
               </div>
               <div>
-                {toggle && reservationResults && reservationResults.length > 0 ? (
-                  reservationResults.map((reservation, index) => (
+                {toggle && bookingList && bookingList.length > 0 ? (
+                  bookingList.map((reservation, reservationId) => (
                     <div
-                      key={index}
-                      className='flex h-16 px-6 mt-1'
+                      key={reservationId}
+                      className='flex w-full h-16 px-6 mt-1'
+                      onClick={() => {
+                        onClose();
+                        nav(`/reservation/detail/${reservation.reservationId}`);
+                      }}
                     >
                       <div className='flex items-center justify-center w-10 border-2'>
                         <img
@@ -132,16 +163,9 @@ const Mypage = ({ isOpen, onClose }) => {
                           src={wave}
                         />
                       </div>
-                      <div className='w-full px-4 py-2 text-white rounded-ee-xl bg-ourPink'>
-                        <div className='text-xs font-bold'>{reservation.name}</div>
-                        <div className='mt-1 text-[0.6rem]'>
-                          {reservation.date.getFullYear()}-
-                          {reservation.date.getMonth() < 9
-                            ? `0${reservation.date.getMonth() + 1}`
-                            : reservation.date.getMonth() + 1}
-                          -
-                          {reservation.date.getDay() < 10 ? `0${reservation.date.getDay()}` : reservation.date.getDay()}
-                        </div>
+                      <div className='w-full px-4 py-2 text-white truncate rounded-ee-xl bg-ourPink'>
+                        <div className='w-full text-xs font-bold truncate'>{reservation.name}</div>
+                        <div className='mt-1 text-[0.6rem]'>{reservation.festivalDate}</div>
                         <div className='text-[0.6rem]'>{reservation.location}</div>
                       </div>
                     </div>

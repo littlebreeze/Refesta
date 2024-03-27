@@ -35,7 +35,7 @@ const ReviewWrapper = () => {
             ref={fileInputRef}
             className='hidden'
             type='file'
-            accept='image/*'
+            accept='image/*, video/*'
             onChange={handleFileChange}
           />
         </div>
