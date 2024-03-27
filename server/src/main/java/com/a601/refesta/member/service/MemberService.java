@@ -49,7 +49,9 @@ public class MemberService {
                 .profileUrl(member.getProfileUrl())
                 .build();
     }
-
+     /**
+     * 프로필 저장
+     */
     public void updateProfile(int memberId, String nickname, MultipartFile file) {
         Member member = getMember(memberId);
         member.setNickname(nickname);
@@ -85,7 +87,7 @@ public class MemberService {
                 parameters,
                 String.class
         );
-        System.out.println(response.getBody() + "추천?????");
+        // System.out.println(response.getBody());
 
     }
 
