@@ -59,8 +59,6 @@ public class SearchService {
             String fromWord = fromToWords[0];
             String toWord = fromToWords[1];
 
-            log.info(inputWord + " " + fromWord + " " + toWord);
-
             //검색어 포함 페스티벌 이름 조회
             festivalList = jpaQueryFactory
                     .select(festival.name)
