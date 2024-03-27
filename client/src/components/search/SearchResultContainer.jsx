@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import SearchResultWrapper from './SearchResultWrapper';
 import FestivalSearchWrapper from './FestivalSearchWrapper';
 import ArtistSearchWrapper from './ArtistSearchWrapper';
+import instance from '../../util/token_interceptor';
+
+// 검색 결과 인풋에 유지 필요
 
 // 검색 더미데이터
 const festivalListData = [
@@ -66,6 +70,38 @@ const artistListData = [
 const SearchResultContainer = () => {
   const [openSearchTab, setOpenSearchTab] = useState(1);
   const [isTotal, setIsTotal] = useState(true);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const word = searchParams.get('word');
+
+  // 왜안되지
+  useEffect(() => {
+    const getSearchResultData = async () => {
+      try {
+        const response = await instance.get(`searches/result?word=${word}`);
+        console.log(response.data.data);
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    };
+    getSearchResultData();
+  }, []);
+
+  console.log(word);
+
+  // 요청 테스트
+  useEffect(() => {
+    const getFestivalInfoData = async () => {
+      try {
+        const response = await instance.get(`festivals/13`);
+        if (response.data.status === 'success') {
+          console.log(response.data.data);
+        }
+      } catch (error) {
+        console.error('Error fetching festival info:', error);
+      }
+    };
+    getFestivalInfoData();
+  }, []);
 
   return (
     <div className=''>

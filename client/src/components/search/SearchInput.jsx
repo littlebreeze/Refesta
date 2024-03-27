@@ -43,10 +43,10 @@ const SearchInput = () => {
     changeSearchKeyword('');
   };
 
-  useEffect(() => {
-    inputDiv.current.focus();
-    return changeSearchKeyword('');
-  }, []);
+  // useEffect(() => {
+  //   inputDiv.current.focus();
+  //   return changeSearchKeyword('');
+  // }, []);
 
   return (
     <header className='h-[70px] py-4 bg-ourIndigo'>
