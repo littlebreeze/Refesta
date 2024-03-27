@@ -13,6 +13,7 @@ const Home = () => {
   // 추천 페스티벌 정보 요청
   const getRecommendFestival = async () => {
     const response = await instance.get('recommendations/festivals');
+    console.log(response.data.data);
     setFestivalData(response.data.data.scheduledFestivalList);
     setSetListData(response.data.data.endedFestivalList);
   };
@@ -25,13 +26,13 @@ const Home = () => {
     <div>
       <div>
         <Carousel />
-        <div className='pt-7 pl-7'>
+        <div className='pt-7'>
           <FestivalHomeList festivalData={festivalData} />
         </div>
-        <div className='pt-7 pl-7'>
+        <div className='pt-7'>
           <ArtistHomeList />
         </div>
-        <div className='py-7 pl-7'>
+        <div className='py-7'>
           <SetListHomeList setListData={setListData} />
         </div>
       </div>
