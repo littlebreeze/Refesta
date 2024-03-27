@@ -1,9 +1,10 @@
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const ReservationButton = () => {
+const ReservationButton = ({ festivalInfoData }) => {
   const nav = useNavigate();
   const onClickReservation = () => {
-    nav('/reservation');
+    nav('/reservation', { state: { festivalInfo: festivalInfoData } });
   };
 
   return (

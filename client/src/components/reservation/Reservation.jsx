@@ -1,18 +1,26 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import useKakaoStore from '../../store/kakaoStore';
 import PosterImage from './PosterImage';
-import Header from './../common/Header';
 
 const Reservation = () => {
-  const festival = {
-    genre: ['랩', '힙합'],
-    name: '대구 힙합 페스티벌(1일차)',
-    date: new Date('2024-05-04'),
-    location: '대구스타디움 보조경기장',
-    price: 110000,
-  };
+  const location = useLocation();
+  const festivalInfo = location.state?.festivalInfo;
+  const nav = useNavigate();
+  const { kakaoPay } = useKakaoStore();
+
+  useEffect(() => {
+    console.log(festivalInfo);
+  }, [festivalInfo]);
 
   // 주문 수량
-  const [cnt, setCnt] = useState(1);
+  const [count, setCount] = useState(1);
+  useEffect(() => {
+    if (count > 4) {
+      alert('최대 4매까지 예약 가능합니다.');
+      setCount(4);
+    }
+  }, [count]);
 
   // 천단위 콤마 넣기
   const addComma = (price) => {
@@ -20,68 +28,81 @@ const Reservation = () => {
     return returnString;
   };
 
+  // 결제
+  // TODO: approve_url 에 /reservation/result
+  const handleKakaoPay = async () => {
+    const redirectUrl = await kakaoPay(festivalInfo.id, count);
+
+    if (redirectUrl) {
+      window.location.href = redirectUrl;
+    } else {
+      alert('결제 요청 실패');
+    }
+  };
+
   return (
-    <div className="flex flex-col">
-      <PosterImage />
-      <section className="flex flex-col mx-5 my-4">
+    <div className='flex flex-col'>
+      <PosterImage posterUrl={festivalInfo.posterUrl} />
+      <section className='flex flex-col mx-5 my-4'>
         <div>
-          <div className="text-xs text-gray-400">
-            {festival.genre.map((genre, index) => (
-              <span key={index}>
-                {genre}
-                {index < festival.genre.length - 1 ? '/' : ''}
-              </span>
-            ))}
-          </div>
-          <div className="text-xl font-bold">{festival.name}</div>
+          <div className='text-xs text-gray-400'>{festivalInfo.name.split(' - ')[0]}</div>
+          <div className='text-xl font-bold'>{festivalInfo.name}</div>
         </div>
-        <div className="mt-4 font-semibold">
-          <div className="flex justify-between">
+        <div className='mt-4 font-semibold'>
+          <div className='flex justify-between'>
             <div>일시</div>
-            <div>
-              {festival.date.getFullYear()}-
-              {festival.date.getMonth() < 9 ? `0${festival.date.getMonth() + 1}` : festival.date.getMonth() + 1}-
-              {festival.date.getDay() < 10 ? `0${festival.date.getDay()}` : festival.date.getDay()}
-            </div>
+            <div>{festivalInfo.date}</div>
           </div>
-          <div className="flex justify-between mt-2">
+          <div className='flex justify-between mt-2'>
             <div>장소</div>
-            <div>장충체육관</div>
+            <div>{festivalInfo.location}</div>
           </div>
-          <div className="flex justify-between mt-2">
+          <div className='flex justify-between mt-2'>
             <div>가격</div>
-            <div>성인 1매 {addComma(festival.price)}원</div>
+            <div>성인 1매 {addComma(festivalInfo.price)}원</div>
           </div>
         </div>
-        <div className="flex justify-between px-3 py-2 mt-10 bg-gray-200 rounded-md">
-          <div className="text-sm">주문 수량</div>
-          <div className="flex px-2 bg-white">
+        <div className='flex justify-between px-3 py-2 mt-10 bg-gray-200 rounded-md'>
+          <div className='text-sm'>주문 수량</div>
+          <div className='flex px-2 bg-white'>
             <button
-              className="px-1"
+              className='px-1'
               onClick={() => {
-                cnt > 1 ? setCnt(cnt - 1) : cnt;
+                count > 1 ? setCount(count - 1) : count;
               }}
             >
               -
             </button>
-            <div className="px-2">{cnt}</div>
+            <div className='px-2'>{count}</div>
             <button
-              className="px-1"
+              className='px-1'
               onClick={() => {
-                setCnt(cnt + 1);
+                setCount(count + 1);
               }}
             >
               +
             </button>
           </div>
         </div>
-        <div className="flex justify-between mt-3 font-bold">
+        <div className='flex justify-between mt-3 font-bold'>
           <div>총 상품 금액 :</div>
-          <div>{addComma(cnt * festival.price)}원</div>
+          <div>{addComma(count * festivalInfo.price)}원</div>
         </div>
-        <div className="flex justify-between w-full mt-3 min-h-14">
-          <button className="flex-1 mr-1 bg-gray-300 rounded-md">취소</button>
-          <button className="flex-1 ml-1 bg-yellow-300 rounded-md">카카오결제</button>
+        <div className='flex justify-between w-full mt-3 min-h-14'>
+          <button
+            className='flex-1 mr-1 bg-gray-300 rounded-md'
+            onClick={() => {
+              nav(-1);
+            }}
+          >
+            취소
+          </button>
+          <button
+            className='flex-1 ml-1 bg-yellow-300 rounded-md'
+            onClick={handleKakaoPay}
+          >
+            카카오결제
+          </button>
         </div>
       </section>
     </div>
