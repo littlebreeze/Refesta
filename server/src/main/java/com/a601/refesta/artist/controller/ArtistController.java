@@ -20,14 +20,17 @@ public class ArtistController {
     private final TokenProvider tokenProvider;
 
     @GetMapping("/{artist_id}")
-    public SuccessResponse<ArtistInfoRes> getArtistInfo(@PathVariable(name = "artist_id") int artistId) {
-        return new SuccessResponse<>(artistService.getArtistInfo(artistId));
+    public SuccessResponse<ArtistInfoRes> getArtistInfo(HttpServletRequest request,
+                                                        @PathVariable(name = "artist_id") int artistId) {
+        int memberId = tokenProvider.getMemberIdByToken(request);
+        return new SuccessResponse<>(artistService.getArtistInfo(memberId, artistId));
     }
 
-    @PatchMapping
-    public SuccessResponse<HttpStatus> editArtistLike(HttpServletRequest request, @RequestBody List<Integer> artistIdList) {
+    @PatchMapping("/{artist_id}")
+    public SuccessResponse<HttpStatus> editArtistLike(HttpServletRequest request,
+                                                      @PathVariable(name = "artist_id") int artistId) {
         int memberId = tokenProvider.getMemberIdByToken(request);
-        artistService.updateArtistLike(memberId, artistIdList);
+        artistService.updateArtistLike(memberId, artistId);
         return new SuccessResponse<>(HttpStatus.OK);
     }
 }

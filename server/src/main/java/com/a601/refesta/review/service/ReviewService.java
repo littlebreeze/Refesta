@@ -32,6 +32,7 @@ public class ReviewService {
                 .contents(contents)
                 .attachmentUrl(s3Util.uploadFile(file))
                 .mediaType(type)
+                .isDeleted(false)
                 .build();
         reviewRepository.save(review);
 

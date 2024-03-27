@@ -27,4 +27,18 @@ public class Reservation extends BaseEntity {
 
     @Column(nullable = false)
     private Integer count;
+
+    @Column(nullable = false)
+    private String tid;
+
+    @Column(nullable = false)
+    private String status;
+
+    public void statusSuccess() {
+        this.status = "SUCCESS";
+    }
+
+    public void statusFail() {
+        this.status = "FAIL";
+    }
 }

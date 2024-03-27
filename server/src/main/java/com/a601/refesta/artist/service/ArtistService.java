@@ -12,7 +12,6 @@ import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,7 +24,6 @@ import static com.a601.refesta.festival.domain.join.QFestivalLineup.festivalLine
 import static com.a601.refesta.genre.domain.QGenre.genre;
 import static com.a601.refesta.member.domain.join.QArtistLike.artistLike;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ArtistService {
@@ -43,12 +41,13 @@ public class ArtistService {
      * @param artistId
      * @return ArtistInfoRes - 아이디, 이름, 사진, 좋아요 여부, 장르, 참가 페스티벌(아이디, 이름, 포스터)
      */
-    public ArtistInfoRes getArtistInfo(int artistId) {
+    public ArtistInfoRes getArtistInfo(int memberId, int artistId) {
         //이름, 사진, 좋아요 여부 조회
         Tuple infoTuple = jpaQueryFactory
                 .select(artist.id, artist.name, artist.pictureUrl, artistLike.isLiked)
                 .from(artist)
-                .leftJoin(artistLike).on(artist.id.eq(artistLike.artist.id))
+                .leftJoin(artistLike).on(artist.id.eq(artistLike.artist.id)
+                        .and(artistLike.member.id.eq(memberId)))
                 .where(artist.id.eq(artistId))
                 .fetchOne();
 
@@ -84,30 +83,28 @@ public class ArtistService {
      * 아티스트 좋아요 업데이트
      *
      * @param memberId     - 구글 식별 ID
-     * @param artistIdList
+     * @param artistId
      */
-    public void updateArtistLike(int memberId, List<Integer> artistIdList) {
-        for (int artistId : artistIdList) {
-            Optional<ArtistLike> optFindLike = artistLikeRepository.findByMember_IdAndArtist_Id(memberId, artistId);
+    public void updateArtistLike(int memberId, int artistId) {
+        Optional<ArtistLike> optFindLike = artistLikeRepository.findByMember_IdAndArtist_Id(memberId, artistId);
 
-            //DB에 없으면 추가
-            if (optFindLike.isEmpty()) {
-                artistLikeRepository.save(ArtistLike.builder()
-                        .member(memberService.getMember(memberId))
-                        .artist(getArtist(artistId))
-                        .isLiked(true)
-                        .build()
-                );
+        //DB에 없으면 추가
+        if (optFindLike.isEmpty()) {
+            artistLikeRepository.save(ArtistLike.builder()
+                    .member(memberService.getMember(memberId))
+                    .artist(getArtist(artistId))
+                    .isLiked(true)
+                    .build()
+            );
 
-                continue;
-            }
-
-            //DB에 있으면 좋아요 상태 업데이트 후 저장
-            ArtistLike findLike = optFindLike.get();
-            findLike.updateStatus();
-
-            artistLikeRepository.save(findLike);
+            return;
         }
+
+        //DB에 있으면 좋아요 상태 업데이트 후 저장
+        ArtistLike findLike = optFindLike.get();
+        findLike.updateStatus();
+
+        artistLikeRepository.save(findLike);
     }
 
     /**
