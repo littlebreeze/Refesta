@@ -17,7 +17,6 @@ import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -32,7 +31,6 @@ import static com.a601.refesta.member.domain.join.QFestivalLike.festivalLike;
 import static com.a601.refesta.review.domain.QReview.review;
 import static com.a601.refesta.song.domain.QSong.song;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
 public class FestivalService {
@@ -51,13 +49,14 @@ public class FestivalService {
      * @param festivalId
      * @return FestivalInfoRes - 이름, 날짜, 장소, 포스터 URL, 가격
      */
-    public FestivalInfoRes getFestivalInfo(int festivalId) {
+    public FestivalInfoRes getFestivalInfo(int memberId, int festivalId) {
         //기본 정보 반환
         return jpaQueryFactory
                 .select(Projections.constructor(FestivalInfoRes.class, festival.id, festival.name, festival.festivalDate,
                         festival.location, festival.posterUrl, festival.price, festival.isEnded, festivalLike.isLiked))
                 .from(festival)
-                .leftJoin(festivalLike).on(festival.id.eq(festivalLike.festival.id))
+                .leftJoin(festivalLike).on(festival.id.eq(festivalLike.festival.id)
+                        .and(festivalLike.member.id.eq(memberId)))
                 .where(festival.id.eq(festivalId))
                 .fetchOne();
     }
@@ -66,31 +65,29 @@ public class FestivalService {
      * 페스티벌(공통) 좋아요 업데이트
      *
      * @param memberId
-     * @param festivalIdList
+     * @param festivalId
      */
-    public void updateFestivalLike(int memberId, List<Integer> festivalIdList) {
-        for (int festivalId : festivalIdList) {
-            Optional<FestivalLike> optFindLike = festivalLikeRepository
-                    .findByMember_IdAndFestival_Id(memberId, festivalId);
+    public void updateFestivalLike(int memberId, int festivalId) {
+        Optional<FestivalLike> optFindLike = festivalLikeRepository
+                .findByMember_IdAndFestival_Id(memberId, festivalId);
 
-            //DB에 없으면 추가
-            if (optFindLike.isEmpty()) {
-                festivalLikeRepository.save(FestivalLike.builder()
-                        .member(memberService.getMember(memberId))
-                        .festival(getFestival(festivalId))
-                        .isLiked(true)
-                        .build()
-                );
+        //DB에 없으면 추가
+        if (optFindLike.isEmpty()) {
+            festivalLikeRepository.save(FestivalLike.builder()
+                    .member(memberService.getMember(memberId))
+                    .festival(getFestival(festivalId))
+                    .isLiked(true)
+                    .build()
+            );
 
-                continue;
-            }
-
-            //DB에 있으면 좋아요 상태 업데이트
-            FestivalLike findLike = optFindLike.get();
-            findLike.updateStatus();
-
-            festivalLikeRepository.save(findLike);
+            return;
         }
+
+        //DB에 있으면 좋아요 상태 업데이트
+        FestivalLike findLike = optFindLike.get();
+        findLike.updateStatus();
+
+        festivalLikeRepository.save(findLike);
     }
 
     /**

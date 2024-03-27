@@ -10,7 +10,11 @@ import com.a601.refesta.member.repository.PreferGenreRepository;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -33,6 +37,7 @@ public class MemberService {
     private final S3Util s3Util;
     private final JPAQueryFactory jpaQueryFactory;
 
+
     public Member getMember(int memberId) {
         return memberRepository.findById(memberId).orElseThrow();
     }
@@ -44,9 +49,8 @@ public class MemberService {
                 .profileUrl(member.getProfileUrl())
                 .build();
     }
-
-    /**
-     * 프로필 세팅
+     /**
+     * 프로필 저장
      */
     public void updateProfile(int memberId, String nickname, MultipartFile file) {
         Member member = getMember(memberId);
@@ -56,19 +60,35 @@ public class MemberService {
         }
         memberRepository.save(member);
     }
+
     /**
      * 선호장르 저장
      */
-    public void getPreferGenre(int memberId, PreferGenreReq genres) {
+    public void createPreferGenre(int memberId, PreferGenreReq genres) {
         Member member = getMember(memberId);
-        for (Integer genreId : genres.getPreferGenres()) {
-            PreferGenre preferGenre =
-                    PreferGenre.builder()
-                            .genre(genreRepository.findById(genreId).orElseThrow())
-                            .member(member)
-                            .build();
-            preferGenreRepository.save(preferGenre);
+        if (genres.getPreferGenres() != null && !genres.getPreferGenres().isEmpty()) {
+            for (Integer genreId : genres.getPreferGenres()) {
+                PreferGenre preferGenre =
+                        PreferGenre.builder()
+                                .genre(genreRepository.findById(genreId).orElseThrow())
+                                .member(member)
+                                .build();
+                preferGenreRepository.save(preferGenre);
+            }
         }
+
+        //추천 데이터 업데이트 요청
+        RestTemplate rt = new RestTemplate();
+        MultiValueMap<String, Integer> parameters = new LinkedMultiValueMap<>();
+        parameters.add("userId", memberId);
+
+        ResponseEntity<String> response = rt.postForEntity(
+                "http://localhost:5000/recommend",
+                parameters,
+                String.class
+        );
+        // System.out.println(response.getBody());
+
     }
 
     /**
@@ -84,8 +104,8 @@ public class MemberService {
                 .from(festival)
                 .innerJoin(festivalLike).on(festivalLike.festival.id.eq(festival.id))
                 .innerJoin(member).on(festivalLike.member.id.eq(member.id))
-                .where(member.id.eq(memberId))
-                .orderBy(festivalLike.createdDate.desc())
+                .where(member.id.eq(memberId), festivalLike.isLiked.eq(true))
+                .orderBy(festivalLike.lastModifiedDate.desc())
                 .fetch();
     }
 
@@ -102,8 +122,8 @@ public class MemberService {
                 .from(artist)
                 .innerJoin(artistLike).on(artistLike.artist.id.eq(artist.id))
                 .innerJoin(member).on(artistLike.member.id.eq(member.id))
-                .where(member.id.eq(memberId))
-                .orderBy(artistLike.createdDate.desc())
+                .where(member.id.eq(memberId), artistLike.isLiked.eq(true))
+                .orderBy(artistLike.lastModifiedDate.desc())
                 .fetch();
     }
 
@@ -120,7 +140,7 @@ public class MemberService {
                 .from(festival)
                 .innerJoin(reservation).on(reservation.festival.id.eq(festival.id))
                 .innerJoin(member).on(reservation.member.id.eq(memberId))
-                .where(member.id.eq(memberId))
+                .where(member.id.eq(memberId), reservation.status.eq("SUCCESS"))
                 .orderBy(festival.festivalDate.desc())
                 .fetch();
     }
