@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor
@@ -17,5 +18,5 @@ public class ReservationRes {
     private String location;
     private int count;
     private int price;
-    private LocalDate paymentDate;
+    private LocalDateTime paymentDate;
 }
