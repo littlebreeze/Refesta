@@ -59,6 +59,8 @@ public class SearchService {
             String fromWord = fromToWords[0];
             String toWord = fromToWords[1];
 
+            log.info(inputWord + " " + fromWord + " " + toWord);
+
             //검색어 포함 페스티벌 이름 조회
             festivalList = jpaQueryFactory
                     .select(festival.name)
@@ -250,8 +252,8 @@ public class SearchService {
         }
 
         //ex) ㄱ 입력 시 가 ~ 깋, ㄴ 입력 시 나 ~ 닣
-        wordArr[0] = consonant + syllableMap.get(syllableKey);
-        wordArr[1] = consonant + syllableMap.get(syllableKey + 1);
+        wordArr[0] = word.substring(0, word.length() - 1) + syllableMap.get(syllableKey);
+        wordArr[1] = word.substring(0, word.length() - 1) + syllableMap.get(syllableKey + 1);
 
         return wordArr;
     }
