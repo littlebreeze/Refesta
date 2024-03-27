@@ -1,7 +1,5 @@
 package com.a601.refesta.member.service;
 
-import com.a601.refesta.common.exception.CustomException;
-import com.a601.refesta.common.exception.ErrorCode;
 import com.a601.refesta.common.util.S3Util;
 import com.a601.refesta.genre.repository.GenreRepository;
 import com.a601.refesta.member.data.*;
@@ -37,14 +35,8 @@ public class MemberService {
     private final PreferGenreRepository preferGenreRepository;
     private final GenreRepository genreRepository;
     private final S3Util s3Util;
+    private final JPAQueryFactory jpaQueryFactory;
 
-    public Member getMember(String googleId) {
-        Member member = memberRepository.findByGoogleId(googleId);
-        if (member == null) {
-            throw new CustomException(ErrorCode.MEMBER_NOT_FOUND_ERROR);
-        }
-        return member;
-    }
 
     public Member getMember(int memberId) {
         return memberRepository.findById(memberId).orElseThrow();
@@ -66,11 +58,10 @@ public class MemberService {
         }
         memberRepository.save(member);
     }
+
     /**
      * 선호장르 저장
      */
-    public void getPreferGenre(int memberId, PreferGenreReq genres) {
-
     public void createPreferGenre(int memberId, PreferGenreReq genres) {
         Member member = getMember(memberId);
         if (genres.getPreferGenres() != null && !genres.getPreferGenres().isEmpty()) {
@@ -94,7 +85,7 @@ public class MemberService {
                 parameters,
                 String.class
         );
-        System.out.println(response.getBody());
+        System.out.println(response.getBody() + "추천?????");
 
     }
 
@@ -111,8 +102,8 @@ public class MemberService {
                 .from(festival)
                 .innerJoin(festivalLike).on(festivalLike.festival.id.eq(festival.id))
                 .innerJoin(member).on(festivalLike.member.id.eq(member.id))
-                .where(member.id.eq(memberId))
-                .orderBy(festivalLike.createdDate.desc())
+                .where(member.id.eq(memberId), festivalLike.isLiked.eq(true))
+                .orderBy(festivalLike.lastModifiedDate.desc())
                 .fetch();
     }
 
@@ -129,8 +120,8 @@ public class MemberService {
                 .from(artist)
                 .innerJoin(artistLike).on(artistLike.artist.id.eq(artist.id))
                 .innerJoin(member).on(artistLike.member.id.eq(member.id))
-                .where(member.id.eq(memberId))
-                .orderBy(artistLike.createdDate.desc())
+                .where(member.id.eq(memberId), artistLike.isLiked.eq(true))
+                .orderBy(artistLike.lastModifiedDate.desc())
                 .fetch();
     }
 
@@ -147,7 +138,7 @@ public class MemberService {
                 .from(festival)
                 .innerJoin(reservation).on(reservation.festival.id.eq(festival.id))
                 .innerJoin(member).on(reservation.member.id.eq(memberId))
-                .where(member.id.eq(memberId),reservation.status.eq("SUCCESS"))
+                .where(member.id.eq(memberId), reservation.status.eq("SUCCESS"))
                 .orderBy(festival.festivalDate.desc())
                 .fetch();
     }
