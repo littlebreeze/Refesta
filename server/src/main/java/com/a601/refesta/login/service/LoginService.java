@@ -39,7 +39,7 @@ public class LoginService {
     @Value("${spring.security.oauth2.provider.google.client-id}")
     private String CLIENT_ID;
 
-    private final String REDIRECT_URI = "http://localhost:5173/google-login";
+    private final String REDIRECT_URI = "http://j10a601.p.ssafy.io/google-login";
 
     private final String TOKEN_URL = "https://oauth2.googleapis.com/token";
 
