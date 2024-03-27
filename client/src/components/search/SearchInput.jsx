@@ -1,26 +1,32 @@
-import { Link, useSearchParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import { useEffect, useRef, useState } from 'react';
+import useSearchStore from '../../store/searchStore';
 
-import backspace from "../../assets/backspace.png";
-import x_btn from "../../assets/x_btn.png";
-
-import AutoComplete from "./AutoComplete";
+import backspace from '../../assets/backspace.png';
+import x_btn from '../../assets/x_btn.png';
 
 const SearchInput = () => {
-  // 검색어는 쿼리스트링으로도 받는 거 같아서 이렇게 해둠
-  const [searchParams, setSearchParams] = useSearchParams();
+  const { searchKeyword, changeSearchKeyword } = useSearchStore();
 
-  const [keyword, setKeyword] = useState(searchParams.get("searchkeyword"));
-  const [isAutoCompleteOpen, setIsAutoCompleteOpen] = useState(false);
+  const nav = useNavigate();
+  const inputDiv = useRef();
+
+  const onFocusInput = () => {
+    nav('/search');
+  };
 
   const onChangeInput = (e) => {
-    setKeyword(e.target.value);
-    setIsAutoCompleteOpen(e.target.value);
+    changeSearchKeyword(e.target.value);
   };
+
   const onClickXBtn = () => {
-    setKeyword("");
-    setIsAutoCompleteOpen(false);
+    changeSearchKeyword('');
   };
+
+  useEffect(() => {
+    inputDiv.current.focus();
+    return changeSearchKeyword('');
+  }, []);
 
   return (
     <header className='h-[70px] py-4 bg-ourIndigo'>
@@ -35,7 +41,9 @@ const SearchInput = () => {
         <div className='relative w-full h-full px-5'>
           <input
             type='text'
-            value={keyword}
+            value={searchKeyword}
+            ref={inputDiv}
+            onFocus={onFocusInput}
             onChange={onChangeInput}
             placeholder='검색어를 입력하세요'
             className='bg-[#102B6A] w-full h-full rounded-full text-white pl-5 pr-8 focus:outline-none'
@@ -43,12 +51,6 @@ const SearchInput = () => {
           <img className='absolute bottom-3 right-8' src={x_btn} onClick={onClickXBtn} />
         </div>
       </div>
-      <AutoComplete
-        isAutoCompleteOpen={isAutoCompleteOpen}
-        keyword={keyword}
-        setKeyword={setKeyword}
-        setIsAutoCompleteOpen={setIsAutoCompleteOpen}
-      />
     </header>
   );
 };
