@@ -5,15 +5,29 @@ import play_btn from '../../assets/play_btn.png';
 import pause_btn from '../../assets/pause_btn.png';
 import previous_btn from '../../assets/previous_btn.png';
 import next_btn from '../../assets/next_btn.png';
+import useSetListStore from '../../store/setListStore';
 
 const SetListPlayer = () => {
-  const [ready, setReady] = useState(false);
   const [playing, setPlaying] = useState(false);
   const [curr, setCurr] = useState([
     'https://www.youtube.com/watch?v=BedeHi2HkFs',
     'https://www.youtube.com/watch?v=iYu76OnDLhk',
     'https://www.youtube.com/watch?v=xFzSUBzhbE4',
   ]);
+  const {
+    lineupList,
+    addLineupList,
+    selectedLineupList,
+    setSelectedLineupList,
+    songInfoMap,
+    addSongInfoMap,
+    sortedSongInfoMap,
+    sortSongInfoMapByLineupList,
+    selectedSongInfoMap,
+    setSelectedSongInfoMap,
+  } = useSetListStore();
+
+  console.log(selectedSongInfoMap);
 
   // 재생 / 정지 버튼
   const PlayButton = () => {
