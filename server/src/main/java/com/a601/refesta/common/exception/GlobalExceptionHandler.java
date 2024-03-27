@@ -26,6 +26,13 @@ public class GlobalExceptionHandler {
                 HttpStatusCode.valueOf(errorCode.getStatus()));
     }
 
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<FailResponse<Map<String, String>>> handleException(Exception e) {
+        return new ResponseEntity<>(
+                FailResponse.of("SEV001", "서버 동작 중 에러가 발생했습니다."),
+                HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
     // MissingServletRequestParameterException이 발생했을 때 처리하는 메서드
     @ExceptionHandler(MissingServletRequestParameterException.class)
     public ResponseEntity<FailResponse<Map<String, String>>> handle(MissingServletRequestParameterException ex) {
