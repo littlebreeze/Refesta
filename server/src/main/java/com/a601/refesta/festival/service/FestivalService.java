@@ -27,7 +27,6 @@ import static com.a601.refesta.festival.domain.QFestival.festival;
 import static com.a601.refesta.festival.domain.join.QFestivalLineup.festivalLineup;
 import static com.a601.refesta.festival.domain.join.QFestivalSetlist.festivalSetlist;
 import static com.a601.refesta.member.domain.QMember.member;
-import static com.a601.refesta.member.domain.join.QArtistLike.artistLike;
 import static com.a601.refesta.member.domain.join.QFestivalLike.festivalLike;
 import static com.a601.refesta.review.domain.QReview.review;
 import static com.a601.refesta.song.domain.QSong.song;
@@ -57,7 +56,7 @@ public class FestivalService {
                         festival.location, festival.posterUrl, festival.price, festival.isEnded, festivalLike.isLiked))
                 .from(festival)
                 .leftJoin(festivalLike).on(festival.id.eq(festivalLike.festival.id)
-                        .and(artistLike.member.id.eq(memberId)))
+                        .and(festivalLike.member.id.eq(memberId)))
                 .where(festival.id.eq(festivalId))
                 .fetchOne();
     }
