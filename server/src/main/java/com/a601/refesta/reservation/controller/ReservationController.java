@@ -9,6 +9,7 @@ import com.a601.refesta.reservation.service.ReservationService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.Map;
 import java.util.TreeMap;
@@ -30,11 +31,16 @@ public class ReservationController {
     }
 
     @GetMapping("/success/{id}")
-    public SuccessResponse<Map<String, Integer>> getKaKaoPayApprove(@PathVariable("id") Integer id,
-                                                                    @RequestParam("pg_token") String pgToken) {
-        Map<String, Integer> data = new TreeMap<>();
-        data.put("reservation_id", reservationService.getKaKaoPayApprove(id, pgToken));
-        return new SuccessResponse<>(data);
+    public RedirectView getKaKaoPayApprove(@PathVariable("id") Integer id,
+                                           @RequestParam("pg_token") String pgToken) {
+        // 경로 생성
+        String redirectUrl = "http://localhost:5173/reservation/result/" + reservationService.getKaKaoPayApprove(id, pgToken);
+
+        // RedirectView 생성 및 설정
+        RedirectView redirectView = new RedirectView();
+        redirectView.setUrl(redirectUrl);
+        // 리디렉션 수행
+        return redirectView;
     }
 
     @GetMapping("/{reservation_id}")
