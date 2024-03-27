@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import axios from 'axios';
+import instance from '../util/token_interceptor';
 
 const token =
   'eyJhbGciOiJIUzUxMiJ9.eyJhdXRoIjpbIlJPTEVfQURNSU4iXSwiYXVkIjoiaHR0cHM6Ly9qMTBhNjAxLnAuc3NhZnkuaW8vIiwic3ViIjoiMTA3OTQ4MDU4MzM1NzA4NjY1MjYwIiwiaXNzIjoiaHR0cHM6Ly9qMTBhNjAxLnAuc3NhZnkuaW8vIiwiaWF0IjoxNzExMDA0MzM2LCJleHAiOjE3MTI4MDQzMzZ9.vZzSd4v5rA1pGDeWNpkFt5HpMzYzAdFZUJIHKKwIl80KaI6rheI1fXiaQIQV9RGvDDdy-snwVOSmmZ2a0CAoUA';
@@ -11,13 +11,11 @@ const headers = {
 const baseURL = `${import.meta.env.VITE_PUBLIC_API_SERVER}`;
 
 const useArtistStore = create((set) => ({
+  // 아티스트 상세 가져오기
   artist: {},
   addArtist: async (artistId) => {
     try {
-      const res = await axios.get(`${baseURL}/artists/${artistId}`, {
-        headers: headers,
-        withCredentials: true,
-      });
+      const res = await instance.get(`${baseURL}/artists/${artistId}`);
       set(() => ({
         artist: res.data.data,
       }));
@@ -25,6 +23,7 @@ const useArtistStore = create((set) => ({
       console.log(e);
     }
   },
+  // 아티스트 좋아요 버튼
   toggleLike: () =>
     set((state) => ({
       artist: {
@@ -32,15 +31,12 @@ const useArtistStore = create((set) => ({
         liked: !state.artist.liked,
       },
     })),
-  updateLike: async (artistIds) => {
+  // 아티스트 좋아요 버튼
+  updateLike: async (artistId) => {
     try {
-      const res = await axios.patch(`${baseURL}/artists`, artistIds, {
-        headers: headers,
-        withCredentials: true,
-      });
-      console.log(res);
+      const res = await instance.patch(`${baseURL}/artists/${artistId}`);
     } catch (e) {
-      console.log(e);
+      console.log('아티스트 좋아요 실패', e);
     }
   },
 }));

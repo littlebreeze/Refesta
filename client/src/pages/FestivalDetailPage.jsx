@@ -92,7 +92,7 @@ const FestivalDetailPage = () => {
         <div>
           <FestivalInfo festivalInfoData={festivalInfoData} />
           <FestivalInfoDetail festivalInfoDetailData={festivalInfoDetailData} />
-          <ReservationButton />
+          <ReservationButton festivalInfoData={festivalInfoData} />
         </div>
       ) : (
         <div>
