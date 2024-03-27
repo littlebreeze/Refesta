@@ -26,7 +26,7 @@ const SearchInput = () => {
     // 엔터 누르면 검색 결과 페이지로
     if (e.key === 'Enter' && searchKeyword) {
       inputDiv.current.blur();
-      nav('/search/result');
+      nav(`/search/result?word=${searchKeyword}`);
     }
 
     // 자동 완성 검색어 요청
@@ -45,7 +45,6 @@ const SearchInput = () => {
   };
 
   useEffect(() => {
-    inputDiv.current.focus();
     return changeSearchKeyword('');
   }, []);
 
