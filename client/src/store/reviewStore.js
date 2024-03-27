@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import axios from 'axios';
+import instance from '../util/token_interceptor';
 
 const token =
   'eyJhbGciOiJIUzUxMiJ9.eyJhdXRoIjpbIlJPTEVfQURNSU4iXSwiYXVkIjoiaHR0cHM6Ly9qMTBhNjAxLnAuc3NhZnkuaW8vIiwic3ViIjoiMTA3OTQ4MDU4MzM1NzA4NjY1MjYwIiwiaXNzIjoiaHR0cHM6Ly9qMTBhNjAxLnAuc3NhZnkuaW8vIiwiaWF0IjoxNzExMDA0MzM2LCJleHAiOjE3MTI4MDQzMzZ9.vZzSd4v5rA1pGDeWNpkFt5HpMzYzAdFZUJIHKKwIl80KaI6rheI1fXiaQIQV9RGvDDdy-snwVOSmmZ2a0CAoUA';
@@ -46,7 +47,9 @@ const useReviewStore = create((set) => ({
         withCredentials: true,
       };
 
-      const res = await axios.post(`${baseURL}/reviews`, formData, config);
+      const res = await instance.post(`${baseURL}/reviews`, formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
       console.log(res);
       if (onSuccess) onSuccess();
     } catch (e) {
@@ -59,13 +62,22 @@ const useReviewStore = create((set) => ({
   myReviewList: [],
   addMyReviews: async () => {
     try {
-      const res = await axios.get(`${baseURL}/members/reviews`, {
-        headers: headers,
-        withCredentials: true,
-      });
-      console.log(res);
+      const res = await instance.get(`${baseURL}/members/reviews`);
       set((state) => ({
-        myReviewList: [...state.myReviewList, ...res.data.data.reviewList],
+        myReviewList: res.data.data.reviewList,
+      }));
+    } catch (e) {
+      console.log(e);
+    }
+  },
+
+  // 후기 삭제
+  removeReview: async (id) => {
+    try {
+      const res = await instance.delete(`${baseURL}/reviews/${id}`);
+      set((state) => ({
+        ...state,
+        myReviewList: state.myReviewList.filter((review) => review.reviewId !== id),
       }));
     } catch (e) {
       console.log(e);
