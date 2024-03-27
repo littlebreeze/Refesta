@@ -10,35 +10,32 @@ const headers = {
 };
 const baseURL = `${import.meta.env.VITE_PUBLIC_API_SERVER}`;
 
-const useArtistStore = create((set) => ({
-  // 아티스트 상세 가져오기
-  artist: {},
-  addArtist: async (artistId) => {
+const useUserStore = create((set) => ({
+  // 마이페이지 유저 정보
+  userInfo: {},
+  getUserInfo: async () => {
     try {
-      const res = await instance.get(`${baseURL}/artists/${artistId}`);
-      set(() => ({
-        artist: res.data.data,
+      const res = await instance.get(`${baseURL}/members`);
+      set((state) => ({
+        userInfo: res.data.data,
       }));
     } catch (e) {
       console.log(e);
     }
   },
-  // 아티스트 좋아요 버튼
-  toggleLike: () =>
-    set((state) => ({
-      artist: {
-        ...state.artist,
-        liked: !state.artist.liked,
-      },
-    })),
-  // 아티스트 좋아요 버튼
-  updateLike: async (artistId) => {
+
+  // 마이페이지 예약내역
+  bookingList: [],
+  getBookingList: async () => {
     try {
-      const res = await instance.patch(`${baseURL}/artists/${artistId}`);
+      const res = await instance.get(`${baseURL}/members/reservations`);
+      set((state) => ({
+        bookingList: res.data.data.reservationList,
+      }));
     } catch (e) {
-      console.log('아티스트 좋아요 실패', e);
+      console.log(e);
     }
   },
 }));
 
-export default useArtistStore;
+export default useUserStore;

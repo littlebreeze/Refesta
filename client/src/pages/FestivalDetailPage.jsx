@@ -5,12 +5,25 @@ import FestivalInfo from '../components/festivalDetail/FestivalInfo';
 import FestivalInfoDetail from '../components/festivalDetail/FestivalInfoDetail';
 import ReservationButton from '../components/festivalDetail/ReservationButton';
 import FestivalInfoContainer from '../components/festivalDetail/FestivalInfoContainer';
+import useSetListStore from '../store/setListStore';
 
 // 페스티벌 상세 진행중
 const FestivalDetailPage = () => {
   const { id } = useParams();
   const [festivalInfoData, setFestivalInfoData] = useState(null);
   const [festivalInfoDetailData, setFestivalInfoDetailData] = useState(null);
+  const {
+    lineupList,
+    addLineupList,
+    selectedLineupList,
+    setSelectedLineupList,
+    songInfoMap,
+    addSongInfoMap,
+    sortedSongInfoMap,
+    sortSongInfoMapByLineupList,
+    selectedSongInfoMap,
+    setSelectedSongInfoMap,
+  } = useSetListStore();
 
   // 페이지가 처음 렌더링 될 때 페스티벌 정보를 가져옴
   useEffect(() => {
@@ -24,11 +37,8 @@ const FestivalDetailPage = () => {
         console.error('Error fetching festival info:', error);
       }
     };
-
     getFestivalInfoData();
   }, []);
-
-  console.log(festivalInfoData);
 
   // 페스티벌이 진행 예정일 때 실행될 함수
   const getFestivalInfoDetailData = async () => {
@@ -41,10 +51,12 @@ const FestivalDetailPage = () => {
   };
 
   // 페스티벌이 완료되었을 때 실행될 함수
-  const test2 = async () => {
+  const getSetListData = async () => {
     try {
-      const response = await instance.get(`test2`);
-      console.log(response.data);
+      const response = await instance.get(`festivals/${id}/songs`);
+      addLineupList(response.data.data.lineupList);
+      addSongInfoMap(response.data.data.songInfoMap);
+      setSelectedLineupList(response.data.data.lineupList);
     } catch (error) {
       console.error('Error:', error);
     }
@@ -52,12 +64,27 @@ const FestivalDetailPage = () => {
 
   // 페스티벌의 완료 여부에 따라 실행될 함수 분기처리
   useEffect(() => {
+    // 진행 예정 페스티벌일 경우
     if (festivalInfoData && !festivalInfoData.ended) {
       getFestivalInfoDetailData();
-    } else if (festivalInfoData && festivalInfoData.ended) {
-      test2();
+    }
+    // 이미 지난 페스티벌일 경우
+    else if (festivalInfoData && festivalInfoData.ended) {
+      getSetListData();
     }
   }, [festivalInfoData]);
+
+  useEffect(() => {
+    if (lineupList.length > 0) {
+      sortSongInfoMapByLineupList(lineupList, songInfoMap);
+    }
+  }, [lineupList]);
+
+  useEffect(() => {
+    if (lineupList.length > 0) {
+      setSelectedSongInfoMap(sortedSongInfoMap);
+    }
+  }, [sortedSongInfoMap]);
 
   return (
     <div>
@@ -65,7 +92,7 @@ const FestivalDetailPage = () => {
         <div>
           <FestivalInfo festivalInfoData={festivalInfoData} />
           <FestivalInfoDetail festivalInfoDetailData={festivalInfoDetailData} />
-          <ReservationButton />
+          <ReservationButton festivalInfoData={festivalInfoData} />
         </div>
       ) : (
         <div>

@@ -16,15 +16,8 @@ const ArtistDetail = () => {
 
   const handleLikeBtn = () => {
     toggleLike();
+    updateLike(id);
   };
-
-  useEffect(() => {
-    return () => {
-      if (artist.liked) {
-        updateLike([id]);
-      }
-    };
-  }, [artist.liked, id, updateLike]);
 
   return (
     <div className='flex-col'>
