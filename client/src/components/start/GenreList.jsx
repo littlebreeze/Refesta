@@ -41,21 +41,26 @@ const GenreList = ({ setStep, stepParam }) => {
     }
   };
 
-  useEffect(() => {
-    console.log(selectedGenre);
-  }, [selectedGenre]);
+  // useEffect(() => {
+  //   console.log(selectedGenre);
+  // }, [selectedGenre]);
 
-  const onClickStart = async () => {
-    console.log(selectedGenre);
-    const response = await instance.post('members/genres', selectedGenre);
-    console.log(response);
-
-    alert('서비스를 시작합니다');
-
-    nav('/', { replace: true });
+  const postGenre = async () => {
+    const response = await instance.post('members/genres', { preferGenres: selectedGenre });
+    return response.data;
   };
 
-  const onClickSkip = () => {
+  const onClickStart = async () => {
+    const response = await postGenre();
+    if (response.status === 'success') {
+      alert('서비스를 시작합니다');
+
+      nav('/', { replace: true });
+    }
+  };
+
+  const onClickSkip = async () => {
+    const response = await postGenre();
     nav('/', { replace: true });
   };
 
@@ -76,7 +81,7 @@ const GenreList = ({ setStep, stepParam }) => {
       >
         시작하기
       </button>
-      <div className='text-center underline cursor-pointer' onClick={onClickSkip}>
+      <div className='text-center underline cursor-pointer' onClick={onClickStart}>
         건너뛰기
       </div>
     </div>
