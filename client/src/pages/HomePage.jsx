@@ -25,7 +25,7 @@ const Home = () => {
     <div>
       <div>
         <Carousel />
-        <div className='pt-7'>
+        <div className='pt-5'>
           <FestivalHomeList festivalData={festivalData} />
         </div>
         <div className='pt-7'>

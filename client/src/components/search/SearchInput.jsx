@@ -1,5 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useEffect, useRef } from 'react';
+import { getRegExp } from 'korean-regexp';
 
 import useSearchStore from '../../store/searchStore';
 import instance from '../../util/token_interceptor';
@@ -14,7 +15,7 @@ const SearchInput = () => {
   const inputDiv = useRef();
 
   const onFocusInput = () => {
-    nav('/search');
+    if (searchKeyword) nav('/search');
   };
 
   const onChangeInput = (e) => {
@@ -23,7 +24,8 @@ const SearchInput = () => {
 
   const onKeyUpInput = (e) => {
     // 엔터 누르면 검색 결과 페이지로
-    if (e.key === 'Enter') {
+    if (e.key === 'Enter' && searchKeyword) {
+      inputDiv.current.blur();
       nav('/search/result');
     }
 
@@ -34,7 +36,6 @@ const SearchInput = () => {
   const getAutoComplete = async () => {
     const response = await instance.get(`searches?word=${searchKeyword}`);
     if (response.data.status === 'success') {
-      console.log('요청');
       setAutoCompleteList(response.data.data);
     }
   };

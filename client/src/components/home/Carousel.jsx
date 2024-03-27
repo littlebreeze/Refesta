@@ -19,7 +19,7 @@ const CarouselComponent = () => {
       centerSlidePercentage={100}
     >
       {images.map((img, idx) => (
-        <img className='object-cover h-48 over' key={idx} src={img} />
+        <img className='object-cover h-56 over' key={idx} src={img} />
       ))}
     </Carousel>
   );
