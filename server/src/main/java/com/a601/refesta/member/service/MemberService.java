@@ -120,7 +120,7 @@ public class MemberService {
                 .from(festival)
                 .innerJoin(reservation).on(reservation.festival.id.eq(festival.id))
                 .innerJoin(member).on(reservation.member.id.eq(memberId))
-                .where(member.id.eq(memberId))
+                .where(member.id.eq(memberId),reservation.status.eq("SUCCESS"))
                 .orderBy(festival.festivalDate.desc())
                 .fetch();
     }
