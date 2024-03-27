@@ -40,6 +40,7 @@ public class ReservationService {
     @Value("${pay.admin-key}")
     private String adminKey;
 
+    //결제창 띄우기 위해 요청하는 것
     public String getKakaoPayUrl(int memberId, ReservationReq reservationReq) {
 
         Festival festival = festivalRepository.findById(reservationReq.getFestivalId()).orElseThrow();
@@ -59,8 +60,8 @@ public class ReservationService {
         req.put("total_amount", festival.getPrice() * reservationReq.getCount());
         req.put("tax_free_amount", 0);
         req.put("approval_url", "http://localhost:8080/reservations/success" + "/" + memberId);
-        req.put("cancel_url", "http://localhost:8080/reservations/cancel/" + memberId);
-        req.put("fail_url", "http://localhost:8080/reservations/fail/" + memberId);
+        req.put("cancel_url", "http://localhost:8080/reservations/cancel" + memberId);
+        req.put("fail_url", "http://localhost:8080/reservations/fail" + memberId);
 
         HttpEntity<Map<String, Object>> requestEntity = new HttpEntity<>(req, headers);
 
@@ -82,11 +83,13 @@ public class ReservationService {
                 .tid(payRes.getTid())
                 .status("READY")
                 .build();
+        
         reservationRepository.save(reservation);
 
         return payRes.getNext_redirect_pc_url();
     }
-
+    
+    //카카오에 결제 승인 요청
     public int getKaKaoPayApprove(Integer memberId, String pgToken) {
 
         RestTemplate rt = new RestTemplate();
@@ -117,7 +120,8 @@ public class ReservationService {
         if (approveRes.getError_message() != null || approveRes.getTid() == null) {
             throw new CustomException(ErrorCode.KAKAOPAY_FAILED_ERROR);
         }
-
+        
+        //결제상태 변경 : 준비 -> 성공
         Reservation reservation = reservationRepository.findByTid(approveRes.getTid()).orElseThrow();
         reservation.statusSuccess();
         reservationRepository.save(reservation);
@@ -125,7 +129,13 @@ public class ReservationService {
 
     }
 
+    /**
+     * 예매 TID
+     * @param memberId
+     * @return TID
+     */
     public String getTid(int memberId) {
+
         return jpaQueryFactory.select(reservation.tid)
                 .from(reservation)
                 .where(reservation.member.id.eq(memberId), reservation.status.eq("READY"))
@@ -133,22 +143,32 @@ public class ReservationService {
                 .fetchOne();
     }
 
+    /**
+     * 예매상세내역
+     * @param memberId
+     * @param reservationId
+     * @return 예매상세정보- 페스티벌(포스터, 이름, 날짜, 장소), 예약(장수, 총 가격)
+     */
     public ReservationRes getReservation(int memberId, Integer reservationId) {
 
+        //예약자와 현재 회원이 다를 때(내 예매내역이 아닐 경우)
         if (reservationRepository.findById(reservationId).orElseThrow().getMember().getId() != memberId) {
             throw new CustomException(ErrorCode.RESERVATION_MEMBER_NOT_EQUAL);
         }
 
+        //장수 * 가격
         NumberExpression<Integer> totalPrice = reservation.count.multiply(festival.price);
 
-        ReservationRes reservationRes = jpaQueryFactory.select(Projections.constructor(ReservationRes.class,
-                        festival.posterUrl, festival.name, festival.festivalDate,
-                        festival.location, reservation.count, totalPrice))
-                .from(festival)
-                .innerJoin(reservation).on(reservation.festival.id.eq(festival.id))
-                .where(reservation.id.eq(reservationId), reservation.status.eq("SUCCESS"))
-                .fetchOne();
+        ReservationRes reservationRes =
+                jpaQueryFactory.select(Projections.constructor(ReservationRes.class,
+                                festival.posterUrl, festival.name, festival.festivalDate,
+                                festival.location, reservation.count, totalPrice))
+                        .from(festival)
+                        .innerJoin(reservation).on(reservation.festival.id.eq(festival.id))
+                        .where(reservation.id.eq(reservationId), reservation.status.eq("SUCCESS"))
+                        .fetchOne();
 
+        //결제 성공한 예매 내역이 없을 경우
         if (reservationRes == null) {
             throw new CustomException(ErrorCode.RESERVATION_NOT_FOUND_ERROR);
         }
