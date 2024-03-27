@@ -162,7 +162,7 @@ public class ReservationService {
         ReservationRes reservationRes =
                 jpaQueryFactory.select(Projections.constructor(ReservationRes.class,
                                 festival.posterUrl, festival.name, festival.festivalDate,
-                                festival.location, reservation.count, totalPrice))
+                                festival.location, reservation.count, totalPrice, reservation.createdDate))
                         .from(festival)
                         .innerJoin(reservation).on(reservation.festival.id.eq(festival.id))
                         .where(reservation.id.eq(reservationId), reservation.status.eq("SUCCESS"))
