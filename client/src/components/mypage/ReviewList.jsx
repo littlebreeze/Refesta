@@ -3,7 +3,6 @@ import ReviewItem from './ReviewItem';
 import useReviewStore from '../../store/reviewStore';
 
 const ReviewList = () => {
-  // const { reviewList } = useReviewStore();
   const { myReviewList, addMyReviews } = useReviewStore();
 
   useEffect(() => {

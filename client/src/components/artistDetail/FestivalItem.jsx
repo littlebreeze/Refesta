@@ -8,7 +8,7 @@ const FestivalItem = ({ festival }) => {
     <div
       className=''
       onClick={() => {
-        nav(`/festival/done/${id}`);
+        nav(`/festival/${id}`);
       }}
     >
       <div className='h-52'>
