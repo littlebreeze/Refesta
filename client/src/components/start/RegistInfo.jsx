@@ -12,11 +12,9 @@ const stepParam = {
   step3: 'genre',
 };
 
-const accessToken = localStorage.getItem('accessToken');
-const refreshToken = localStorage.getItem('refreshToken');
+//
 
 const RegisterInfo = () => {
-  const nav = useNavigate();
   const [steps, setStep] = useState(stepParam.step1);
 
   return (

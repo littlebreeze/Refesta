@@ -4,8 +4,12 @@ import { useEffect, useRef, useState } from 'react';
 
 import defaultImg from '../../assets/default_img.jpg';
 import editPencil from '../../assets/edit_pencil.png';
+import { useLocation, useNavigate } from 'react-router';
 
 const ProfileInfo = ({ setStep, stepParam }) => {
+  const nav = useNavigate();
+  const { state } = useLocation();
+
   const [nickname, setNickname] = useState('');
   const [imgInfo, setImgInfo] = useState({
     url: '',
@@ -30,6 +34,10 @@ const ProfileInfo = ({ setStep, stepParam }) => {
   };
 
   useEffect(() => {
+    if (!state) {
+      alert('잘못된 접근입니다.');
+      nav('/', { replace: true });
+    }
     getUserProfile();
   }, []);
 
