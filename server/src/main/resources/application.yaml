@@ -17,3 +17,6 @@ spring:
     include:
       - cors
       - secret
+
+server:
+  port: 8081
