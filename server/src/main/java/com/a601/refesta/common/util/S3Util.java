@@ -11,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
@@ -32,7 +33,7 @@ public class S3Util {
             if (type.startsWith("video")) {
                 type = "video/mp4";
             }
-            String fileName = file.getOriginalFilename();
+            String fileName = UUID.randomUUID() + "-" +file.getOriginalFilename();
             String fileUrl = baseUrl + fileName;
             ObjectMetadata metadata = new ObjectMetadata();
             metadata.setContentType(type);
