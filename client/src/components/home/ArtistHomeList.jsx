@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import instance from '../../util/token_interceptor';
 
+import refresh from '../../assets/refresh.png';
 import ArtistHomeItem from './ArtistHomeItem';
 import ListTitle from './ListTitle';
 
@@ -31,8 +32,12 @@ const ArtistHomeList = () => {
     <div className='h-[283px]'>
       <ListTitle
         title={'추천 아티스트'}
-        description={'아티스트가 참여한 페스티벌을 알아보세요!'}
-        btn={<button onClick={onClickRefresh}>새로고침</button>}
+        description={'아티스트로 페스티벌을 찾아보세요!'}
+        btn={
+          <div className='w-1/2 ml-auto'>
+            <img src={refresh} onClick={onClickRefresh} />
+          </div>
+        }
       />
       <div className='flex overflow-x-scroll gap-x-3 scrollbar-hide px-7'>
         {artistData.map((item) => (
