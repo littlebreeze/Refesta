@@ -1,9 +1,14 @@
+import useSearchStore from '../../store/searchStore';
+
 import AutoCompleteItem from './AutoCompleteItem';
+
 const AutoComplete = () => {
-  const festivalKeyword = ['유앤아이 페스티벌', '가나아이다라아이마바아이', '가나아이다라아이마바아이'];
-  const artistKeyword = ['아이유', '아이브'];
+  const { autoCompleteList } = useSearchStore();
+
+  const festivalKeyword = autoCompleteList.festivalWordList;
+  const artistKeyword = autoCompleteList.artistWordList;
   return (
-    <div className='bg-yellow-300 '>
+    <div className=''>
       <div>
         <div className='p-7'>
           <div className='mb-2 text-lg font-semibold'>페스티벌</div>
