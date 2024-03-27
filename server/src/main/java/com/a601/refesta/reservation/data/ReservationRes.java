@@ -17,4 +17,5 @@ public class ReservationRes {
     private String location;
     private int count;
     private int price;
+    private LocalDate paymentDate;
 }
