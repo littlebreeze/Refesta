@@ -77,7 +77,11 @@ const SearchResultContainer = () => {
   useEffect(() => {
     const getSearchResultData = async () => {
       try {
-        const response = await instance.get(`searches/result?word=${word}`);
+        const response = await instance.get(`searches/results`, {
+          params: {
+            word: word,
+          },
+        });
         console.log(response.data.data);
       } catch (error) {
         console.error('Error:', error);
@@ -86,22 +90,20 @@ const SearchResultContainer = () => {
     getSearchResultData();
   }, []);
 
-  console.log(word);
-
   // 요청 테스트
-  useEffect(() => {
-    const getFestivalInfoData = async () => {
-      try {
-        const response = await instance.get(`festivals/13`);
-        if (response.data.status === 'success') {
-          console.log(response.data.data);
-        }
-      } catch (error) {
-        console.error('Error fetching festival info:', error);
-      }
-    };
-    getFestivalInfoData();
-  }, []);
+  // useEffect(() => {
+  //   const getFestivalInfoData = async () => {
+  //     try {
+  //       const response = await instance.get(`festivals/13`);
+  //       if (response.data.status === 'success') {
+  //         console.log(response.data.data);
+  //       }
+  //     } catch (error) {
+  //       console.error('Error fetching festival info:', error);
+  //     }
+  //   };
+  //   getFestivalInfoData();
+  // }, []);
 
   return (
     <div className=''>
