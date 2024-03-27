@@ -12,21 +12,10 @@ const stepParam = {
   step3: 'genre',
 };
 
-const accessToken = localStorage.getItem('accessToken');
-const refreshToken = localStorage.getItem('refreshToken');
+//
 
-const RegisterInfo = ({ step }) => {
-  const nav = useNavigate();
-  const [steps, setStep] = useState(step);
-
-  // 이 페이지로 이동했을 때, 토큰으로 사용자 정보 요청
-
-  useEffect(() => {
-    nav(`/regist/${steps}`, { replace: true });
-  }, [steps]);
-
-  // 저장된 토큰으로 사용자 정보 요청해서 받아오기
-  // setStep 함수 넘겨주기
+const RegisterInfo = () => {
+  const [steps, setStep] = useState(stepParam.step1);
 
   return (
     <div>
