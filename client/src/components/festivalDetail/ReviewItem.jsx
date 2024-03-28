@@ -26,6 +26,7 @@ const ReviewItem = ({ review }) => {
             url={attachmentUrl}
             muted={true}
             playing={isPlaying}
+            playsinline={true}
             loop={true}
             controls={true}
             width='100%'

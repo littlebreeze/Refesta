@@ -3,6 +3,7 @@ import instance from '../util/token_interceptor';
 
 const baseURL = `${import.meta.env.VITE_PUBLIC_API_SERVER}`;
 
+// approval_url => reservation/result
 const useKakaoStore = create((set) => ({
   kakaoPay: async (festivalId, count) => {
     try {
@@ -23,6 +24,14 @@ const useKakaoStore = create((set) => ({
       set((state) => ({
         billingResult: res.data.data,
       }));
+    } catch (e) {
+      console.log(e);
+    }
+  },
+  approvePayment: async (pgToken) => {
+    try {
+      const res = await instance.post(`${baseURL}/reservations/success`, pgToken);
+      return res.data;
     } catch (e) {
       console.log(e);
     }

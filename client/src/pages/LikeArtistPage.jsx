@@ -8,7 +8,7 @@ const LikeArtist = () => {
   useEffect(() => {
     getLikeArtistList();
     console.log(likeArtistList);
-  }, []); // likeArtistList 넣으면 무한루프.. 왜 ?
+  }, []); //
 
   return (
     <div className='bg-gray-200 h-lvh'>

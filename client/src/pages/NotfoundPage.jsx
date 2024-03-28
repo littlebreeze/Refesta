@@ -12,7 +12,7 @@ const Notfound = () => {
         <h2>존재하지 않는 주소를 입력하셨거나</h2>
         <h2>요청하신 주소가 변경,삭제되어 찾을 수 없습니다.</h2>
       </div>
-      <div className='grid items-center w-48 h-12 border-2 rounded-full cursor-pointer text-ourIndigo border-ourIndigo'>
+      <div className='grid items-center w-48 h-12 text-center text-white rounded-full cursor-pointer bg-ourIndigo hover:bg-ourPink hover:text-white'>
         <Link to='/'>Refesta 홈으로</Link>
       </div>
     </div>
