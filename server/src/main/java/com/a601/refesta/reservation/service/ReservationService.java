@@ -16,6 +16,7 @@ import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.NumberExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
@@ -30,6 +31,7 @@ import static com.a601.refesta.reservation.domain.QReservation.reservation;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class ReservationService {
 
     private final FestivalRepository festivalRepository;
@@ -105,6 +107,7 @@ public class ReservationService {
         Map<String, Object> req = new HashMap<>();
         req.put("cid", "TC0ONETIME");
         req.put("tid", getTid(memberId));
+        log.error("tid"+getTid(memberId));
         req.put("partner_order_id", "refesta" + memberId);
         req.put("partner_user_id", "ReFesta");
         req.put("pg_token", pgToken);
@@ -116,18 +119,19 @@ public class ReservationService {
                 requestEntity,
                 String.class
         );
-
+        log.error("kakao 응답받음");
         Gson gson = new Gson();
 
         ApproveRes approveRes = gson.fromJson(response.getBody(), ApproveRes.class);
         if (approveRes.getError_message() != null || approveRes.getTid() == null) {
             throw new CustomException(ErrorCode.KAKAOPAY_FAILED_ERROR);
         }
-        
+        log.error("if문 안걸림");
         //결제상태 변경 : 준비 -> 성공
         Reservation reservation = reservationRepository.findByTid(approveRes.getTid()).orElseThrow();
         reservation.statusSuccess();
         reservationRepository.save(reservation);
+        log.error("id는"+reservation.getId());
         return reservation.getId();
 
     }
