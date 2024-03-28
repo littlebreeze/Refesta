@@ -1,7 +1,6 @@
 import pymysql
 import random
-import makedata
-from flask import Flask, request, render_template
+from flask import Flask, request
 
 app = Flask(__name__)
 
