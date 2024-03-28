@@ -53,6 +53,30 @@ const useSetListStore = create((set) => ({
   setAllSelected: (data) => {
     set({ isAllSelected: data });
   },
+
+  // 현재 재생 여부
+  playing: false,
+  setPlaying: (data) => {
+    set({ playing: data });
+  },
+
+  // 현재 재생중인 노래
+  currSong: '',
+  setCurrSong: (data) => {
+    set({ currSong: data });
+  },
+
+  // 현재 재생중인 노래의 가수명
+  currSinger: '',
+  setCurrSinger: (data) => {
+    set({ currSinger: data });
+  },
+
+  // 현재 재생중인 플레이리스트
+  currSongList: [],
+  setCurrSongList: (data) => {
+    set({ currSongList: data });
+  },
 }));
 
 export default useSetListStore;

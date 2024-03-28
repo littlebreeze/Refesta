@@ -14,6 +14,14 @@ const PlayList = () => {
     sortSongInfoMapByLineupList,
     selectedSongInfoMap,
     setSelectedSongInfoMap,
+    playing,
+    setPlaying,
+    currSong,
+    setCurrSong,
+    currSongList,
+    setCurrSongList,
+    currSinger,
+    setCurrSinger,
   } = useSetListStore();
 
   // selectedLineupList가 변경될 때마다 해당하는 노래 정보를 가져와 selectedSongInfoMap에 저장
@@ -24,13 +32,15 @@ const PlayList = () => {
     setSelectedSongInfoMap(updatedSelectedSongInfoMap);
   }, [selectedLineupList]);
 
+  console.log('@@@@@@@@@', selectedSongInfoMap);
+
   return (
     <div className='h-full m-4 bg-white'>
       {selectedSongInfoMap.length > 0 && (
-        <div className='overflow-x-auto whitespace-nowrap '>
+        <div className='overflow-x-auto whitespace-nowrap'>
           {selectedSongInfoMap.map((songs, index) => (
             <div key={index} className='my-2'>
-              <ul className='ml-4 '>
+              <ul className=''>
                 {songs.map((song, idx) => (
                   <PlayListItem key={idx} song={song} artistName={selectedLineupList[index]?.name} />
                 ))}

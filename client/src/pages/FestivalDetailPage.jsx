@@ -37,6 +37,7 @@ const FestivalDetailPage = () => {
         console.error('Error fetching festival info:', error);
       }
     };
+
     getFestivalInfoData();
   }, []);
 
@@ -85,6 +86,9 @@ const FestivalDetailPage = () => {
       setSelectedSongInfoMap(sortedSongInfoMap);
     }
   }, [sortedSongInfoMap]);
+
+  console.log('핸들 버튼 누를 때 리스트를 업데이트', selectedSongInfoMap);
+  console.log('노래 재생 목록 리스트', selectedSongInfoMap);
 
   return (
     <div>
