@@ -26,11 +26,10 @@ const ProfileInfo = ({ setStep, stepParam }) => {
       setNickname(nickname ? nickname : '');
       //setImgURL(url ? url : defaultImg);
       setImgInfo({ ...imgInfo, url: url });
+    } else {
+      alert('로그인 정보가 유효하지 않습니다!');
+      window.location.replace('/login');
     }
-    // else {
-    //   alert('로그인 정보가 유효하지 않습니다!');
-    //   window.location.replace('/login');
-    // }
   };
 
   useEffect(() => {
@@ -112,7 +111,7 @@ const ProfileInfo = ({ setStep, stepParam }) => {
         <form>
           <input type='file' accept='image/*' ref={inputFile} className='hidden' onChange={onChangeImgFile} />
           <img
-            className='object-cover w-full border rounded-full border-zinc-300'
+            className='object-cover w-full border rounded-full aspect-square border-zinc-300'
             src={imgInfo.url ? imgInfo.url : defaultImg}
           />
           <div
