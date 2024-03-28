@@ -5,7 +5,7 @@ const ListTitle = ({ title, description, btn }) => {
         <div className='text-lg'>{title}</div>
         <div className='text-sm text-zinc-400'>{description}</div>
       </div>
-      <div className='w-1/4 pr-3 text-sm text-right '>{btn}</div>
+      <div className='w-1/4 pr-3 text-sm text-right'>{btn}</div>
     </div>
   );
 };
