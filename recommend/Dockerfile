@@ -28,3 +28,5 @@ USER appuser
 COPY . .
 
 EXPOSE 8082
+
+CMD python -m recommend.app
