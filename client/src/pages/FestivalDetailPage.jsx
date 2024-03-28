@@ -25,6 +25,8 @@ const FestivalDetailPage = () => {
     setSelectedSongInfoMap,
     currSong,
     setCurrSong,
+    currSongList,
+    setCurrSongList,
   } = useSetListStore();
 
   // 페이지가 처음 렌더링 될 때 페스티벌 정보를 가져옴
@@ -83,6 +85,8 @@ const FestivalDetailPage = () => {
     if (lineupList.length > 0) {
       setSelectedSongInfoMap(sortedSongInfoMap);
       setCurrSong(sortedSongInfoMap[0][0]);
+      const allSongs = lineupList.flatMap((artist) => songInfoMap[artist.id].flatMap((song) => song));
+      setCurrSongList(allSongs);
     }
   }, [sortedSongInfoMap]);
 
