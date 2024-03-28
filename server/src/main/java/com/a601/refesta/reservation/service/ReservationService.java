@@ -131,7 +131,7 @@ public class ReservationService {
         Reservation reservation = reservationRepository.findByTid(approveRes.getTid()).orElseThrow();
         reservation.statusSuccess();
         reservationRepository.save(reservation);
-        log.error("id"+reservation.getId());
+        log.error("id는"+reservation.getId());
         return reservation.getId();
 
     }
