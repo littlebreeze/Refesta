@@ -86,7 +86,7 @@ public class ReservationService {
         
         reservationRepository.save(reservation);
 
-        return payRes.getNext_redirect_pc_url();
+        return payRes.getNext_redirect_mobile_url();
     }
     
     //카카오에 결제 승인 요청
