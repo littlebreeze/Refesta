@@ -34,7 +34,7 @@ const ArtistHomeList = () => {
         title={'추천 아티스트'}
         description={'아티스트로 페스티벌을 찾아보세요!'}
         btn={
-          <div className='w-[30px] ml-auto'>
+          <div className='w-[30px] ml-auto mb-2'>
             <img src={refresh} onClick={onClickRefresh} />
           </div>
         }

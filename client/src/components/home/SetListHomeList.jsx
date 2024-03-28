@@ -18,9 +18,11 @@ const SetListHomeList = ({ setListData }) => {
         title={'추천 셋리스트'}
         description={'셋리스트로 페스티벌을 찾아보세요!'}
         btn={
-          <Link className='cursor-pointer' to='/festival/list/ended'>
-            {`전체보기 >`}
-          </Link>
+          <div className='pb-5 cursor-pointer'>
+            <Link className='cursor-pointer' to='/festival/list/ended'>
+              {`전체보기 >`}
+            </Link>
+          </div>
         }
       />
       <div className='flex overflow-x-scroll gap-x-4 scrollbar-hide whitespace-nowrap px-7'>

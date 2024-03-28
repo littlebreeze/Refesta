@@ -21,6 +21,7 @@ import MainLayout from './layout/MainLayout';
 import SearchLayout from './layout/SearchLayout';
 import SubLayout from './layout/SubLayout';
 import TestPage from './pages/TestPage';
+import AboutPage from './pages/AboutPage';
 
 function App() {
   return (
@@ -32,6 +33,7 @@ function App() {
             <Route path='/google-login' element={<Google_Login />} />
             <Route path='/regist' element={<RegisterInfo />} />
             <Route path='/test' element={<TestPage />} />
+            <Route path='/about' element={<AboutPage />} />
           </Route>
           <Route element={<MainLayout />}>
             <Route path='/' element={<Home />} />
@@ -46,7 +48,7 @@ function App() {
             <Route path='/like/festival' element={<LikeFestival />} />
             <Route path='my-review' element={<MyReview />} />
           </Route>
-          z
+
           <Route element={<SearchLayout />}>
             <Route path='/search' element={<Search />} />
             <Route path='/search/result' element={<SearchResult />} />
