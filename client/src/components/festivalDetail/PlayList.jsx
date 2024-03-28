@@ -32,8 +32,6 @@ const PlayList = () => {
     setSelectedSongInfoMap(updatedSelectedSongInfoMap);
   }, [selectedLineupList]);
 
-  console.log('@@@@@@@@@', selectedSongInfoMap);
-
   return (
     <div className='h-full m-4 bg-white'>
       {selectedSongInfoMap.length > 0 && (
@@ -42,7 +40,7 @@ const PlayList = () => {
             <div key={index} className='my-2'>
               <ul className=''>
                 {songs.map((song, idx) => (
-                  <PlayListItem key={idx} song={song} artistName={selectedLineupList[index]?.name} />
+                  <PlayListItem key={idx} song={song} />
                 ))}
               </ul>
             </div>
