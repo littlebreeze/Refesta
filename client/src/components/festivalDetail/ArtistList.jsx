@@ -18,19 +18,26 @@ const ArtistList = () => {
     setSelectedSongInfoMap,
     isAllSelected,
     setAllSelected,
+    currSong,
+    setCurrSong,
+    currSongList,
+    setCurrSongList,
   } = useSetListStore();
 
   // 라인업 전체 버튼을 관리하는 함수
   const toggleAllSelect = () => {
     // 라인업이 전체 선택되어 있을 때 전체 버튼을 누를 경우
     if (isAllSelected) {
-      //  선택된 라인업 전체를 초기화
+      // 선택된 라인업 전체를 초기화
       setSelectedLineupList([]);
+      setCurrSongList([]);
     }
     // 라인업이 일부만 선택되어 있을 때 전체 버튼을 누를 경우
     else {
       // 선택된 라인업을 전체 라인업으로 변경
       setSelectedLineupList([...lineupList]);
+      const allSongs = lineupList.flatMap((artist) => songInfoMap[artist.id].map((song) => song.audioUrl));
+      setCurrSongList(allSongs);
     }
     // 버튼 토글
     setAllSelected(!isAllSelected);
