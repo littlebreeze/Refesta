@@ -42,10 +42,10 @@ public class ReservationController {
     @GetMapping("/success/{id}")
     public RedirectView getKaKaoPayApprove(@PathVariable("id") Integer id,
                                            @RequestParam("pg_token") String pgToken) {
-        log.error("pgToken"+pgToken);
+        System.out.println("pgToken"+pgToken);
         // 경로 생성
         String redirectUrl = REFESTA_URL+"/reservation/result/" + reservationService.getKaKaoPayApprove(id, pgToken);
-        log.error("redirectUrl"+redirectUrl);
+        System.out.println("redirectUrl"+redirectUrl);
         // RedirectView 생성 및 설정
         RedirectView redirectView = new RedirectView();
         redirectView.setUrl(redirectUrl);
