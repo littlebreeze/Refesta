@@ -141,7 +141,9 @@ public class SearchService {
                     .innerJoin(memberFestival).on(memberFestival.member.id.eq(memberId)
                             .and(festival.name.toLowerCase().between(fromWord.toLowerCase(), toWord.toLowerCase()))
                             .and(memberFestival.festival.id.eq(festival.id)))
-                    .orderBy(festival.isEnded.isTrue().asc(), memberFestival.id.asc())
+                    .orderBy(new CaseBuilder()
+                            .when(festival.isEnded.isFalse()).then(1)
+                            .otherwise(2).asc(), memberFestival.id.asc())
                     .fetch();
 
             //검색어 포함 아티스트 조회(이름), 추천 순 정렬
@@ -195,7 +197,7 @@ public class SearchService {
                                     .and(memberFestival.member.id.eq(memberId)))
                             .innerJoin(festivalGenre).on(festivalGenre.genre.id.eq(genreIdx)
                                     .and(festivalGenre.festival.id.eq(festival.id)))
-                            .orderBy(festival.isEnded.asc(), memberFestival.id.asc())
+                            .orderBy(festival.isEnded.isTrue().asc(), memberFestival.id.asc())
                             .fetch();
 
                     festivalResultList.addAll(festivalGenreResult);
