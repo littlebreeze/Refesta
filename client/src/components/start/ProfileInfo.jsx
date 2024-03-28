@@ -4,11 +4,11 @@ import { useEffect, useRef, useState } from 'react';
 
 import defaultImg from '../../assets/default_img.jpg';
 import editPencil from '../../assets/edit_pencil.png';
-import { useLocation, useNavigate } from 'react-router';
+
+import { useProfileQuery } from '../../queries/profileQueries';
 
 const ProfileInfo = ({ setStep, stepParam }) => {
-  const nav = useNavigate();
-  const { state } = useLocation();
+  const { data, isLoading, isError, error } = useProfileQuery();
 
   const [nickname, setNickname] = useState('');
   const [imgInfo, setImgInfo] = useState({
@@ -16,30 +16,26 @@ const ProfileInfo = ({ setStep, stepParam }) => {
     file: null,
   });
 
-  // 페이지에 들어왔을 때 토큰으로 사용자 정보 가져오기
-  const getUserProfile = async () => {
-    const response = await instance.get('/members');
-
-    if (response.data.status == 'success') {
-      const nickname = response.data.data.nickname;
-      const url = response.data.data.profileUrl;
+  // 사용자 정보 설정
+  const getUserProfile = () => {
+    if (!isError) {
+      const nickname = data.data.data.nickname;
+      const url = data.data.data.profileUrl;
       setNickname(nickname ? nickname : '');
-      //setImgURL(url ? url : defaultImg);
       setImgInfo({ ...imgInfo, url: url });
+    } else {
+      alert('로그인 정보가 유효하지 않습니다!');
+      window.location.replace('/login');
     }
-    // else {
-    //   alert('로그인 정보가 유효하지 않습니다!');
-    //   window.location.replace('/login');
-    // }
   };
 
   useEffect(() => {
-    if (!state) {
-      alert('잘못된 접근입니다.');
-      nav('/', { replace: true });
-    }
-    getUserProfile();
-  }, []);
+    // if (!state) {
+    //   alert('잘못된 접근입니다.');
+    //   nav('/', { replace: true });
+    // }
+    if (!isLoading) getUserProfile();
+  }, [isLoading]);
 
   // 닉네임 변경
   const onChangeNickName = (e) => {
@@ -97,9 +93,7 @@ const ProfileInfo = ({ setStep, stepParam }) => {
       },
     });
 
-    if (response.data.status == 'success') {
-      alert('프로필 설정 완료');
-    } else {
+    if (response.data.status !== 'success') {
       alert('로그인 정보가 유효하지 않습니다!');
     }
     setStep(stepParam.step2);
