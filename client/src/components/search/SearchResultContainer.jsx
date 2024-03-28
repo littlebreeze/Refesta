@@ -4,43 +4,11 @@ import SearchResultWrapper from './SearchResultWrapper';
 import FestivalSearchWrapper from './FestivalSearchWrapper';
 import ArtistSearchWrapper from './ArtistSearchWrapper';
 import instance from '../../util/token_interceptor';
+import useSearchResultStore from '../../store/searchResultStore';
 
 // 검색 결과 인풋에 유지 필요
 
 // 검색 더미데이터
-const festivalListData = [
-  {
-    id: 1,
-    name: '페스티벌1',
-    posterUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS0ZWVBmlIJDtyR5A94VRS8NZ23pHJ6y4g8SDiVtlEqvA&s',
-  },
-  { id: 2, name: '페스티벌2', posterUrl: 'https://www.sjpost.co.kr/news/photo/202209/63605_63690_858.jpg' },
-  {
-    id: 3,
-    name: '페스티벌3',
-    posterUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSuUCZVeXZKttzr92dQb1IifchonFC6pp_suN876hGcqA&s',
-  },
-  {
-    id: 4,
-    name: '페스티벌4',
-    posterUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSX2eAxdtsFgWTvdj1-7Jpbc_3mkRM78Ibbl7oPyny0GA&s',
-  },
-  {
-    id: 5,
-    name: '페스티벌5',
-    posterUrl: 'https://i.pinimg.com/originals/0d/38/a5/0d38a59507825d5f09e686016e685bee.jpg',
-  },
-  {
-    id: 6,
-    name: '페스티벌6',
-    posterUrl: 'https://festival.seoul.go.kr/files/2021/09/img-poster-2021.jpg',
-  },
-  {
-    id: 7,
-    name: '페스티벌7',
-    posterUrl: 'https://cdn.bokjitimes.com/news/photo/202211/33800_22771_5029.jpg',
-  },
-];
 
 const artistListData = [
   {
@@ -73,7 +41,8 @@ const SearchResultContainer = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const word = searchParams.get('word');
 
-  // 왜안되지
+  const { festivalList, artistList, setFestivalList, setArtistList } = useSearchResultStore();
+
   useEffect(() => {
     const getSearchResultData = async () => {
       try {
@@ -82,7 +51,9 @@ const SearchResultContainer = () => {
             word: word,
           },
         });
-        console.log(response.data.data);
+        console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!', response.data.data);
+        setFestivalList(response.data.data.festivalList);
+        setArtistList(response.data.data.artistList);
       } catch (error) {
         console.error('Error:', error);
       }
@@ -90,20 +61,9 @@ const SearchResultContainer = () => {
     getSearchResultData();
   }, []);
 
-  // 요청 테스트
-  // useEffect(() => {
-  //   const getFestivalInfoData = async () => {
-  //     try {
-  //       const response = await instance.get(`festivals/13`);
-  //       if (response.data.status === 'success') {
-  //         console.log(response.data.data);
-  //       }
-  //     } catch (error) {
-  //       console.error('Error fetching festival info:', error);
-  //     }
-  //   };
-  //   getFestivalInfoData();
-  // }, []);
+  console.log(word);
+  console.log(festivalList);
+  console.log(artistList);
 
   return (
     <div className=''>
@@ -149,7 +109,6 @@ const SearchResultContainer = () => {
         <div className='flex-auto'>
           <div className={openSearchTab === 1 ? 'block' : 'hidden'}>
             <SearchResultWrapper
-              festivalListData={festivalListData}
               artistListData={artistListData}
               isTotal={isTotal}
               openSearchTab={openSearchTab}
@@ -157,7 +116,7 @@ const SearchResultContainer = () => {
             />
           </div>
           <div className={openSearchTab === 2 ? 'block' : 'hidden'}>
-            <FestivalSearchWrapper festivalListData={festivalListData} isTotal={isTotal} />
+            <FestivalSearchWrapper isTotal={isTotal} />
           </div>
           <div className={openSearchTab === 3 ? 'block' : 'hidden'}>
             <ArtistSearchWrapper artistListData={artistListData} isTotal={isTotal} />
