@@ -57,16 +57,6 @@ const ArtistList = () => {
           <div className='w-12 text-xs truncate'>전체</div>
         </li>
         {/* 개별 가수 */}
-        {/* {lineupList.map((artist) => (
-          <li className='flex-col p-2' key={artist.id}>
-            <div className='relative mb-2'>
-              {allSelected && <img className='absolute w-12 rounded-full ' src={select} alt='' />}
-              <img className='w-12 rounded-full' src={artist.pictureUrl} alt='' />
-            </div>
-            <div className='w-12 text-xs truncate'>{artist.name}</div>
-          </li>
-        ))} */}
-        {/* 개별 가수 */}
         {lineupList.map((artist) => (
           <ArtistItem key={artist.id} artist={artist} isSelected={selectedLineupList.includes(artist)} />
         ))}

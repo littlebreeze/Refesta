@@ -6,34 +6,6 @@ import ArtistSearchWrapper from './ArtistSearchWrapper';
 import instance from '../../util/token_interceptor';
 import useSearchResultStore from '../../store/searchResultStore';
 
-// 검색 결과 인풋에 유지 필요
-
-// 검색 더미데이터
-
-const artistListData = [
-  {
-    id: 1,
-    name: '아티스트1',
-    pictureUrl: 'https://file2.nocutnews.co.kr/newsroom/image/2018/06/13/20180613171028464851_0_600_400.jpg',
-  },
-  {
-    id: 2,
-    name: '아티스트2',
-    pictureUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRX6ymz6MoLTHiD1N0k4B_gcXQvEm-_fy9RsRPffvhw1g&s',
-  },
-  {
-    id: 3,
-    name: '아티스트3',
-    pictureUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSduvH1GvtZpN_PXqn3djWZ9c7rgwRmBRz2cJ4BfhwyCw&s',
-  },
-  {
-    id: 4,
-    name: '아티스트4',
-    pictureUrl:
-      'https://i.namu.wiki/i/Ik_uDo4DVhIDvKhcc1IwGXris7ZJD7LUKfAlZoFq543xPAx01Mt-AmcG9AUiwLfva4Hkblb7Hq2tFvawJL95vQ.webp',
-  },
-];
-
 // 검색 결과 탭(통합검색/페스티벌/아티스트)
 const SearchResultContainer = () => {
   const [openSearchTab, setOpenSearchTab] = useState(1);
@@ -51,7 +23,6 @@ const SearchResultContainer = () => {
             word: word,
           },
         });
-        console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!', response.data.data);
         setFestivalList(response.data.data.festivalList);
         setArtistList(response.data.data.artistList);
       } catch (error) {
@@ -60,10 +31,6 @@ const SearchResultContainer = () => {
     };
     getSearchResultData();
   }, []);
-
-  console.log(word);
-  console.log(festivalList);
-  console.log(artistList);
 
   return (
     <div className=''>
@@ -108,18 +75,13 @@ const SearchResultContainer = () => {
       <div className='h-full min-w-0 mx-4 mt-4 break-words'>
         <div className='flex-auto'>
           <div className={openSearchTab === 1 ? 'block' : 'hidden'}>
-            <SearchResultWrapper
-              artistListData={artistListData}
-              isTotal={isTotal}
-              openSearchTab={openSearchTab}
-              setOpenSearchTab={setOpenSearchTab}
-            />
+            <SearchResultWrapper isTotal={isTotal} openSearchTab={openSearchTab} setOpenSearchTab={setOpenSearchTab} />
           </div>
           <div className={openSearchTab === 2 ? 'block' : 'hidden'}>
             <FestivalSearchWrapper isTotal={isTotal} />
           </div>
           <div className={openSearchTab === 3 ? 'block' : 'hidden'}>
-            <ArtistSearchWrapper artistListData={artistListData} isTotal={isTotal} />
+            <ArtistSearchWrapper isTotal={isTotal} />
           </div>
         </div>
       </div>

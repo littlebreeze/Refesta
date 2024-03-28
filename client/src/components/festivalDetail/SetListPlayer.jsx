@@ -34,8 +34,6 @@ const SetListPlayer = () => {
     currSinger,
   } = useSetListStore();
 
-  console.log('!!!!!!!!', currSong);
-
   // 재생&일시정지
   const onClickPlayButton = () => {
     setPlaying(!playing);
@@ -59,8 +57,8 @@ const SetListPlayer = () => {
         </div>
         <div className='ml-3'>
           <div className='text-left'>
-            <div className='truncate max-w-28'>{currSong.title || '노래 선택'}</div>
-            <div className='text-xs text-gray-400 truncate max-w-28'>가수명</div>
+            <div className='truncate max-w-28'>{currSong.title}</div>
+            <div className='text-xs text-gray-400 truncate max-w-28'>{currSong.singer}</div>
           </div>
         </div>
       </div>

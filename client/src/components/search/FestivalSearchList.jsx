@@ -25,11 +25,15 @@ const FestivalSearchList = ({ isTotal, setOpenSearchTab }) => {
           {isTotal && festivalList.length > 6 && <button onClick={onClickTotalBtn}>&nbsp; &gt;</button>}
         </span>
       </div>
-      <div className='flex flex-wrap justify-between'>
-        {renderFestivalListData.map((item) => (
-          <FestivalSearchItem key={item.id} festival={item} />
-        ))}
-      </div>
+      {renderFestivalListData.length === 0 ? (
+        <div className='p-4 mt-4 text-lg font-bold text-center '>페스티벌 정보가 없습니다.</div>
+      ) : (
+        <div className='flex flex-wrap justify-between'>
+          {renderFestivalListData.map((festival) => (
+            <FestivalSearchItem key={festival.id} festival={festival} />
+          ))}
+        </div>
+      )}
     </div>
   );
 };
