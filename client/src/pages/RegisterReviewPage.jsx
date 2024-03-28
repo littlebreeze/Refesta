@@ -149,6 +149,7 @@ const RegisterReview = ({ isOpen, onClose, selectedFile: propSelectedFile }) => 
                       url={fileUrl}
                       muted={true}
                       playing={isPlaying}
+                      playsinline={true}
                       loop={true}
                       controls={true}
                       width='100%'
