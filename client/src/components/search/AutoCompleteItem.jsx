@@ -15,7 +15,7 @@ const AutoCompleteItem = ({ name }) => {
     console.log('push push');
     changeSearchKeyword(selectedKeyword.current.getAttribute('data-keyword'));
     // 검색 결과 요청
-    nav(`/search/result?word=${searchKeyword}`);
+    nav(`/search/result?word=${selectedKeyword.current.getAttribute('data-keyword')}`);
   };
 
   return (
