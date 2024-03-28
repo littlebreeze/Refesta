@@ -40,6 +40,9 @@ public class ReservationService {
     @Value("${pay.admin-key}")
     private String adminKey;
 
+    @Value("${spring.refesta.back.url}")
+    private String REFESTA_URL;
+
     //결제창 띄우기 위해 요청하는 것
     public String getKakaoPayUrl(int memberId, ReservationReq reservationReq) {
 
@@ -59,9 +62,9 @@ public class ReservationService {
         req.put("quantity", reservationReq.getCount());
         req.put("total_amount", festival.getPrice() * reservationReq.getCount());
         req.put("tax_free_amount", 0);
-        req.put("approval_url", "http://localhost:8080/reservations/success" + "/" + memberId);
-        req.put("cancel_url", "http://localhost:8080/reservations/cancel" + memberId);
-        req.put("fail_url", "http://localhost:8080/reservations/fail" + memberId);
+        req.put("approval_url", REFESTA_URL+"/reservations/success" + "/" + memberId);
+        req.put("cancel_url", REFESTA_URL+"/reservations/cancel" + memberId);
+        req.put("fail_url", REFESTA_URL+"/reservations/fail" + memberId);
 
         HttpEntity<Map<String, Object>> requestEntity = new HttpEntity<>(req, headers);
 

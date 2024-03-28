@@ -10,6 +10,7 @@ import com.a601.refesta.member.repository.PreferGenreRepository;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
@@ -37,6 +38,8 @@ public class MemberService {
     private final S3Util s3Util;
     private final JPAQueryFactory jpaQueryFactory;
 
+    @Value("${spring.refesta.recommend.url}")
+    private String REFESTA_URL;
 
     public Member getMember(int memberId) {
         return memberRepository.findById(memberId).orElseThrow();
@@ -83,7 +86,7 @@ public class MemberService {
         parameters.add("userId", memberId);
 
         ResponseEntity<String> response = rt.postForEntity(
-                "http://localhost:5000/recommend",
+                REFESTA_URL+"/recommend",
                 parameters,
                 String.class
         );
