@@ -8,6 +8,7 @@ import com.a601.refesta.reservation.data.ReservationRes;
 import com.a601.refesta.reservation.service.ReservationService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
@@ -15,9 +16,11 @@ import org.springframework.web.servlet.view.RedirectView;
 import java.util.Map;
 import java.util.TreeMap;
 
+
 @RestController
 @RequestMapping("/reservations")
 @RequiredArgsConstructor
+@Slf4j
 public class ReservationController {
 
     private final ReservationService reservationService;
@@ -32,15 +35,17 @@ public class ReservationController {
         int memberId = tokenProvider.getMemberIdByToken(request);
         Map<String, String> data = new TreeMap<>();
         data.put("redirect_url", reservationService.getKakaoPayUrl(memberId, reservationReq));
+        System.out.println(reservationService.getKakaoPayUrl(memberId, reservationReq));
         return new SuccessResponse<>(data);
     }
 
     @GetMapping("/success/{id}")
     public RedirectView getKaKaoPayApprove(@PathVariable("id") Integer id,
                                            @RequestParam("pg_token") String pgToken) {
+        log.error("pgToken"+pgToken);
         // 경로 생성
         String redirectUrl = REFESTA_URL+"/reservation/result/" + reservationService.getKaKaoPayApprove(id, pgToken);
-
+        log.error("redirectUrl"+redirectUrl);
         // RedirectView 생성 및 설정
         RedirectView redirectView = new RedirectView();
         redirectView.setUrl(redirectUrl);
