@@ -27,16 +27,13 @@ const Mypage = ({ isOpen, onClose, nickname, profileUrl }) => {
   }, [isOpen, onClose]);
 
   // 모달 닫힐 때 예약 내역 닫기
+  // 예약내역 가져오기
   useEffect(() => {
+    getBookingList();
     if (!isOpen) {
       setToggle(false);
     }
   }, [isOpen]);
-
-  // 예약내역 가져오기
-  useEffect(() => {
-    getBookingList();
-  }, [getBookingList]);
 
   if (!isOpen) return null;
 
