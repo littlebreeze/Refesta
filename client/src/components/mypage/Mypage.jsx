@@ -53,6 +53,16 @@ const Mypage = ({ isOpen, onClose, nickname, profileUrl }) => {
     onClose();
   };
 
+  const handleGoComingFestival = () => {
+    nav('/festival/list/scheduled');
+    onClose();
+  };
+
+  const handleGoEndedFestival = () => {
+    nav('/festival/list/ended');
+    onClose();
+  };
+
   const reservationResults = [
     {
       name: '사운드베리 2024',
@@ -127,10 +137,16 @@ const Mypage = ({ isOpen, onClose, nickname, profileUrl }) => {
                   <div className='mt-3 text-xs font-bold'>내가 작성한 후기</div>
                 </div>
               </div>
-              <div className='flex items-center justify-center w-full h-16 text-xs font-bold border-t-2 border-b-2'>
+              <div
+                className='flex items-center justify-center w-full h-16 text-xs font-bold border-t-2 border-b-2'
+                onClick={handleGoComingFestival}
+              >
                 예정 페스티벌
               </div>
-              <div className='flex items-center justify-center w-full h-16 text-xs font-bold border-b-2'>
+              <div
+                className='flex items-center justify-center w-full h-16 text-xs font-bold border-b-2'
+                onClick={handleGoEndedFestival}
+              >
                 지난 페스티벌
               </div>
               <div>

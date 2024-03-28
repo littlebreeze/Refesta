@@ -36,6 +36,7 @@ const RegisterReview = ({ isOpen, onClose, selectedFile: propSelectedFile }) => 
 
   // 모달 닫힐때 url정리
   useEffect(() => {
+    console.log(fileUrl);
     return () => {
       if (fileUrl) {
         URL.revokeObjectURL(fileUrl);
@@ -76,10 +77,12 @@ const RegisterReview = ({ isOpen, onClose, selectedFile: propSelectedFile }) => 
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
+    console.log(file);
     if (file) {
       setSelectedFile(file);
       setIsImage(file.type.startsWith('image'));
-      const newURL = URL.createObjectURL(selectedFile);
+      const newURL = URL.createObjectURL(file);
+      console.log(newURL);
       setFileUrl(newURL);
 
       setNewReview((prev) => ({
