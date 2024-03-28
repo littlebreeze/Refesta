@@ -6,7 +6,6 @@ import RegisterInfo from './pages/RegisterInfoPage';
 import Home from './pages/HomePage';
 import FestivalList from './pages/FestivalListPage';
 import FestivalDetail from './pages/FestivalDetailPage';
-// import FestivalDetailDone from './pages/FestivalDetailDonePage';
 import Notfound from './pages/NotfoundPage';
 import Google_Login from './components/start/Google_login';
 import ArtistDetail from './pages/ArtistDetailPage';
@@ -24,8 +23,6 @@ import SubLayout from './layout/SubLayout';
 import TestPage from './pages/TestPage';
 
 function App() {
-  const [count, setCount] = useState(0);
-
   return (
     <div className='flex flex-col h-full'>
       <BrowserRouter>
@@ -40,10 +37,7 @@ function App() {
             <Route path='/' element={<Home />} />
             <Route path='/festival/list/:state' element={<FestivalList />} />
             <Route path='/festival/:id' element={<FestivalDetail />} />
-            {/* <Route
-              path='/festival/done/:id'
-              element={<FestivalDetailDone />}
-            /> */}
+
             <Route path='/artist/:id' element={<ArtistDetail />} />
             <Route path='/reservation' element={<Reservation />} />
             <Route path='/reservation/result/:id' element={<ReservationResult />} />

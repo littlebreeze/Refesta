@@ -1,10 +1,13 @@
 import React from 'react';
 import ArtistSearchItem from './ArtistSearchItem';
+import useSearchResultStore from '../../store/searchResultStore';
 
 const ArtistSearchList = ({ artistListData, isTotal, setOpenSearchTab }) => {
-  let renderArtistListData = artistListData;
-  if (isTotal && renderArtistListData.length > 3) {
-    renderArtistListData = artistListData.slice(0, 3);
+  const { festivalList, artistList, setFestivalList, setArtistList } = useSearchResultStore();
+
+  let renderArtistList = artistList;
+  if (isTotal && renderArtistList.length > 3) {
+    renderArtistList = artistList.slice(0, 3);
   }
 
   const onClickTotalBtn = () => {
@@ -15,13 +18,13 @@ const ArtistSearchList = ({ artistListData, isTotal, setOpenSearchTab }) => {
     <div>
       <div className='text-base font-bold text-left'>
         <span>아티스트 &nbsp;</span>
-        <span className='text-lg font-bold text-ourPink'>{artistListData.length}</span>
+        <span className='text-lg font-bold text-ourPink'>{artistList.length}</span>
         <span className='text-lg text-gray-400'>
-          {isTotal && artistListData.length > 3 && <button onClick={onClickTotalBtn}>&nbsp; &gt;</button>}
+          {isTotal && artistList.length > 3 && <button onClick={onClickTotalBtn}>&nbsp; &gt;</button>}
         </span>
       </div>
       <div className=''>
-        {renderArtistListData.map((item) => (
+        {renderArtistList.map((item) => (
           <ArtistSearchItem key={item.id} artist={item} />
         ))}
       </div>

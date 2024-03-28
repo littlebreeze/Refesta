@@ -1,5 +1,5 @@
-import { Link, useNavigate } from 'react-router-dom';
-import { useEffect, useRef } from 'react';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import { useState, useEffect, useRef } from 'react';
 import { getRegExp } from 'korean-regexp';
 
 import useSearchStore from '../../store/searchStore';
@@ -10,9 +10,15 @@ import x_btn from '../../assets/x_btn.png';
 
 const SearchInput = () => {
   const { searchKeyword, changeSearchKeyword, setAutoCompleteList } = useSearchStore();
-
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [urlSearchKeyword, setUrlSearchKeyword] = useState('');
   const nav = useNavigate();
   const inputDiv = useRef();
+
+  useEffect(() => {
+    const urlKeyword = searchParams.get('word') || '';
+    setUrlSearchKeyword(urlKeyword);
+  }, [searchParams]);
 
   const onFocusInput = () => {
     if (searchKeyword) nav('/search');
@@ -23,6 +29,11 @@ const SearchInput = () => {
   };
 
   const onKeyUpInput = (e) => {
+    // 뒤로가기 키보드 버튼(Backspace)이 눌렸을 때
+    if (e.keyCode === 8) {
+      setUrlSearchKeyword(''); // urlSearchKeyword 초기화
+    }
+
     // 엔터 누르면 검색 결과 페이지로
     if (e.key === 'Enter' && searchKeyword) {
       inputDiv.current.blur();
@@ -48,6 +59,8 @@ const SearchInput = () => {
     return changeSearchKeyword('');
   }, []);
 
+  console.log('검색결과창', urlSearchKeyword);
+
   return (
     <header className='h-[70px] py-4 bg-ourIndigo'>
       <div className='flex items-center h-full'>
@@ -61,7 +74,7 @@ const SearchInput = () => {
         <div className='relative w-full h-full px-5'>
           <input
             type='text'
-            value={searchKeyword}
+            value={urlSearchKeyword || searchKeyword}
             ref={inputDiv}
             onFocus={onFocusInput}
             onChange={onChangeInput}

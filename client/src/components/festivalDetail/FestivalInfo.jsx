@@ -17,9 +17,8 @@ const FestivalInfo = ({ festivalInfoData }) => {
   }, [festivalInfoData]);
 
   const handleLike = async () => {
-    const festivalIdList = [festivalInfoData.id];
     try {
-      const response = await instance.patch(`festivals`, festivalIdList);
+      const response = await instance.patch(`festivals/${festivalInfoData.id}`);
       if (response.data.status === 'success') {
         setLikedFestival((prevLiked) => !prevLiked);
       }
