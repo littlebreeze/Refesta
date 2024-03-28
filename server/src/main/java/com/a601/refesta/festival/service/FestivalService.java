@@ -148,7 +148,7 @@ public class FestivalService {
             //노래 정보 저장
             List<FestivalSetlistRes.SongInfo> songInfoList = songInfoMap.get(artistId);
             songInfoList.add(new FestivalSetlistRes.SongInfo
-                    (tuple.get(song.title), tuple.get(song.audioUrl), tuple.get(song.imageUrl)));
+                    (tuple.get(song.title), tuple.get(song.audioUrl), tuple.get(song.imageUrl), tuple.get(artist.name)));
         }
 
         //셋리스트 정보 반환

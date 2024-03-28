@@ -36,5 +36,7 @@ public class FestivalSetlistRes {
         private String audioUrl;
 
         private String imageUrl;
+
+        private String singer;
     }
 }
