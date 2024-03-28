@@ -16,7 +16,7 @@ const SetListHomeList = ({ setListData }) => {
     <div className='h-[330px]'>
       <ListTitle
         title={'추천 셋리스트'}
-        description={'셋리스트로 페스티벌을 알아보세요!'}
+        description={'셋리스트로 페스티벌을 찾아보세요!'}
         btn={
           <Link className='cursor-pointer' to='/festival/list/ended'>
             {`전체보기 >`}
