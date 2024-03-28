@@ -10,9 +10,9 @@ const FestivalHomeList = ({ festivalData }) => {
         title={'추천 페스티벌'}
         description={'취향에 맞는 페스티벌을 추천해드려요!'}
         btn={
-          <Link className='cursor-pointer' to='/festival/list/scheduled'>
-            {`전체보기 >`}
-          </Link>
+          <div className='pb-5 cursor-pointer'>
+            <Link to='/festival/list/scheduled'>{`전체보기 >`}</Link>
+          </div>
         }
       />
       <div className='flex overflow-x-scroll scrollbar-hide whitespace-nowrap gap-x-3 px-7'>

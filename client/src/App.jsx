@@ -6,7 +6,6 @@ import RegisterInfo from './pages/RegisterInfoPage';
 import Home from './pages/HomePage';
 import FestivalList from './pages/FestivalListPage';
 import FestivalDetail from './pages/FestivalDetailPage';
-// import FestivalDetailDone from './pages/FestivalDetailDonePage';
 import Notfound from './pages/NotfoundPage';
 import Google_Login from './components/start/Google_login';
 import ArtistDetail from './pages/ArtistDetailPage';
@@ -22,10 +21,9 @@ import MainLayout from './layout/MainLayout';
 import SearchLayout from './layout/SearchLayout';
 import SubLayout from './layout/SubLayout';
 import TestPage from './pages/TestPage';
+import AboutPage from './pages/AboutPage';
 
 function App() {
-  const [count, setCount] = useState(0);
-
   return (
     <div className='flex flex-col h-full'>
       <BrowserRouter>
@@ -35,15 +33,13 @@ function App() {
             <Route path='/google-login' element={<Google_Login />} />
             <Route path='/regist' element={<RegisterInfo />} />
             <Route path='/test' element={<TestPage />} />
+            <Route path='/about' element={<AboutPage />} />
           </Route>
           <Route element={<MainLayout />}>
             <Route path='/' element={<Home />} />
             <Route path='/festival/list/:state' element={<FestivalList />} />
             <Route path='/festival/:id' element={<FestivalDetail />} />
-            {/* <Route
-              path='/festival/done/:id'
-              element={<FestivalDetailDone />}
-            /> */}
+
             <Route path='/artist/:id' element={<ArtistDetail />} />
             <Route path='/reservation' element={<Reservation />} />
             <Route path='/reservation/result/:id' element={<ReservationResult />} />
@@ -52,7 +48,7 @@ function App() {
             <Route path='/like/festival' element={<LikeFestival />} />
             <Route path='my-review' element={<MyReview />} />
           </Route>
-          z
+
           <Route element={<SearchLayout />}>
             <Route path='/search' element={<Search />} />
             <Route path='/search/result' element={<SearchResult />} />

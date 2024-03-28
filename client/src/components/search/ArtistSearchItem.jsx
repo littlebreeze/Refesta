@@ -8,7 +8,7 @@ const ArtistSearchItem = ({ artist }) => {
       </div>
       <div className='mt-5 ml-3'>
         <div className='text-sm text-center '>{artist.name}</div>
-        <div className='mt-1 text-xs text-gray-400'>장르</div>
+        <div className='mt-1 text-xs text-gray-400'>{artist.genre[0] || '미정'}</div>
       </div>
     </div>
   );
