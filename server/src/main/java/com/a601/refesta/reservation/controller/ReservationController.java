@@ -11,7 +11,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.Map;
 import java.util.TreeMap;
@@ -35,22 +34,16 @@ public class ReservationController {
         int memberId = tokenProvider.getMemberIdByToken(request);
         Map<String, String> data = new TreeMap<>();
         data.put("redirect_url", reservationService.getKakaoPayUrl(memberId, reservationReq));
-        System.out.println(reservationService.getKakaoPayUrl(memberId, reservationReq));
         return new SuccessResponse<>(data);
     }
 
-    @GetMapping("/success/{id}")
-    public RedirectView getKaKaoPayApprove(@PathVariable("id") Integer id,
-                                           @RequestParam("pg_token") String pgToken) {
-        System.out.println("pgToken"+pgToken);
-        // 경로 생성
-        String redirectUrl = REFESTA_URL+"/reservation/result/" + reservationService.getKaKaoPayApprove(id, pgToken);
-        System.out.println("redirectUrl"+redirectUrl);
-        // RedirectView 생성 및 설정
-        RedirectView redirectView = new RedirectView();
-        redirectView.setUrl(redirectUrl);
-        // 리디렉션 수행
-        return redirectView;
+    @PostMapping("/success")
+    public SuccessResponse<Map<String, Integer>> getKaKaoPayApprove(HttpServletRequest request,
+                                                                    @RequestBody String pgToken) {
+        int memberId = tokenProvider.getMemberIdByToken(request);
+        Map<String, Integer> data = new TreeMap<>();
+        data.put("reservation_id", reservationService.getKaKaoPayApprove(memberId, pgToken));
+        return new SuccessResponse<>(data);
     }
 
     @GetMapping("/{reservation_id}")

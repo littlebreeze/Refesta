@@ -42,7 +42,7 @@ public class ReservationService {
     @Value("${pay.admin-key}")
     private String adminKey;
 
-    @Value("${spring.refesta.back.url}")
+    @Value("${spring.refesta.front.url}")
     private String REFESTA_URL;
 
     //결제창 띄우기 위해 요청하는 것
@@ -64,9 +64,9 @@ public class ReservationService {
         req.put("quantity", reservationReq.getCount());
         req.put("total_amount", festival.getPrice() * reservationReq.getCount());
         req.put("tax_free_amount", 0);
-        req.put("approval_url", REFESTA_URL+"/reservations/success" + "/" + memberId);
-        req.put("cancel_url", REFESTA_URL+"/reservations/cancel" + memberId);
-        req.put("fail_url", REFESTA_URL+"/reservations/fail" + memberId);
+        req.put("approval_url", REFESTA_URL+"/reservation/approve");
+        req.put("cancel_url", REFESTA_URL+"/reservation/cancel");
+        req.put("fail_url", REFESTA_URL+"/reservation/fail");
 
         HttpEntity<Map<String, Object>> requestEntity = new HttpEntity<>(req, headers);
 
@@ -107,7 +107,6 @@ public class ReservationService {
         Map<String, Object> req = new HashMap<>();
         req.put("cid", "TC0ONETIME");
         req.put("tid", getTid(memberId));
-        System.out.println("tid"+getTid(memberId));
         req.put("partner_order_id", "refesta" + memberId);
         req.put("partner_user_id", "ReFesta");
         req.put("pg_token", pgToken);
@@ -119,19 +118,17 @@ public class ReservationService {
                 requestEntity,
                 String.class
         );
-        System.out.println("kakao 응답받음");
+
         Gson gson = new Gson();
 
         ApproveRes approveRes = gson.fromJson(response.getBody(), ApproveRes.class);
         if (approveRes.getError_message() != null || approveRes.getTid() == null) {
             throw new CustomException(ErrorCode.KAKAOPAY_FAILED_ERROR);
         }
-        System.out.println("if문 안걸림");
         //결제상태 변경 : 준비 -> 성공
         Reservation reservation = reservationRepository.findByTid(approveRes.getTid()).orElseThrow();
         reservation.statusSuccess();
         reservationRepository.save(reservation);
-        System.out.println("id는"+reservation.getId());
         return reservation.getId();
 
     }
