@@ -1,5 +1,6 @@
 import { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+
 import useSearchStore from '@store/searchStore';
 
 const AutoCompleteItem = ({ name }) => {
