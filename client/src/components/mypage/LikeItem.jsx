@@ -1,8 +1,8 @@
-import useArtistStore from '../../store/artistStore';
-import useLikeStore from '../../store/likeStore';
+import useArtistStore from '@store/artistStore';
+import useLikeStore from '@store/likeStore';
 
-import heartFull from './../../assets/heart_full.png';
-import heart from './../../assets/heart.png';
+import heartFull from '@assets/heart_full.png';
+import heart from '@assets/heart.png';
 
 const LikeItem = ({ content, onClick }) => {
   const { id, name, url, like, type } = content;

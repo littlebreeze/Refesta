@@ -1,4 +1,4 @@
-import FestivalItem from './FestivalItem';
+import FestivalItem from '@components/artistDetail/FestivalItem';
 
 const FestivalList = ({ festivalList }) => {
   if (festivalList && festivalList.length > 0) {

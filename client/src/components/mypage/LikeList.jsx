@@ -1,5 +1,6 @@
-import LikeItem from './../mypage/LikeItem';
 import { useNavigate } from 'react-router';
+
+import LikeItem from '@components/mypage/LikeItem';
 
 const LikeList = ({ contents }) => {
   const nav = useNavigate();

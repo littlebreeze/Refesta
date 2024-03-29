@@ -1,8 +1,10 @@
-import BillingResult from './../components/reservation/BillingResult';
-import billImg from './../assets/billImg.png';
-import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import useKakaoStore from '../store/kakaoStore';
+import { useNavigate, useParams } from 'react-router-dom';
+import useKakaoStore from '@store/kakaoStore';
+
+import BillingResult from '@components/reservation/BillingResult';
+
+import billImg from '@assets/billImg.png';
 
 const ReservationResultPage = () => {
   const [reservationNum, setReservationNum] = useState();
