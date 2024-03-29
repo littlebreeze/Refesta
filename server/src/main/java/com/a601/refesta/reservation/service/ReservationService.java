@@ -16,6 +16,7 @@ import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.NumberExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
@@ -30,6 +31,7 @@ import static com.a601.refesta.reservation.domain.QReservation.reservation;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class ReservationService {
 
     private final FestivalRepository festivalRepository;
@@ -40,7 +42,7 @@ public class ReservationService {
     @Value("${pay.admin-key}")
     private String adminKey;
 
-    @Value("${spring.refesta.back.url}")
+    @Value("${spring.refesta.front.url}")
     private String REFESTA_URL;
 
     //결제창 띄우기 위해 요청하는 것
@@ -62,9 +64,9 @@ public class ReservationService {
         req.put("quantity", reservationReq.getCount());
         req.put("total_amount", festival.getPrice() * reservationReq.getCount());
         req.put("tax_free_amount", 0);
-        req.put("approval_url", REFESTA_URL+"/reservations/success" + "/" + memberId);
-        req.put("cancel_url", REFESTA_URL+"/reservations/cancel" + memberId);
-        req.put("fail_url", REFESTA_URL+"/reservations/fail" + memberId);
+        req.put("approval_url", REFESTA_URL + "/reservation/approve");
+        req.put("cancel_url", REFESTA_URL + "/reservation/cancel");
+        req.put("fail_url", REFESTA_URL + "/reservation/fail");
 
         HttpEntity<Map<String, Object>> requestEntity = new HttpEntity<>(req, headers);
 
@@ -86,12 +88,12 @@ public class ReservationService {
                 .tid(payRes.getTid())
                 .status("READY")
                 .build();
-        
+
         reservationRepository.save(reservation);
 
-        return payRes.getNext_redirect_pc_url();
+        return payRes.getNext_redirect_mobile_url();
     }
-    
+
     //카카오에 결제 승인 요청
     public int getKaKaoPayApprove(Integer memberId, String pgToken) {
 
@@ -123,7 +125,6 @@ public class ReservationService {
         if (approveRes.getError_message() != null || approveRes.getTid() == null) {
             throw new CustomException(ErrorCode.KAKAOPAY_FAILED_ERROR);
         }
-        
         //결제상태 변경 : 준비 -> 성공
         Reservation reservation = reservationRepository.findByTid(approveRes.getTid()).orElseThrow();
         reservation.statusSuccess();
@@ -134,6 +135,7 @@ public class ReservationService {
 
     /**
      * 예매 TID
+     *
      * @param memberId
      * @return TID
      */
@@ -148,6 +150,7 @@ public class ReservationService {
 
     /**
      * 예매상세내역
+     *
      * @param memberId
      * @param reservationId
      * @return 예매상세정보- 페스티벌(포스터, 이름, 날짜, 장소), 예약(장수, 총 가격)

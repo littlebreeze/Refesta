@@ -24,5 +24,4 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         objectMapper.writeValue(response.getOutputStream(), FailResponse.of("401", "인증되지 않은 사용자입니다."));
     }
-
 }

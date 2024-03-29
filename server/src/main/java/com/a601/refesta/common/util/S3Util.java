@@ -33,7 +33,7 @@ public class S3Util {
             if (type.startsWith("video")) {
                 type = "video/mp4";
             }
-            String fileName = UUID.randomUUID() + "-" +file.getOriginalFilename();
+            String fileName = UUID.randomUUID() + "-" + file.getOriginalFilename();
             String fileUrl = baseUrl + fileName;
             ObjectMetadata metadata = new ObjectMetadata();
             metadata.setContentType(type);

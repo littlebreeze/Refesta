@@ -38,7 +38,7 @@ public class MemberController {
 
     @PostMapping("/genres")
     public SuccessResponse<Integer> addPreferGenre(HttpServletRequest request, @RequestBody PreferGenreReq genres) {
-        int memberId=tokenProvider.getMemberIdByToken(request);
+        int memberId = tokenProvider.getMemberIdByToken(request);
         memberService.createPreferGenre(memberId, genres);
         return new SuccessResponse<>(HttpStatus.SC_OK);
     }
@@ -60,7 +60,7 @@ public class MemberController {
     }
 
     @GetMapping("/reservations")
-    public SuccessResponse<Map<String, List<ReservationRes>>> getReservations(HttpServletRequest request){
+    public SuccessResponse<Map<String, List<ReservationRes>>> getReservations(HttpServletRequest request) {
         int memberId = tokenProvider.getMemberIdByToken(request);
         Map<String, List<ReservationRes>> data = new TreeMap<>();
         data.put("reservationList", memberService.getReservations(memberId));
@@ -68,7 +68,7 @@ public class MemberController {
     }
 
     @GetMapping("/reviews")
-    public SuccessResponse<Map<String, List<ReviewRes>>> getReviews(HttpServletRequest request){
+    public SuccessResponse<Map<String, List<ReviewRes>>> getReviews(HttpServletRequest request) {
         int memberId = tokenProvider.getMemberIdByToken(request);
         Map<String, List<ReviewRes>> data = new TreeMap<>();
         data.put("reviewList", memberService.getReviews(memberId));

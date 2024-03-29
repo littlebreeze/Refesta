@@ -5,6 +5,7 @@ import com.a601.refesta.common.exception.ErrorCode;
 import com.a601.refesta.search.data.AutoCompleteRes;
 import com.a601.refesta.search.data.SearchResultRes;
 import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -43,59 +44,68 @@ public class SearchService {
     /**
      * 자동완성 검색어 반환
      *
-     * @param memberId
      * @param inputWord
      * @return AutoCompleteRes - 페스티벌 검색어(최대 3개) 리스트, 아티스트 검색어(최대 3개) 리스트
      */
     public AutoCompleteRes getAutoComplete(int memberId, String inputWord) {
-        //Todo: 검색 우선순위(완전 일치 >> 포함)
         List<String> festivalList;
         List<String> artistList;
 
         //검색어가 초성으로 끝나는 경우
-        if(checkEndsWithConsonant(inputWord)) {
-            String[] fromToWords = setFromToWord(inputWord);
+        if (checkEndsWithConsonant(inputWord)) {
+            String[] fromToWords = setFromToWords(inputWord);
 
             String fromWord = fromToWords[0];
             String toWord = fromToWords[1];
 
-            //검색어 포함 페스티벌 이름 조회
+            //검색어 포함 페스티벌 이름 조회, 추천 순 정렬
             festivalList = jpaQueryFactory
                     .select(festival.name)
-                    .from(memberFestival)
-                    .innerJoin(festival).on(memberFestival.festival.id.eq(festival.id)
-                            .and(memberFestival.member.id.eq(memberId)))
-                    .where(festival.name.toLowerCase().between(fromWord.toLowerCase(), toWord.toLowerCase()))
+                    .from(festival)
+                    .innerJoin(memberFestival).on(memberFestival.member.id.eq(memberId)
+                            .and(festival.name.toLowerCase().between(fromWord.toLowerCase(), toWord.toLowerCase()))
+                            .and(memberFestival.festival.id.eq(festival.id)))
+                    .orderBy(memberFestival.id.asc())
                     .limit(3)
                     .fetch();
 
-            //검색어 포함 아티스트 이름 조회
+            //검색어 포함 아티스트 이름 조회, 추천 순 정렬
             artistList = jpaQueryFactory
                     .select(artist.name)
-                    .from(memberArtist)
-                    .innerJoin(artist).on(memberArtist.artist.id.eq(artist.id)
-                            .and(memberArtist.member.id.eq(memberId)))
+                    .from(artist)
+                    .leftJoin(memberArtist).on(memberArtist.member.id.eq(memberId)
+                            .and(memberArtist.artist.id.eq(artist.id)))
                     .where(artist.name.toLowerCase().between(fromWord.toLowerCase(), toWord.toLowerCase()))
+                    .orderBy(memberArtist.id.asc())
                     .limit(3)
                     .fetch();
         } else {
-            //검색어 포함 페스티벌 이름 조회
+            //페스티벌 이름 포함으로 검색, 일치 >> 시작 >> 추천순 정렬
             festivalList = jpaQueryFactory
                     .select(festival.name)
                     .from(memberFestival)
-                    .innerJoin(festival).on(memberFestival.festival.id.eq(festival.id)
-                            .and(memberFestival.member.id.eq(memberId)))
-                    .where(festival.name.toLowerCase().contains(inputWord.toLowerCase()))
+                    .innerJoin(festival).on(memberFestival.member.id.eq(memberId)
+                            .and(festival.name.toLowerCase().contains(inputWord.toLowerCase()))
+                            .and(festival.id.eq(memberFestival.festival.id)))
+                    .orderBy(new CaseBuilder()
+                                    .when(festival.name.equalsIgnoreCase(inputWord)).then(0)
+                                    .when(festival.name.toLowerCase().startsWith(inputWord.toLowerCase())).then(1)
+                                    .otherwise(2).asc(),
+                            memberFestival.id.asc())
                     .limit(3)
                     .fetch();
 
-            //검색어 포함 아티스트 이름 조회
+            //아티스트 이름 포함으로 검색, 일치 >> 시작 >> 추천 순 정렬
             artistList = jpaQueryFactory
                     .select(artist.name)
-                    .from(memberArtist)
-                    .innerJoin(artist).on(memberArtist.artist.id.eq(artist.id)
-                            .and(memberArtist.member.id.eq(memberId)))
+                    .from(artist)
+                    .leftJoin(memberArtist).on(memberArtist.member.id.eq(memberId)
+                            .and(memberArtist.artist.id.eq(artist.id)))
                     .where(artist.name.toLowerCase().contains(inputWord.toLowerCase()))
+                    .orderBy(new CaseBuilder()
+                            .when(artist.name.equalsIgnoreCase(inputWord)).then(0)
+                            .when(artist.name.toLowerCase().startsWith(inputWord.toLowerCase())).then(1)
+                            .otherwise(2).asc(), memberArtist.id.asc())
                     .limit(3)
                     .fetch();
         }
@@ -110,64 +120,75 @@ public class SearchService {
     /**
      * 검색 결과 반환
      *
-     * @param memberId
      * @param searchWord
      * @return SearchResultRes - 페스티벌 리스트(아이디, 이름, 포스터 Url), 아티스트 리스트(아이디, 이름, 사진 Url, 장르 리스트)
      */
     public SearchResultRes getSearchResult(int memberId, String searchWord) {
-        //Todo: 검색 우선순위(완전 일치 >> 포함)
         List<SearchResultRes.FestivalResult> festivalResultList;
         List<SearchResultRes.ArtistResult> artistResultList;
 
-        if(checkEndsWithConsonant(searchWord)) {
-            String[] fromToWords = setFromToWord(searchWord);
+        if (checkEndsWithConsonant(searchWord)) {
+            String[] fromToWords = setFromToWords(searchWord);
 
             String fromWord = fromToWords[0];
             String toWord = fromToWords[1];
 
-            //검색어 포함 페스티벌 조회(이름)
+            //검색어 포함 페스티벌 조회(이름), 종료 여부 >> 추천 순 정렬
             festivalResultList = jpaQueryFactory
                     .select(Projections.constructor(SearchResultRes.FestivalResult.class,
                             festival.id, festival.name, festival.posterUrl, festival.isEnded))
-                    .from(memberFestival)
-                    .innerJoin(festival).on(memberFestival.festival.id.eq(festival.id)
-                            .and(memberFestival.member.id.eq(memberId)))
-                    .where(festival.name.toLowerCase().between(fromWord.toLowerCase(), toWord.toLowerCase()))
+                    .from(festival)
+                    .innerJoin(memberFestival).on(memberFestival.member.id.eq(memberId)
+                            .and(festival.name.toLowerCase().between(fromWord.toLowerCase(), toWord.toLowerCase()))
+                            .and(memberFestival.festival.id.eq(festival.id)))
+                    .orderBy(new CaseBuilder()
+                            .when(festival.isEnded.isFalse()).then(1)
+                            .otherwise(2).asc(), memberFestival.id.asc())
                     .fetch();
 
-            //검색어 포함 아티스트 조회(이름)
+            //검색어 포함 아티스트 조회(이름), 추천 순 정렬
             artistResultList = jpaQueryFactory
                     .select(Projections.constructor(SearchResultRes.ArtistResult.class,
                             artist.id, artist.name, artist.pictureUrl))
-                    .from(memberArtist)
-                    .innerJoin(artist).on(memberArtist.artist.id.eq(artist.id)
-                            .and(memberArtist.member.id.eq(memberId)))
+                    .from(artist)
+                    .leftJoin(memberArtist).on(memberArtist.member.id.eq(memberId)
+                            .and(memberArtist.artist.id.eq(artist.id)))
                     .where(artist.name.toLowerCase().between(fromWord.toLowerCase(), toWord.toLowerCase()))
+                    .orderBy(memberArtist.id.asc())
                     .fetch();
         } else {
-            //검색어 포함 페스티벌 조회(이름)
+            //검색어 포함 페스티벌 조회(이름), 일치 >> 시작 >> 종료 여부 >> 추천 순 정렬
             festivalResultList = jpaQueryFactory
                     .select(Projections.constructor(SearchResultRes.FestivalResult.class,
                             festival.id, festival.name, festival.posterUrl, festival.isEnded))
-                    .from(memberFestival)
-                    .innerJoin(festival).on(memberFestival.festival.id.eq(festival.id)
-                            .and(memberFestival.member.id.eq(memberId)))
-                    .where(festival.name.toLowerCase().contains(searchWord.toLowerCase()))
+                    .from(festival)
+                    .innerJoin(memberFestival).on(memberFestival.member.id.eq(memberId)
+                            .and(festival.name.toLowerCase().contains(searchWord.toLowerCase()))
+                            .and(festival.id.eq(memberFestival.festival.id)))
+                    .orderBy(new CaseBuilder()
+                            .when(festival.name.equalsIgnoreCase(searchWord)).then(0)
+                            .when(festival.name.toLowerCase().startsWith(searchWord.toLowerCase())).then(1)
+                            .when(festival.isEnded.isFalse()).then(2)
+                            .otherwise(3).asc(), memberFestival.id.asc())
                     .fetch();
 
-            //검색어 포함 아티스트 조회(이름)
+            //검색어 포함 아티스트 조회(이름), 일치 >> 시작 >> 추천 순 정렬
             artistResultList = jpaQueryFactory
                     .select(Projections.constructor(SearchResultRes.ArtistResult.class,
                             artist.id, artist.name, artist.pictureUrl))
-                    .from(memberArtist)
-                    .innerJoin(artist).on(memberArtist.artist.id.eq(artist.id)
+                    .from(artist)
+                    .leftJoin(memberArtist).on(memberArtist.artist.id.eq(artist.id)
                             .and(memberArtist.member.id.eq(memberId)))
                     .where(artist.name.toLowerCase().contains(searchWord.toLowerCase()))
+                    .orderBy(new CaseBuilder()
+                            .when(artist.name.equalsIgnoreCase(searchWord)).then(0)
+                            .when(artist.name.toLowerCase().startsWith(searchWord.toLowerCase())).then(1)
+                            .otherwise(2).asc(), memberArtist.id.asc())
                     .fetch();
 
-            for(int genreIdx = 1; genreIdx < genreMap.size(); genreIdx++) {
-                if(genreMap.get(genreIdx).contains(searchWord.toLowerCase())) {
-                    //페스티벌 조회(장르)
+            for (int genreIdx = 1; genreIdx < genreMap.size(); genreIdx++) {
+                if (genreMap.get(genreIdx).contains(searchWord.toLowerCase())) {
+                    //페스티벌 조회(장르) 종료 여부 순 >> 추천 순 정렬
                     List<SearchResultRes.FestivalResult> festivalGenreResult = jpaQueryFactory
                             .select(Projections.constructor(SearchResultRes.FestivalResult.class,
                                     festival.id, festival.name, festival.posterUrl, festival.isEnded))
@@ -176,11 +197,12 @@ public class SearchService {
                                     .and(memberFestival.member.id.eq(memberId)))
                             .innerJoin(festivalGenre).on(festivalGenre.genre.id.eq(genreIdx)
                                     .and(festivalGenre.festival.id.eq(festival.id)))
+                            .orderBy(festival.isEnded.isTrue().asc(), memberFestival.id.asc())
                             .fetch();
 
                     festivalResultList.addAll(festivalGenreResult);
 
-                    //아티스트 조회(장르)
+                    //아티스트 조회(장르) 추천 순 정렬
                     List<SearchResultRes.ArtistResult> artistGenreResult = jpaQueryFactory
                             .select(Projections.constructor(SearchResultRes.ArtistResult.class,
                                     artist.id, artist.name, artist.pictureUrl))
@@ -189,6 +211,7 @@ public class SearchService {
                                     .and(memberArtist.member.id.eq(memberId)))
                             .innerJoin(artistGenre).on(artistGenre.genre.id.eq(genreIdx)
                                     .and(artistGenre.artist.id.eq(artist.id)))
+                            .orderBy(memberArtist.id.asc())
                             .limit(10)
                             .fetch();
 
@@ -199,7 +222,7 @@ public class SearchService {
             }
         }
 
-        for(SearchResultRes.ArtistResult artistResult : artistResultList) {
+        for (SearchResultRes.ArtistResult artistResult : artistResultList) {
             //아티스트 장르 조회
             List<String> genreList = jpaQueryFactory
                     .select(genre.name)
@@ -221,8 +244,8 @@ public class SearchService {
      * @param word
      * @return true/false
      */
-    public boolean checkEndsWithConsonant (String word) {
-        if(word == null || word.equals("")) {
+    public boolean checkEndsWithConsonant(String word) {
+        if (word == null || word.equals("")) {
             throw new CustomException(ErrorCode.SEARCH_WORD_NULL_ERROR);
         }
 
@@ -235,10 +258,11 @@ public class SearchService {
 
     /**
      * 초성 검색 시작, 끝 지정
+     *
      * @param word
      * @return String[] - fromWord, toWord
      */
-    public String[] setFromToWord(String word) {
+    public String[] setFromToWords(String word) {
         String[] wordArr = new String[2];
 
         int syllableKey = 0;

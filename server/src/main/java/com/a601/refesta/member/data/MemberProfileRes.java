@@ -9,5 +9,4 @@ public class MemberProfileRes {
 
     private String nickname;
     private String profileUrl;
-
 }

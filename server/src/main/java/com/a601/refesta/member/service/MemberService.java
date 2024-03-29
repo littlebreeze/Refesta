@@ -52,7 +52,8 @@ public class MemberService {
                 .profileUrl(member.getProfileUrl())
                 .build();
     }
-     /**
+
+    /**
      * 프로필 저장
      */
     public void updateProfile(int memberId, String nickname, MultipartFile file) {
@@ -86,7 +87,7 @@ public class MemberService {
         parameters.add("userId", memberId);
 
         ResponseEntity<String> response = rt.postForEntity(
-                REFESTA_URL+"/recommend",
+                REFESTA_URL + "/recommend",
                 parameters,
                 String.class
         );

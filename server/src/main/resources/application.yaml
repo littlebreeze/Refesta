@@ -31,7 +31,7 @@ spring:
 #      https://j10a601.p.ssafy.io
 #    https://localhost:8080
     recommend:
-      url: https://j10a601.p.ssafy.io
+      url: http://j10a601.p.ssafy.io:8082
 #      http://localhost:5000
 #      https://j10a601.p.ssafy.io
 
@@ -42,3 +42,8 @@ spring:
 
 server:
   port: 8081
+
+  ssl:
+    key-store: classpath:keystore.p12
+    key-store-type: PKCS12
+    key-store-password: root

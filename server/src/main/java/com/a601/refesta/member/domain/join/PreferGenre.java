@@ -24,5 +24,4 @@ public class PreferGenre extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "genre_id")
     private Genre genre;
-
 }

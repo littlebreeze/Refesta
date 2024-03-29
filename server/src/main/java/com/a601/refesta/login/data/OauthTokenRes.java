@@ -24,5 +24,4 @@ public class OauthTokenRes {
     public void isSignUp(boolean signUp) {
         this.signUp = signUp;
     }
-
 }
