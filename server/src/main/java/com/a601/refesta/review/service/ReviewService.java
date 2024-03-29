@@ -35,7 +35,6 @@ public class ReviewService {
                 .isDeleted(false)
                 .build();
         reviewRepository.save(review);
-
     }
 
     public void deleteReview(int memberId, int reviewId) {
@@ -50,6 +49,5 @@ public class ReviewService {
         Review review = reviewRepository.findById(reviewId).orElseThrow();
         review.delete();
         reviewRepository.save(review);
-
     }
 }

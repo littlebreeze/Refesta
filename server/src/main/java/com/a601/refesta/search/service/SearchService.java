@@ -88,9 +88,9 @@ public class SearchService {
                             .and(festival.name.toLowerCase().contains(inputWord.toLowerCase()))
                             .and(festival.id.eq(memberFestival.festival.id)))
                     .orderBy(new CaseBuilder()
-                                .when(festival.name.equalsIgnoreCase(inputWord)).then(0)
-                                .when(festival.name.toLowerCase().startsWith(inputWord.toLowerCase())).then(1)
-                                .otherwise(2).asc(),
+                                    .when(festival.name.equalsIgnoreCase(inputWord)).then(0)
+                                    .when(festival.name.toLowerCase().startsWith(inputWord.toLowerCase())).then(1)
+                                    .otherwise(2).asc(),
                             memberFestival.id.asc())
                     .limit(3)
                     .fetch();
@@ -103,9 +103,9 @@ public class SearchService {
                             .and(memberArtist.artist.id.eq(artist.id)))
                     .where(artist.name.toLowerCase().contains(inputWord.toLowerCase()))
                     .orderBy(new CaseBuilder()
-                                .when(artist.name.equalsIgnoreCase(inputWord)).then(0)
-                                .when(artist.name.toLowerCase().startsWith(inputWord.toLowerCase())).then(1)
-                                .otherwise(2).asc(), memberArtist.id.asc())
+                            .when(artist.name.equalsIgnoreCase(inputWord)).then(0)
+                            .when(artist.name.toLowerCase().startsWith(inputWord.toLowerCase())).then(1)
+                            .otherwise(2).asc(), memberArtist.id.asc())
                     .limit(3)
                     .fetch();
         }

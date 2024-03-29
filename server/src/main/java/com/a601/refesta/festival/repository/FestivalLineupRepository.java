@@ -6,6 +6,4 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface FestivalLineupRepository extends JpaRepository<FestivalLineup, Integer> {
-
-    List<FestivalLineup> findAllByFestivalId(Integer festivalId);
 }

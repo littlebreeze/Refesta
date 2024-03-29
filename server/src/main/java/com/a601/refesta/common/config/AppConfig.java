@@ -32,11 +32,20 @@ public class AppConfig {
     public List<String> consonantsList() {
         List<String> consonantsList = new ArrayList<>();
 
-        consonantsList.add("ㄱ");    consonantsList.add("ㄴ");    consonantsList.add("ㄷ");
-        consonantsList.add("ㄹ");    consonantsList.add("ㅁ");    consonantsList.add("ㅂ");
-        consonantsList.add("ㅅ");    consonantsList.add("ㅇ");    consonantsList.add("ㅈ");
-        consonantsList.add("ㅊ");    consonantsList.add("ㅋ");    consonantsList.add("ㅌ");
-        consonantsList.add("ㅍ");    consonantsList.add("ㅎ");
+        consonantsList.add("ㄱ");
+        consonantsList.add("ㄴ");
+        consonantsList.add("ㄷ");
+        consonantsList.add("ㄹ");
+        consonantsList.add("ㅁ");
+        consonantsList.add("ㅂ");
+        consonantsList.add("ㅅ");
+        consonantsList.add("ㅇ");
+        consonantsList.add("ㅈ");
+        consonantsList.add("ㅊ");
+        consonantsList.add("ㅋ");
+        consonantsList.add("ㅌ");
+        consonantsList.add("ㅍ");
+        consonantsList.add("ㅎ");
 
         return consonantsList;
     }
@@ -46,11 +55,20 @@ public class AppConfig {
     public Map<Integer, String> syllableMap() {
         Map<Integer, String> syllableMap = new HashMap<>();
 
-        syllableMap.put(0, "가");    syllableMap.put(1, "나");    syllableMap.put(2, "다");
-        syllableMap.put(3, "라");    syllableMap.put(4, "마");    syllableMap.put(5, "바");
-        syllableMap.put(6, "사");    syllableMap.put(7, "아");    syllableMap.put(8, "자");
-        syllableMap.put(9, "차");    syllableMap.put(10, "카");   syllableMap.put(11, "타");
-        syllableMap.put(12, "파");   syllableMap.put(13, "하");
+        syllableMap.put(0, "가");
+        syllableMap.put(1, "나");
+        syllableMap.put(2, "다");
+        syllableMap.put(3, "라");
+        syllableMap.put(4, "마");
+        syllableMap.put(5, "바");
+        syllableMap.put(6, "사");
+        syllableMap.put(7, "아");
+        syllableMap.put(8, "자");
+        syllableMap.put(9, "차");
+        syllableMap.put(10, "카");
+        syllableMap.put(11, "타");
+        syllableMap.put(12, "파");
+        syllableMap.put(13, "하");
         syllableMap.put(14, "힣");
 
         return syllableMap;
