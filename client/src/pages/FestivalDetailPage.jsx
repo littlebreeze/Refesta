@@ -46,6 +46,17 @@ const FestivalDetailPage = () => {
       }
     };
 
+    // 페스티벌 상세 페이지 접근 데이터 제공
+    const increaseFestivalViewCount = async () => {
+      try {
+        const res = await instance.patch(`festivals/${id}/views`);
+        console.log(res);
+      } catch (e) {
+        console.error('Error:', e);
+      }
+    };
+
+    increaseFestivalViewCount();
     getFestivalInfoData();
   }, []);
 
