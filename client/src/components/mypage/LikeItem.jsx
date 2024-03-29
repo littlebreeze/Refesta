@@ -1,19 +1,33 @@
 import useArtistStore from '@store/artistStore';
 import useLikeStore from '@store/likeStore';
 
+import instance from '@util/token_interceptor';
+
 import heartFull from '@assets/heart_full.png';
 import heart from '@assets/heart.png';
 
 const LikeItem = ({ content, onClick }) => {
   const { id, name, url, like, type } = content;
-  const { updateLike } = useArtistStore();
-  const { toggleLike } = useLikeStore();
+  const { updateArtistLike } = useArtistStore();
+  const { toggleArtistLike, toggleFestivalLike } = useLikeStore();
+
+  const handleFestivalLike = async (id) => {
+    try {
+      const response = await instance.patch(`festivals/${id}`);
+    } catch (e) {
+      console.error('페스티벌 좋아요 실패', e);
+    }
+  };
 
   const handleLikeBtn = () => {
     if (type === 'artist') {
       console.log(id, type);
-      toggleLike(id);
-      updateLike(id);
+      toggleArtistLike(id);
+      updateArtistLike(id);
+    } else {
+      console.log(id, type);
+      handleFestivalLike(id);
+      toggleFestivalLike(id);
     }
   };
 

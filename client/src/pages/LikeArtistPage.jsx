@@ -8,7 +8,7 @@ const LikeArtistPage = () => {
 
   useEffect(() => {
     getLikeArtistList();
-  }, []); //
+  }, []);
 
   return (
     <div className='bg-gray-200 h-lvh'>
