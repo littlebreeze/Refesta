@@ -31,9 +31,14 @@ spring:
     #      https://j10a601.p.ssafy.io
     #    https://localhost:8080
     recommend:
-      url: http://localhost:5000 #http://j10a601.p.ssafy.io:8082
+      url: http://j10a601.p.ssafy.io:8082
+#      http://localhost:5000
+#      https://j10a601.p.ssafy.io
 
-  #      https://j10a601.p.ssafy.io
+  data:
+    redis:
+      host: j10a601.p.ssafy.io
+      port: 6379
 
   data:
     redis:
