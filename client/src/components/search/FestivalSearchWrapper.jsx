@@ -1,5 +1,4 @@
-import React, { useEffect } from 'react';
-import FestivalSearchList from './FestivalSearchList';
+import FestivalSearchList from '@components/search/FestivalSearchList';
 
 // 통합검색 결과
 const FestivalSearchWrapper = ({ festivalListData }) => {

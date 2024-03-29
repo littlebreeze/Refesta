@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import useSetListStore from '../../store/setListStore';
-import select from '../../assets/select.png';
+import { useEffect } from 'react';
+import useSetListStore from '@store/setListStore';
+
+import select from '@assets/select.png';
 
 const ArtistItem = ({ artist }) => {
   const {

@@ -1,5 +1,4 @@
-import React, { useEffect } from 'react';
-import SearchResultContainer from '../components/search/SearchResultContainer';
+import SearchResultContainer from '@components/search/SearchResultContainer';
 
 const SearchResult = () => {
   return (

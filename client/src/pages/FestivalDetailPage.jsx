@@ -1,11 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import instance from '../util/token_interceptor';
-import FestivalInfo from '../components/festivalDetail/FestivalInfo';
-import FestivalInfoDetail from '../components/festivalDetail/FestivalInfoDetail';
-import ReservationButton from '../components/festivalDetail/ReservationButton';
-import FestivalInfoContainer from '../components/festivalDetail/FestivalInfoContainer';
-import useSetListStore from '../store/setListStore';
+import useSetListStore from '@store/setListStore';
+
+import instance from '@util/token_interceptor';
+
+import FestivalInfo from '@components/festivalDetail/FestivalInfo';
+import FestivalInfoDetail from '@components/festivalDetail/FestivalInfoDetail';
+import ReservationButton from '@components/festivalDetail/ReservationButton';
+import FestivalInfoContainer from '@components/festivalDetail/FestivalInfoContainer';
+
+// assets
 
 // 페스티벌 상세 진행중
 const FestivalDetailPage = () => {
