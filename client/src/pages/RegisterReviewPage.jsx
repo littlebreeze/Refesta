@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, useState, useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import useReviewStore from '@store/reviewStore';
+import festivalInfoStore from '@store/festivalInfoStore';
 
 import ReactPlayer from 'react-player';
 
@@ -13,6 +14,7 @@ const RegisterReviewPage = ({ isOpen, onClose, selectedFile: propSelectedFile })
   const inputFileRef = useRef(null);
   const nav = useNavigate();
   const { id } = useParams();
+  const { festivalInfoData } = festivalInfoStore();
   const { registerReview, addReviews } = useReviewStore();
   const [isPlaying, setIsPlaying] = useState(true);
 
@@ -100,7 +102,11 @@ const RegisterReviewPage = ({ isOpen, onClose, selectedFile: propSelectedFile })
   // 프리뷰
   const preview = useMemo(() => {
     return isImage ? (
-      <img key={`file-preview-${Date.now()}`} className='object-cover w-full h-full' src={fileUrl} />
+      <img
+        key={`file-preview-${Date.now()}`}
+        className='object-cover w-full h-full'
+        src={fileUrl}
+      />
     ) : (
       <ReactPlayer
         key={`file-preview-${Date.now()}`}
@@ -123,7 +129,10 @@ const RegisterReviewPage = ({ isOpen, onClose, selectedFile: propSelectedFile })
       {isOpen && (
         <div className='w-full h-full max-w-[500px] bg-white'>
           <Header />
-          <button className='absolute m-4 mt-6 right-1 top-16' onClick={onClose}>
+          <button
+            className='absolute m-4 mt-6 right-1 top-16'
+            onClick={onClose}
+          >
             <span>
               <img src={xBtn} />
             </span>
@@ -135,14 +144,14 @@ const RegisterReviewPage = ({ isOpen, onClose, selectedFile: propSelectedFile })
                 <div className='overflow-hidden h-14 w-9'>
                   <img
                     className='object-cover h-full'
-                    src='https://www.seouljazz.co.kr/data/editor/2312/20231205173920_7006427c7339d61b9ea55f8db36041fc_9r59.jpg'
+                    src={festivalInfoData.posterUrl}
                   />
                 </div>
                 <div className='flex flex-col justify-center px-3'>
-                  <div className='font-bold'>제 15회 서울 재즈 페스티벌</div>
-                  <div className='flex text-gray-500'>
-                    <div>2023.07.07</div>
-                    <div className='ml-2'>| 올림픽 공원</div>
+                  <div className='font-bold leading-5 text-left'>{festivalInfoData.name}</div>
+                  <div className='flex mt-1 text-xs text-gray-500'>
+                    <div>{festivalInfoData.date}</div>
+                    <div className='ml-2'>| {festivalInfoData.location}</div>
                   </div>
                 </div>
               </div>
@@ -153,7 +162,10 @@ const RegisterReviewPage = ({ isOpen, onClose, selectedFile: propSelectedFile })
                     className='absolute flex items-center justify-center w-12 h-12 bg-gray-300 rounded-full bottom-3 right-10'
                     onClick={handleImageChange}
                   >
-                    <img className='w-2/3' src={picture} />
+                    <img
+                      className='w-2/3'
+                      src={picture}
+                    />
                   </div>
                   <input
                     ref={inputFileRef}
