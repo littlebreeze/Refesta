@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import useKakaoStore from '../../store/kakaoStore';
-import PosterImage from './PosterImage';
+import useKakaoStore from '@store/kakaoStore';
+
+import PosterImage from '@components/reservation/PosterImage';
 
 const Reservation = () => {
   const location = useLocation();

@@ -1,10 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import useArtistStore from '../../store/artistStore';
-import FestivalList from './FestivalList';
+import useArtistStore from '@store/artistStore';
 
-import heartFull from './../../assets/heart_full.png';
-import heart from './../../assets/heart.png';
+import FestivalList from '@components/artistDetail/FestivalList';
+
+import heartFull from '@assets/heart_full.png';
+import heart from '@assets/heart.png';
 
 const ArtistDetail = () => {
   const { addArtist, artist, toggleLike, updateLike } = useArtistStore();

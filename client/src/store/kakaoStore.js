@@ -1,5 +1,6 @@
 import { create } from 'zustand';
-import instance from '../util/token_interceptor';
+
+import instance from '@util/token_interceptor';
 
 const baseURL = `${import.meta.env.VITE_PUBLIC_API_SERVER}`;
 

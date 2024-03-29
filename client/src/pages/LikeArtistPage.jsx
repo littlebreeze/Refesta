@@ -1,6 +1,7 @@
-import { useEffect, useState } from 'react';
-import LikeList from '../components/mypage/LikeList';
-import useLikeStore from '../store/likeStore';
+import { useEffect } from 'react';
+import useLikeStore from '@store/likeStore';
+
+import LikeList from '@components/mypage/LikeList';
 
 const LikeArtist = () => {
   const { likeArtistList, getLikeArtistList } = useLikeStore();

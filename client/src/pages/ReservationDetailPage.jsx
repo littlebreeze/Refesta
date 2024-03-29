@@ -1,9 +1,9 @@
-import useKakaoStore from '../store/kakaoStore';
-import { useParams } from 'react-router-dom';
-
-import PosterImage from './../components/reservation/PosterImage';
-import BillingResult from './../components/reservation/BillingResult';
 import { useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import useKakaoStore from '@store/kakaoStore';
+
+import PosterImage from '@components/reservation/PosterImage';
+import BillingResult from '@components/reservation/BillingResult';
 
 const ReservationDetail = () => {
   const { billingResult, getBillingResult } = useKakaoStore();
