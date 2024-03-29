@@ -2,7 +2,7 @@ import axios from 'axios';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 
-import loading from '../../assets/loading.png';
+import loading from '@assets/loading.png';
 
 const Google_Login = () => {
   const nav = useNavigate();

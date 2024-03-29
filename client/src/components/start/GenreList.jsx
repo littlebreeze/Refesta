@@ -1,9 +1,10 @@
-import instance from '../../util/token_interceptor';
-
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router';
 
-import GenreItem from './GenreItem';
+import instance from '@util/token_interceptor';
+import { useGenreQuery } from '@/queries/startPagesQueries';
+
+import GenreItem from '@components/start/GenreItem';
 
 const lists = [
   { id: 1, title: '랩/힙합', image: 'rap_hiphop', color: '727272' },
@@ -30,6 +31,8 @@ const lists = [
 const GenreList = ({ setStep, stepParam }) => {
   const nav = useNavigate();
 
+  const { mutate, isLoading, isError, error } = useGenreQuery();
+
   const [selectedGenre, setSelectedGenre] = useState([]);
 
   const onClickGenre = (id) => {
@@ -41,26 +44,26 @@ const GenreList = ({ setStep, stepParam }) => {
     }
   };
 
-  // useEffect(() => {
-  //   console.log(selectedGenre);
-  // }, [selectedGenre]);
-
   const postGenre = async () => {
     const response = await instance.post('members/genres', { preferGenres: selectedGenre });
     return response.data;
   };
 
-  const onClickStart = async () => {
-    const response = await postGenre();
-    if (response.status === 'success') {
+  const onClickStart = () => {
+    mutate(selectedGenre);
+    if (!isLoading) {
       alert('서비스를 시작합니다');
 
       nav('/', { replace: true });
     }
+    if (isError) {
+      alert('요청 실패');
+      console.log(error);
+    }
   };
 
-  const onClickSkip = async () => {
-    const response = await postGenre();
+  const onClickSkip = () => {
+    mutate(selectedGenre);
     nav('/', { replace: true });
   };
 

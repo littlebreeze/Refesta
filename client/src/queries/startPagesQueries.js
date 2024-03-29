@@ -24,3 +24,14 @@ const postUserProfile = async (formData) => {
 export const usePostProfileQuery = () => {
   return useMutation('postProfile', postUserProfile);
 };
+
+const postGenre = async (selectedGenre) => {
+  const response = await instance.post('members/genres', { preferGenres: selectedGenre });
+  return response;
+};
+
+export const useGenreQuery = () => {
+  return useMutation('postGenre', postGenre);
+};
+
+// 구글 재생목록 가져와서 저장하는 로직 추가 예정

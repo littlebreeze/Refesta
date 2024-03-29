@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 
-import defaultImg from '../../assets/default_img.jpg';
-import editPencil from '../../assets/edit_pencil.png';
+import defaultImg from '@assets/default_img.jpg';
+import editPencil from '@assets/edit_pencil.png';
 
-import { useProfileQuery, usePostProfileQuery } from '@/queries/profileQueries';
+import { useProfileQuery, usePostProfileQuery } from '@/queries/startPagesQueries';
 
 const ProfileInfo = ({ setStep, stepParam }) => {
   const { data, isLoading, isError, error } = useProfileQuery();
@@ -14,8 +14,7 @@ const ProfileInfo = ({ setStep, stepParam }) => {
     file: null,
   });
 
-  const { data: postData, isLoading: isPostLoading, mutate, mutateAsync } = usePostProfileQuery();
-  console.log(data);
+  const { data: postData, isLoading: isPostLoading, mutate } = usePostProfileQuery();
 
   // 사용자 정보 설정
   const getUserProfile = () => {

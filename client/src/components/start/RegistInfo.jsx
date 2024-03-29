@@ -1,9 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import ProfileInfo from '../start/ProfileInfo';
 import YoutubeConnect from './YoutubeConnect';
 import GenreList from './GenreList';
-import { useNavigate } from 'react-router-dom';
 
 // STEP : profile > youtube > genre
 const stepParam = {
@@ -11,8 +10,6 @@ const stepParam = {
   step2: 'youtube',
   step3: 'genre',
 };
-
-//
 
 const RegisterInfo = () => {
   const [steps, setStep] = useState(stepParam.step1);
