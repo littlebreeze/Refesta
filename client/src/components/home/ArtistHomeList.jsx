@@ -4,11 +4,13 @@ import instance from '@util/token_interceptor';
 
 import ArtistHomeItem from '@components/home/ArtistHomeItem';
 import ListTitle from '@components/home/ListTitle';
+import ItemLoading from '@components/home/loading/ItemLoading';
 
 import refresh from '@assets/refresh.png';
 
 const ArtistHomeList = () => {
   const [artistData, setArtistData] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   // 페이지 번호
   const [page, setPage] = useState(1);
@@ -16,10 +18,10 @@ const ArtistHomeList = () => {
   // 추천 아티스트 정보 요청
   const getRecommendArtists = async () => {
     const response = await instance.get('recommendations/artists', {
-      //const response = await instance.get(`artists/${page}`, {
       params: { page },
     });
     setArtistData(response.data.data.artistInfoList);
+    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -42,9 +44,11 @@ const ArtistHomeList = () => {
         }
       />
       <div className='flex overflow-x-scroll gap-x-3 scrollbar-hide px-7'>
-        {artistData.map((item) => (
-          <ArtistHomeItem key={item.id} {...item} />
-        ))}
+        {isLoading ? (
+          <ItemLoading type={'artist'} />
+        ) : (
+          artistData.map((item) => <ArtistHomeItem key={item.id} {...item} />)
+        )}
       </div>
     </div>
   );
