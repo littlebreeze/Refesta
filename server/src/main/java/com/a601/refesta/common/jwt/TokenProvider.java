@@ -5,9 +5,7 @@ import com.a601.refesta.common.exception.ErrorCode;
 import com.a601.refesta.login.data.MemberDetail;
 import com.a601.refesta.login.data.MemberDetailAuthenticationToken;
 import com.a601.refesta.login.data.OauthTokenRes;
-import com.a601.refesta.login.repository.RefreshTokenRepository;
 import com.a601.refesta.member.domain.Member;
-import com.a601.refesta.member.domain.RefreshToken;
 import com.a601.refesta.member.repository.MemberRepository;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
@@ -24,7 +22,6 @@ import java.security.Key;
 import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.Date;
-import java.util.List;
 
 import static java.time.LocalDateTime.now;
 
@@ -44,8 +41,6 @@ public class TokenProvider {
     @Autowired
     private MemberRepository memberRepository;
 
-    @Autowired
-    private RefreshTokenRepository refreshTokenRepository;
 
     public TokenProvider(@Value("${spring.security.oauth2.jwt.secret}") String secret) {
         byte[] keyBytes = Decoders.BASE64.decode(secret);
@@ -53,14 +48,6 @@ public class TokenProvider {
     }
 
     public OauthTokenRes generateTokenDto(Member member) {
-        // 이미 있는 refreshToken 만료 처리 로직
-        List<RefreshToken> list = refreshTokenRepository.findAllByToken();
-        if (list != null) {
-            for (RefreshToken rt : list) {
-                rt.setExpired();
-                refreshTokenRepository.save(rt);
-            }
-        }
 
         long now = (new Date()).getTime();
         //ACCESSTOKEN 생성
@@ -94,7 +81,6 @@ public class TokenProvider {
                 .refreshTokenExpiresIn(REFRESH_TOKEN_EXPIRE_TIME)
                 .build();
     }
-    //토큰에서 member정보 빼노는 메소드 만들기
 
     // 토큰을 검증하는 역할
     public boolean validateToken(String token) {
