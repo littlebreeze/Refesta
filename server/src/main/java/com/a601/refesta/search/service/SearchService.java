@@ -4,6 +4,7 @@ import com.a601.refesta.common.exception.CustomException;
 import com.a601.refesta.common.exception.ErrorCode;
 import com.a601.refesta.search.data.AutoCompleteRes;
 import com.a601.refesta.search.data.SearchResultRes;
+import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -48,8 +49,8 @@ public class SearchService {
      * @return AutoCompleteRes - 페스티벌 검색어(최대 3개) 리스트, 아티스트 검색어(최대 3개) 리스트
      */
     public AutoCompleteRes getAutoComplete(int memberId, String inputWord) {
-        List<String> festivalList;
-        List<String> artistList;
+        List<AutoCompleteRes.SearchWord> festivalList;
+        List<AutoCompleteRes.SearchWord> artistList;
 
         //검색어가 초성으로 끝나는 경우
         if (checkEndsWithConsonant(inputWord)) {
@@ -60,7 +61,7 @@ public class SearchService {
 
             //검색어 포함 페스티벌 이름 조회, 추천 순 정렬
             festivalList = jpaQueryFactory
-                    .select(festival.name)
+                    .select(Projections.constructor(AutoCompleteRes.SearchWord.class, festival.id, festival.name))
                     .from(festival)
                     .innerJoin(memberFestival).on(memberFestival.member.id.eq(memberId)
                             .and(festival.name.toLowerCase().between(fromWord.toLowerCase(), toWord.toLowerCase()))
@@ -71,7 +72,7 @@ public class SearchService {
 
             //검색어 포함 아티스트 이름 조회, 추천 순 정렬
             artistList = jpaQueryFactory
-                    .select(artist.name)
+                    .select(Projections.constructor(AutoCompleteRes.SearchWord.class, artist.id, artist.name))
                     .from(artist)
                     .leftJoin(memberArtist).on(memberArtist.member.id.eq(memberId)
                             .and(memberArtist.artist.id.eq(artist.id)))
@@ -82,7 +83,7 @@ public class SearchService {
         } else {
             //페스티벌 이름 포함으로 검색, 일치 >> 시작 >> 추천순 정렬
             festivalList = jpaQueryFactory
-                    .select(festival.name)
+                    .select(Projections.constructor(AutoCompleteRes.SearchWord.class, festival.id, festival.name))
                     .from(memberFestival)
                     .innerJoin(festival).on(memberFestival.member.id.eq(memberId)
                             .and(festival.name.toLowerCase().contains(inputWord.toLowerCase()))
@@ -97,7 +98,7 @@ public class SearchService {
 
             //아티스트 이름 포함으로 검색, 일치 >> 시작 >> 추천 순 정렬
             artistList = jpaQueryFactory
-                    .select(artist.name)
+                    .select(Projections.constructor(AutoCompleteRes.SearchWord.class, artist.id, artist.name))
                     .from(artist)
                     .leftJoin(memberArtist).on(memberArtist.member.id.eq(memberId)
                             .and(memberArtist.artist.id.eq(artist.id)))
