@@ -2,22 +2,36 @@ import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import useArtistStore from '@store/artistStore';
 
+import instance from '@util/token_interceptor';
+
 import FestivalList from '@components/artistDetail/FestivalList';
 
 import heartFull from '@assets/heart_full.png';
 import heart from '@assets/heart.png';
 
 const ArtistDetail = () => {
-  const { addArtist, artist, toggleLike, updateLike } = useArtistStore();
+  const { addArtist, artist, toggleLike, updateArtistLike } = useArtistStore();
   const { id } = useParams();
 
   useEffect(() => {
     addArtist(id);
+
+    // 아티스트 상세 페이지 접근 데이터 제공
+    const increaseArtistViewCount = async () => {
+      try {
+        const res = await instance.patch(`artists/${id}/views`);
+        console.log(res);
+      } catch (e) {
+        console.error('Error:', e);
+      }
+    };
+
+    increaseArtistViewCount();
   }, [addArtist, id]);
 
   const handleLikeBtn = () => {
     toggleLike();
-    updateLike(id);
+    updateArtistLike(id);
   };
 
   return (

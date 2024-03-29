@@ -30,8 +30,8 @@ const useLikeStore = create((set) => ({
       console.log(e);
     }
   },
-  // 좋아요 토글
-  toggleLike: (id) =>
+  // 아티스트 좋아요 토글
+  toggleArtistLike: (id) =>
     set((state) => {
       const updateList = state.likeArtistList.map((artist) => {
         if (artist.artistId === id) {
@@ -40,6 +40,18 @@ const useLikeStore = create((set) => ({
         return artist;
       });
       return { likeArtistList: updateList };
+    }),
+
+  // 페스티벌 좋아요 토글
+  toggleFestivalLike: (id) =>
+    set((state) => {
+      const updateList = state.likeFestivalList.map((festival) => {
+        if (festival.festivalId === id) {
+          return { ...festival, like: !festival.like };
+        }
+        return festival;
+      });
+      return { likeFestivalList: updateList };
     }),
 }));
 
