@@ -10,30 +10,25 @@ import FestivalInfoDetail from '@components/festivalDetail/FestivalInfoDetail';
 import ReservationButton from '@components/festivalDetail/ReservationButton';
 import FestivalInfoContainer from '@components/festivalDetail/FestivalInfoContainer';
 
+// 페스티벌 상세보기 페이지
 const FestivalDetailPage = () => {
   const { id } = useParams();
-
-  const { festivalInfoData, setFestivalInfoData, festivalInfoDetailData, setFestivalInfoDetailData } =
-    useFestivalInfoStore();
-
+  const { festivalInfoData, setFestivalInfoData, setFestivalInfoDetailData } = useFestivalInfoStore();
   const {
     lineupList,
     addLineupList,
-    selectedLineupList,
     setSelectedLineupList,
     songInfoMap,
     addSongInfoMap,
     sortedSongInfoMap,
     sortSongInfoMapByLineupList,
-    selectedSongInfoMap,
     setSelectedSongInfoMap,
-    currSong,
     setCurrSong,
-    currSongList,
     setCurrSongList,
   } = useSetListStore();
 
-  // 페이지가 처음 렌더링 될 때 페스티벌 정보를 가져옴
+  // 페이지가 처음 렌더링 될 때
+  // 페스티벌 정보를 가져오는 함수 실행
   useEffect(() => {
     const getFestivalInfoData = async () => {
       try {
@@ -45,13 +40,14 @@ const FestivalDetailPage = () => {
         console.error('Error:', error);
       }
     };
-
     getFestivalInfoData();
   }, []);
 
-  // 페스티벌의 완료 여부에 따라 실행될 함수 분기처리
+  // 페스티벌 정보를 바탕으로
+  // 예정 페스티벌과 완료 페스티벌에 따라
+  // 필요한 정보를 가져오는 함수를 각각 분기처리하여 실행
   useEffect(() => {
-    // 진행 예정 페스티벌일 경우
+    // 예정 페스티벌의 경우에 처리할 함수
     if (festivalInfoData && !festivalInfoData.ended) {
       const getFestivalInfoDetailData = async () => {
         try {
@@ -63,7 +59,7 @@ const FestivalDetailPage = () => {
       };
       getFestivalInfoDetailData();
     }
-    // 이미 지난 페스티벌일 경우
+    // 완료 페스티벌의 경우에 처리할 함수
     else if (festivalInfoData && festivalInfoData.ended) {
       const getSetListData = async () => {
         try {
@@ -79,12 +75,16 @@ const FestivalDetailPage = () => {
     }
   }, [festivalInfoData]);
 
+  // 페스티벌 라인업과 노래 정보를 바탕으로
+  // 노래 정보를 순서에 맞춰 정렬하는 함수 실행
   useEffect(() => {
     if (lineupList.length > 0) {
       sortSongInfoMapByLineupList(lineupList, songInfoMap);
     }
   }, [lineupList]);
 
+  // 정렬된 노래 정보를 바탕으로
+  // 초기 재생할 노래와 현재 재생 목록을 설정하는 함수 실행
   useEffect(() => {
     if (lineupList.length > 0) {
       setSelectedSongInfoMap(sortedSongInfoMap);
@@ -97,15 +97,17 @@ const FestivalDetailPage = () => {
   return (
     <div>
       {festivalInfoData && !festivalInfoData.ended ? (
+        // 예정 페스티벌
         <div>
-          <FestivalInfo />
-          <FestivalInfoDetail />
-          <ReservationButton />
+          <FestivalInfo /> {/* 페스티벌 기본 정보 */}
+          <FestivalInfoDetail /> {/* 예정 페스티벌 이미지 정보 */}
+          <ReservationButton /> {/* 예매 버튼 */}
         </div>
       ) : (
+        // 완료 페스티벌
         <div>
-          <FestivalInfo />
-          <FestivalInfoContainer />
+          <FestivalInfo /> {/* 페스티벌 기본 정보 */}
+          <FestivalInfoContainer /> {/* 페스티벌 셋리스트 & 후기게시판 탭 */}
         </div>
       )}
     </div>
