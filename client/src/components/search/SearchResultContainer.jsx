@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import SearchResultWrapper from './SearchResultWrapper';
-import FestivalSearchWrapper from './FestivalSearchWrapper';
-import ArtistSearchWrapper from './ArtistSearchWrapper';
-import instance from '../../util/token_interceptor';
-import useSearchResultStore from '../../store/searchResultStore';
+import useSearchResultStore from '@store/searchResultStore';
+
+import instance from '@util/token_interceptor';
+
+import SearchResultWrapper from '@components/search/SearchResultWrapper';
+import FestivalSearchWrapper from '@components/search//FestivalSearchWrapper';
+import ArtistSearchWrapper from '@components/search//ArtistSearchWrapper';
 
 // 검색 결과 탭(통합검색/페스티벌/아티스트)
 const SearchResultContainer = () => {
