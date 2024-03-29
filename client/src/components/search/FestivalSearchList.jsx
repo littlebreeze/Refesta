@@ -1,6 +1,5 @@
-import React from 'react';
-import FestivalSearchItem from './FestivalSearchItem';
-import useSearchResultStore from '../../store/searchResultStore';
+import useSearchResultStore from '@store/searchResultStore';
+import FestivalSearchItem from '@components/search/FestivalSearchItem';
 
 const FestivalSearchList = ({ isTotal, setOpenSearchTab }) => {
   const { festivalList, artistList, setFestivalList, setArtistList } = useSearchResultStore();

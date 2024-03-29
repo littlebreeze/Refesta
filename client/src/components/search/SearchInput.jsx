@@ -1,6 +1,5 @@
-import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { useState, useEffect, useRef } from 'react';
-import { getRegExp } from 'korean-regexp';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 
 import useSearchStore from '../../store/searchStore';
 import instance from '../../util/token_interceptor';

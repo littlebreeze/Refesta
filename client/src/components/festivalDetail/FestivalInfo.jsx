@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import heart from '../../assets/heart.png';
-import heart_full from '../../assets/heart_full.png';
-import instance from '../../util/token_interceptor';
+import { useEffect, useState } from 'react';
+import instance from '@util/token_interceptor';
+import heart from '@assets/heart.png';
+import heart_full from '@assets/heart_full.png';
 
 // 페스티벌 상세 정보
 const FestivalInfo = ({ festivalInfoData }) => {

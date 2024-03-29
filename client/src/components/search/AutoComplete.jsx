@@ -1,6 +1,5 @@
-import useSearchStore from '../../store/searchStore';
-
-import AutoCompleteItem from './AutoCompleteItem';
+import useSearchStore from '@store/searchStore';
+import AutoCompleteItem from '@components/search/AutoCompleteItem';
 
 const AutoComplete = () => {
   const { autoCompleteList } = useSearchStore();

@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import SetListWrapper from './SetListWrapper';
-import ReviewWrapper from './ReviewWrapper';
+import { useState } from 'react';
+import SetListWrapper from '@components/festivalDetail/SetListWrapper';
+import ReviewWrapper from '@components/festivalDetail/ReviewWrapper';
 
 // 완료된 페스티벌 탭(셋리스트/후기게시판)
 const FestivalInfoContainer = ({ id }) => {

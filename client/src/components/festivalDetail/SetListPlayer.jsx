@@ -1,12 +1,12 @@
-import React, { useEffect } from 'react';
-import { useState, useRef } from 'react';
+import { useState, useEffect } from 'react';
+import useSetListStore from '@store/setListStore';
 import ReactPlayer from 'react-player';
-import play_btn from '../../assets/play_btn.png';
-import pause_btn from '../../assets/pause_btn.png';
-import default_album_poster from '../../assets/default_album_poster.jpg';
-import previous_btn from '../../assets/previous_btn.png';
-import next_btn from '../../assets/next_btn.png';
-import useSetListStore from '../../store/setListStore';
+
+import play_btn from '@assets/play_btn.png';
+import pause_btn from '@assets/pause_btn.png';
+import previous_btn from '@assets/previous_btn.png';
+import next_btn from '@assets/next_btn.png';
+import default_album_poster from '@assets/default_album_poster.jpg';
 
 const SetListPlayer = () => {
   const {
