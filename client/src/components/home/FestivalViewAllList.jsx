@@ -1,13 +1,14 @@
-import instance from '../../util/token_interceptor';
 import { useEffect, useState } from 'react';
-import FestivalViewAllItem from './FestivalViewAllItem';
+
+import instance from '@util/token_interceptor';
+
+import FestivalViewAllItem from '@components/home/FestivalViewAllItem';
 
 const FestivalViewAllList = ({ title, state }) => {
   const dummyData = [
     {
       id: 1,
-      posterUrl:
-        'https://ticketimage.interpark.com/Play/image/large/24/24001681_p.gif',
+      posterUrl: 'https://ticketimage.interpark.com/Play/image/large/24/24001681_p.gif',
       name: '사운드 베리 THEATER 2024 - 1일차',
       date: new Date('2024-03-16').getTime(),
       location: '올림픽공원',
@@ -15,8 +16,7 @@ const FestivalViewAllList = ({ title, state }) => {
     },
     {
       id: 2,
-      posterUrl:
-        'https://ticketimage.interpark.com/Play/image/large/24/24001880_p.gif',
+      posterUrl: 'https://ticketimage.interpark.com/Play/image/large/24/24001880_p.gif',
       name: '2024 LOVESOME - 마음 방울 채집',
       date: new Date('2024-04-27').getTime(),
       location: '올림픽공원',
@@ -33,8 +33,7 @@ const FestivalViewAllList = ({ title, state }) => {
     },
     {
       id: 4,
-      posterUrl:
-        'https://ticketimage.interpark.com/Play/image/large/24/24001880_p.gif',
+      posterUrl: 'https://ticketimage.interpark.com/Play/image/large/24/24001880_p.gif',
       name: '2024 LOVESOME - 마음 방울 채집',
       date: new Date('2024-04-27').getTime(),
       location: '올림픽공원',
@@ -42,8 +41,7 @@ const FestivalViewAllList = ({ title, state }) => {
     },
     {
       id: 5,
-      posterUrl:
-        'https://ticketimage.interpark.com/Play/image/large/24/24001681_p.gif',
+      posterUrl: 'https://ticketimage.interpark.com/Play/image/large/24/24001681_p.gif',
       name: '사운드 베리 THEATER 2024 - 1일차',
       date: new Date('2024-03-16').getTime(),
       location: '올림픽공원',
@@ -51,8 +49,7 @@ const FestivalViewAllList = ({ title, state }) => {
     },
     {
       id: 6,
-      posterUrl:
-        'https://ticketimage.interpark.com/Play/image/large/24/24001880_p.gif',
+      posterUrl: 'https://ticketimage.interpark.com/Play/image/large/24/24001880_p.gif',
       name: '2024 LOVESOME - 마음 방울 채집',
       date: new Date('2024-04-27').getTime(),
       location: '올림픽공원',
@@ -64,9 +61,7 @@ const FestivalViewAllList = ({ title, state }) => {
 
   // 추천 아티스트 정보 요청
   const getRecommendArtists = async () => {
-    const response = await instance.get(
-      `recommendations/${state}-festivals`
-    );
+    const response = await instance.get(`recommendations/${state}-festivals`);
     setFestivalData(response.data.data);
   };
 
@@ -76,9 +71,7 @@ const FestivalViewAllList = ({ title, state }) => {
 
   return (
     <div className='px-4'>
-      <div className='mt-2 text-2xl font-semibold text-center mb-7'>
-        {title} 페스티벌
-      </div>
+      <div className='mt-2 text-2xl font-semibold text-center mb-7'>{title} 페스티벌</div>
       <div className='grid gap-y-7'>
         {festivalData.map((item) => (
           <FestivalViewAllItem key={item.id} {...item} />

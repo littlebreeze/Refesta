@@ -1,10 +1,11 @@
-import Carousel from '../components/home/Carousel';
-import ArtistHomeList from '../components/home/ArtistHomeList';
-import FestivalHomeList from '../components/home/FestivalHomeList';
-import SetListHomeList from '../components/home/SetListHomeList';
-
-import instance from '../util/token_interceptor';
 import { useEffect, useState } from 'react';
+
+import instance from '@util/token_interceptor';
+
+import Carousel from '@components/home/Carousel';
+import ArtistHomeList from '@components/home/ArtistHomeList';
+import FestivalHomeList from '@components/home/FestivalHomeList';
+import SetListHomeList from '@components/home/SetListHomeList';
 
 const Home = () => {
   const [festivalData, setFestivalData] = useState([]);
