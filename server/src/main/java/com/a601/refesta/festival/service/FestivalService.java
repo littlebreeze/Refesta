@@ -17,6 +17,7 @@ import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -67,7 +68,7 @@ public class FestivalService {
      * @param memberId
      * @param festivalId
      */
-    public void updateFestivalLike(int memberId, int festivalId) {
+    public HttpStatus updateFestivalLike(int memberId, int festivalId) {
         Optional<FestivalLike> optFindLike = festivalLikeRepository
                 .findByMember_IdAndFestival_Id(memberId, festivalId);
 
@@ -80,14 +81,15 @@ public class FestivalService {
                     .build()
             );
 
-            return;
+            return HttpStatus.CREATED;
         }
 
         //DB에 있으면 좋아요 상태 업데이트
         FestivalLike findLike = optFindLike.get();
         findLike.updateStatus();
-
         festivalLikeRepository.save(findLike);
+
+        return HttpStatus.OK;
     }
 
     /**

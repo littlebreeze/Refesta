@@ -48,7 +48,6 @@ public class FestivalController {
     public SuccessResponse<HttpStatus> editFestivalLike(HttpServletRequest request,
                                                         @PathVariable(name = "festival_id") int festivalId) {
         int memberId = tokenProvider.getMemberIdByToken(request);
-        festivalService.updateFestivalLike(memberId, festivalId);
-        return new SuccessResponse<>(HttpStatus.OK);
+        return new SuccessResponse<>(festivalService.updateFestivalLike(memberId, festivalId));
     }
 }

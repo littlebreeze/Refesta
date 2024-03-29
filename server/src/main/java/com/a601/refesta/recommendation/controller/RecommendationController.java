@@ -8,10 +8,10 @@ import com.a601.refesta.recommendation.data.FestivalRecommendationRes;
 import com.a601.refesta.recommendation.service.RecommendationService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.security.core.parameters.P;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -46,5 +46,26 @@ public class RecommendationController {
     public SuccessResponse<List<EntireFestivalInfoRes>> getEntireEndedFestival(HttpServletRequest request) {
         int memberId = tokenProvider.getMemberIdByToken(request);
         return new SuccessResponse<>(recommendationService.getEntireEndedFestival(memberId));
+    }
+
+    @PatchMapping("/festivals/{festival_id}")
+    public SuccessResponse<HttpStatus> editFestivalPreference(HttpServletRequest request,
+                          @PathVariable(name = "festival_id") int festivalId, @RequestParam(name = "point") int point) {
+        int memberId = tokenProvider.getMemberIdByToken(request);
+        return new SuccessResponse<>(recommendationService.updateFestivalPreference(memberId, festivalId, point));
+    }
+
+    @PatchMapping("/songs/{song_id}")
+    public SuccessResponse<HttpStatus> editSongPreference(HttpServletRequest request,
+                                                          @PathVariable(name = "song_id") int songId) {
+        int memberId = tokenProvider.getMemberIdByToken(request);
+        return new SuccessResponse<>(recommendationService.updateSongPreference(memberId, songId));
+    }
+
+    @PatchMapping("/artists/{artist_id}")
+    public SuccessResponse<HttpStatus> editArtistPreference(HttpServletRequest request,
+                              @PathVariable(name = "artist_id") int artistId, @RequestParam(name = "point") int point) {
+        int memberId = tokenProvider.getMemberIdByToken(request);
+        return new SuccessResponse<>(recommendationService.updateArtistPreference(memberId, artistId, point));
     }
 }
