@@ -5,7 +5,7 @@ import useKakaoStore from '@store/kakaoStore';
 import PosterImage from '@components/reservation/PosterImage';
 import BillingResult from '@components/reservation/BillingResult';
 
-const ReservationDetail = () => {
+const ReservationDetailPage = () => {
   const { billingResult, getBillingResult } = useKakaoStore();
   const { id } = useParams();
   useEffect(() => {
@@ -20,4 +20,4 @@ const ReservationDetail = () => {
   );
 };
 
-export default ReservationDetail;
+export default ReservationDetailPage;

@@ -3,13 +3,12 @@ import useLikeStore from '@store/likeStore';
 
 import LikeList from '@components/mypage/LikeList';
 
-const LikeArtist = () => {
+const LikeArtistPage = () => {
   const { likeArtistList, getLikeArtistList } = useLikeStore();
 
   useEffect(() => {
     getLikeArtistList();
-    console.log(likeArtistList);
-  }, []); //
+  }, []);
 
   return (
     <div className='bg-gray-200 h-lvh'>
@@ -18,4 +17,4 @@ const LikeArtist = () => {
   );
 };
 
-export default LikeArtist;
+export default LikeArtistPage;

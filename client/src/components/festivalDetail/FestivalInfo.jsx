@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import useFestivalInfoStore from '@store/festivalInfoStore';
 
 import instance from '@util/token_interceptor';
 
@@ -6,7 +7,10 @@ import heart from '@assets/heart.png';
 import heart_full from '@assets/heart_full.png';
 
 // 페스티벌 상세 정보
-const FestivalInfo = ({ festivalInfoData }) => {
+const FestivalInfo = () => {
+  const { festivalInfoData, setFestivalInfoData, festivalInfoDetailData, setFestivalInfoDetailData } =
+    useFestivalInfoStore();
+
   const [likedFestival, setLikedFestival] = useState(festivalInfoData && festivalInfoData.liked); // 좋아요 상태를 저장하는 상태 변수
 
   useEffect(() => {

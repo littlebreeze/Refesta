@@ -1,9 +1,15 @@
-import { useNavigate } from 'react-router';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 import LikeItem from '@components/mypage/LikeItem';
 
+import wishlist from '@assets/wishlist.png';
+
 const LikeList = ({ contents }) => {
   const nav = useNavigate();
+  const location = useLocation();
+  const pageType = location.pathname.includes('festival') ? 'festival' : 'artist';
+
+  // 컨텐츠 클릭 -> 상세 페이지
   const handleItemClick = (id, type) => {
     if (type === 'festival') {
       nav(`/festival/${id}`);
@@ -11,10 +17,9 @@ const LikeList = ({ contents }) => {
       nav(`/artist/${id}`);
     }
   };
-  console.log(contents);
 
   return (
-    <div className='grid grid-cols-2 gap-3 pt-3 mx-3 bg-gray-200'>
+    <div className='grid grid-cols-2 gap-3 bg-gray-200'>
       {contents && contents.length > 0 ? (
         contents.map((content) => {
           const modifiedContents = {
@@ -31,8 +36,24 @@ const LikeList = ({ contents }) => {
             />
           );
         })
+      ) : pageType === 'festival' ? (
+        <div className='absolute flex flex-col items-center w-full h-full bg-white pt-52'>
+          <div className='w-24'>
+            <img src={wishlist} />
+          </div>
+          <div className='mt-5 text-lg font-bold'>좋아하는 페스티벌이 없어요</div>
+          <div className='text-xs text-gray-500'>페스티벌 상세 화면에서 하트 아이콘을 눌러</div>
+          <div className='text-xs text-gray-500'>나만의 페스티벌 목록을 만들어보세요!</div>
+        </div>
       ) : (
-        <div className='mt-10 text-xl font-bold text-center'>좋아하는 아티스트가 없어요</div>
+        <div className='absolute flex flex-col items-center w-full bg-white pt-52'>
+          <div className='w-24'>
+            <img src={wishlist} />
+          </div>
+          <div className='mt-5 text-lg font-bold'>좋아하는 아티스트가 없어요</div>
+          <div className='text-xs text-gray-500'>아티스트 상세 화면에서 하트 아이콘을 눌러</div>
+          <div className='text-xs text-gray-500'>나만의 아티스트 목록을 만들어보세요!</div>
+        </div>
       )}
     </div>
   );

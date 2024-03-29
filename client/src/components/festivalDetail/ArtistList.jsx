@@ -37,7 +37,7 @@ const ArtistList = () => {
     else {
       // 선택된 라인업을 전체 라인업으로 변경
       setSelectedLineupList([...lineupList]);
-      const allSongs = lineupList.flatMap((artist) => songInfoMap[artist.id].map((song) => song.audioUrl));
+      const allSongs = lineupList.flatMap((artist) => songInfoMap[artist.id].map((song) => song));
       setCurrSongList(allSongs);
     }
     // 버튼 토글

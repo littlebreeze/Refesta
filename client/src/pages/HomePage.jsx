@@ -7,7 +7,7 @@ import ArtistHomeList from '@components/home/ArtistHomeList';
 import FestivalHomeList from '@components/home/FestivalHomeList';
 import SetListHomeList from '@components/home/SetListHomeList';
 
-const Home = () => {
+const HomePage = () => {
   const [festivalData, setFestivalData] = useState([]);
   const [setListData, setSetListData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -46,4 +46,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default HomePage;
