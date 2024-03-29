@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import heart from '../../assets/heart.png';
+import heart from '@assets/heart.png';
 import heart_full from '../../assets/heart_full.png';
 import instance from '../../util/token_interceptor';
 
