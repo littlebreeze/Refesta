@@ -4,8 +4,6 @@ import heart_full from '../../assets/heart_full.png';
 import instance from '../../util/token_interceptor';
 
 // 페스티벌 상세 정보
-// 1. 페스티벌 포스터
-// 2. 페스티벌 정보
 const FestivalInfo = ({ festivalInfoData }) => {
   const [likedFestival, setLikedFestival] = useState(festivalInfoData && festivalInfoData.liked); // 좋아요 상태를 저장하는 상태 변수
 
@@ -45,9 +43,9 @@ const FestivalInfo = ({ festivalInfoData }) => {
               <div className='pb-1 text-sm'>가격</div>
               <div className='pb-4 pl-1 text-xs'>{festivalInfoData.price.toLocaleString()}원</div>
             </div>
-            <div className='absolute bottom-0 right-0 flex justify-end pr-1'>
+            <div className='absolute bottom-0 right-0 flex justify-end pr-1 w-9'>
               <img
-                className=''
+                className='w-full'
                 src={likedFestival ? heart_full : heart}
                 alt='페스티벌 좋아요 버튼'
                 onClick={handleLike}

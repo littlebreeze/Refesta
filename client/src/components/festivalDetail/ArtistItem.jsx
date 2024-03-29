@@ -16,9 +16,13 @@ const ArtistItem = ({ artist }) => {
     setSelectedSongInfoMap,
     isAllSelected,
     setAllSelected,
+    currSong,
+    setCurrSong,
+    currSongList,
+    setCurrSongList,
+    currSinger,
+    setCurrSinger,
   } = useSetListStore();
-
-  const isSelected = selectedLineupList.includes(artist);
 
   useEffect(() => {
     if (lineupList.length === selectedLineupList.length) {
@@ -29,11 +33,17 @@ const ArtistItem = ({ artist }) => {
   }, [selectedLineupList]);
 
   // 요소 하나 선택
+  const isSelected = selectedLineupList.includes(artist);
+
   const toggleSelect = () => {
     if (!isSelected) {
       setSelectedLineupList([...selectedLineupList, artist]); // 선택된 아티스트 목록에 추가
+      const additionalCurrSongList = [];
+      songInfoMap[artist.id].forEach((song) => additionalCurrSongList.push(song));
+      setCurrSongList([...currSongList, ...additionalCurrSongList]);
     } else {
       setSelectedLineupList(selectedLineupList.filter((item) => item !== artist)); // 선택된 아티스트 목록에서 제거
+      setCurrSongList(currSongList.filter((song) => !songInfoMap[artist.id].includes(song)));
     }
   };
 
