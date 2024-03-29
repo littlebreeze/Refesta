@@ -14,12 +14,12 @@ const ItemLoading = ({ type }) => {
   } else if (type === 'festival') {
     return (
       <>
-        {dummydata.map((item) => {
-          <FestivalHomeItem key={item.id} />;
-        })}
-        {dummydata.map((item) => {
-          <FestivalHomeItem key={item.id} />;
-        })}
+        {dummydata.map((item) => (
+          <FestivalHomeItem key={item.id} />
+        ))}
+        {dummydata.map((item) => (
+          <FestivalHomeItem key={item.id} />
+        ))}
       </>
     );
   } else if (type === 'artist') {
