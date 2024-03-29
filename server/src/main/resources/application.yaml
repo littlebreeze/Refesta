@@ -37,7 +37,7 @@ spring:
 
   data:
     redis:
-      host: https://j10a601.p.ssafy.io
+      host: j10a601.p.ssafy.io
       port: 6379
 
 server:
