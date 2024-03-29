@@ -1,11 +1,11 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import useSearchStore from '@store/searchStore';
 
-import useSearchStore from '../../store/searchStore';
-import instance from '../../util/token_interceptor';
+import instance from '@util/token_interceptor';
 
-import backspace from '../../assets/backspace.png';
-import x_btn from '../../assets/x_btn.png';
+import backspace from '@assets/backspace.png';
+import x_btn from '@assets/x_btn.png';
 
 const SearchInput = () => {
   const { searchKeyword, changeSearchKeyword, setAutoCompleteList } = useSearchStore();

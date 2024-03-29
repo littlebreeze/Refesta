@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import useSetListStore from '@store/setListStore';
+
 import all_album from '@assets/all_album.jpg';
 import select from '@assets/select.png';
 import ArtistItem from '@components/festivalDetail/ArtistItem';

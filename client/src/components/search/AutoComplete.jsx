@@ -1,4 +1,5 @@
 import useSearchStore from '@store/searchStore';
+
 import AutoCompleteItem from '@components/search/AutoCompleteItem';
 
 const AutoComplete = () => {

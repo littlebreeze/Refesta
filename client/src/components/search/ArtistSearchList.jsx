@@ -1,4 +1,5 @@
 import useSearchResultStore from '@store/searchResultStore';
+
 import ArtistSearchItem from '@components/search/ArtistSearchItem';
 
 const ArtistSearchList = ({ artistListData, isTotal, setOpenSearchTab }) => {

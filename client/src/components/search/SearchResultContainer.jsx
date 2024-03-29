@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import useSearchResultStore from '@store/searchResultStore';
+
 import instance from '@util/token_interceptor';
 
 import SearchResultWrapper from '@components/search/SearchResultWrapper';

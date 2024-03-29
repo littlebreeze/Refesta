@@ -1,4 +1,5 @@
 import useSearchResultStore from '@store/searchResultStore';
+
 import FestivalSearchItem from '@components/search/FestivalSearchItem';
 
 const FestivalSearchList = ({ isTotal, setOpenSearchTab }) => {

@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import useSetListStore from '@store/setListStore';
+
 import PlayListItem from '@components/festivalDetail/PlayListItem';
 
 const PlayList = () => {
