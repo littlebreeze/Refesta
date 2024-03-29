@@ -1,13 +1,4 @@
 const BillingResult = ({ billingResult }) => {
-  const festival = {
-    name: '대구 힙합 페스티벌(1일차)',
-    date: new Date('2024-05-04'),
-    location: '대구스타디움 보조경기장',
-    price: 110000,
-    paymentDate: new Date(),
-    cnt: 2,
-  };
-
   // 천단위 콤마 넣기
   const addComma = (price) => {
     let returnString = price?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');

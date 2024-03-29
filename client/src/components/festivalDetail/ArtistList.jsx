@@ -18,19 +18,26 @@ const ArtistList = () => {
     setSelectedSongInfoMap,
     isAllSelected,
     setAllSelected,
+    currSong,
+    setCurrSong,
+    currSongList,
+    setCurrSongList,
   } = useSetListStore();
 
   // 라인업 전체 버튼을 관리하는 함수
   const toggleAllSelect = () => {
     // 라인업이 전체 선택되어 있을 때 전체 버튼을 누를 경우
     if (isAllSelected) {
-      //  선택된 라인업 전체를 초기화
+      // 선택된 라인업 전체를 초기화
       setSelectedLineupList([]);
+      setCurrSongList([]);
     }
     // 라인업이 일부만 선택되어 있을 때 전체 버튼을 누를 경우
     else {
       // 선택된 라인업을 전체 라인업으로 변경
       setSelectedLineupList([...lineupList]);
+      const allSongs = lineupList.flatMap((artist) => songInfoMap[artist.id].map((song) => song.audioUrl));
+      setCurrSongList(allSongs);
     }
     // 버튼 토글
     setAllSelected(!isAllSelected);
@@ -56,16 +63,6 @@ const ArtistList = () => {
           </div>
           <div className='w-12 text-xs truncate'>전체</div>
         </li>
-        {/* 개별 가수 */}
-        {/* {lineupList.map((artist) => (
-          <li className='flex-col p-2' key={artist.id}>
-            <div className='relative mb-2'>
-              {allSelected && <img className='absolute w-12 rounded-full ' src={select} alt='' />}
-              <img className='w-12 rounded-full' src={artist.pictureUrl} alt='' />
-            </div>
-            <div className='w-12 text-xs truncate'>{artist.name}</div>
-          </li>
-        ))} */}
         {/* 개별 가수 */}
         {lineupList.map((artist) => (
           <ArtistItem key={artist.id} artist={artist} isSelected={selectedLineupList.includes(artist)} />

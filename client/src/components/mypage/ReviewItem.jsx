@@ -12,7 +12,7 @@ const ReviewItem = ({ review }) => {
       <div className='flex justify-between'>
         <div className='flex flex-col'>
           <div className='text-lg font-bold leading-5'>{name}</div>
-          <div className='flex my-2 text-sm text-gray-400'>
+          <div className='flex my-2 text-xs text-gray-400'>
             <div className='mr-3'>{review.festivalDate}</div>
             <div>| {location}</div>
           </div>
@@ -38,6 +38,7 @@ const ReviewItem = ({ review }) => {
             url={attachmentUrl}
             muted={true}
             playing={isPlaying}
+            playsinline={true}
             loop={true}
             controls={true}
             width='100%'

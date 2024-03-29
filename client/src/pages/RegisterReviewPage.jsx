@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect, useState, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import ReactPlayer from 'react-player';
 import { useNavigate } from 'react-router-dom';
@@ -17,7 +17,6 @@ const RegisterReview = ({ isOpen, onClose, selectedFile: propSelectedFile }) => 
 
   const [newReview, setNewReview] = useState({});
 
-  const [selectedFile, setSelectedFile] = useState(propSelectedFile);
   const [fileUrl, setFileUrl] = useState('');
   const [isImage, setIsImage] = useState();
 
@@ -28,11 +27,10 @@ const RegisterReview = ({ isOpen, onClose, selectedFile: propSelectedFile }) => 
     } else {
       document.body.style.overflow = 'unset';
     }
-
     return () => {
       document.body.style.overflow = 'unset';
     };
-  }, [isOpen, onClose]);
+  }, [isOpen]);
 
   // 모달 닫힐때 url정리
   useEffect(() => {
@@ -42,7 +40,7 @@ const RegisterReview = ({ isOpen, onClose, selectedFile: propSelectedFile }) => 
         setFileUrl('');
       }
     };
-  }, [fileUrl]);
+  }, []);
 
   // newReview에 festivalId 할당
   useEffect(() => {
@@ -68,7 +66,6 @@ const RegisterReview = ({ isOpen, onClose, selectedFile: propSelectedFile }) => 
         file: propSelectedFile,
       }));
       setIsImage(propSelectedFile.type.startsWith('image'));
-      setSelectedFile(propSelectedFile);
       const newURL = URL.createObjectURL(propSelectedFile);
       setFileUrl(newURL);
     }
@@ -77,9 +74,8 @@ const RegisterReview = ({ isOpen, onClose, selectedFile: propSelectedFile }) => 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      setSelectedFile(file);
       setIsImage(file.type.startsWith('image'));
-      const newURL = URL.createObjectURL(selectedFile);
+      const newURL = URL.createObjectURL(file);
       setFileUrl(newURL);
 
       setNewReview((prev) => ({
@@ -99,6 +95,30 @@ const RegisterReview = ({ isOpen, onClose, selectedFile: propSelectedFile }) => 
       onClose();
     });
   };
+
+  // 프리뷰
+  const preview = useMemo(() => {
+    return isImage ? (
+      <img
+        key={`file-preview-${Date.now()}`}
+        className='object-cover w-full h-full'
+        src={fileUrl}
+      />
+    ) : (
+      <ReactPlayer
+        key={`file-preview-${Date.now()}`}
+        url={fileUrl}
+        muted={true}
+        playing={isPlaying}
+        playsinline={true}
+        loop={true}
+        controls={true}
+        width='100%'
+        height='100%'
+        className='bg-gray-800'
+      />
+    );
+  }, [fileUrl, isImage, isPlaying]);
 
   if (!isOpen) return null;
   return (
@@ -134,25 +154,7 @@ const RegisterReview = ({ isOpen, onClose, selectedFile: propSelectedFile }) => 
               </div>
               <div className='flex flex-col items-center'>
                 <div className='relative flex items-center justify-center w-full overflow-hidden h-72 px-7'>
-                  {isImage ? (
-                    <img
-                      key={`file-preview-${Date.now()}`}
-                      className='object-cover w-full h-full'
-                      src={fileUrl}
-                    />
-                  ) : (
-                    <ReactPlayer
-                      key={`file-preview-${Date.now()}`}
-                      url={fileUrl}
-                      muted={true}
-                      playing={isPlaying}
-                      loop={true}
-                      controls={true}
-                      width='100%'
-                      height='100%'
-                      className='bg-gray-800'
-                    />
-                  )}
+                  {preview}
                   <div
                     className='absolute flex items-center justify-center w-12 h-12 bg-gray-300 rounded-full bottom-3 right-10'
                     onClick={handleImageChange}

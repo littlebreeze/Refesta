@@ -59,8 +59,6 @@ const SearchInput = () => {
     return changeSearchKeyword('');
   }, []);
 
-  console.log('검색결과창', urlSearchKeyword);
-
   return (
     <header className='h-[70px] py-4 bg-ourIndigo'>
       <div className='flex items-center h-full'>

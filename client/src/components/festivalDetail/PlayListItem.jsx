@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import useSetListStore from '../../store/setListStore';
 
-const PlayListItem = ({ song, artistName }) => {
+const PlayListItem = ({ song }) => {
   const {
     lineupList,
     addLineupList,
@@ -41,7 +41,7 @@ const PlayListItem = ({ song, artistName }) => {
           <div className='w-56 ml-2 overflow-hidden text-sm text-left whitespace-nowrap text-ellipsis'>
             {song.title}
           </div>
-          <div className='mt-1 ml-2 text-xs text-left text-gray-400'>{artistName}</div>
+          <div className='mt-1 ml-2 text-xs text-left text-gray-400'>{song.singer}</div>
         </div>
       </li>
     </div>

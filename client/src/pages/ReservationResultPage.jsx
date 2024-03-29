@@ -12,6 +12,9 @@ const ReservationResultPage = () => {
 
   useEffect(() => {
     getBillingResult(id);
+  }, []);
+
+  useEffect(() => {
     setReservationNum(
       id +
         'JR' +
@@ -20,7 +23,7 @@ const ReservationResultPage = () => {
         billingResult.count +
         'JY'
     );
-  }, []);
+  }, [billingResult]);
 
   return (
     <div className='flex flex-col items-center justify-between w-full min-h-[800] h-lvh'>

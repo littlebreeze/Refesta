@@ -27,16 +27,13 @@ const Mypage = ({ isOpen, onClose, nickname, profileUrl }) => {
   }, [isOpen, onClose]);
 
   // 모달 닫힐 때 예약 내역 닫기
+  // 예약내역 가져오기
   useEffect(() => {
+    getBookingList();
     if (!isOpen) {
       setToggle(false);
     }
   }, [isOpen]);
-
-  // 예약내역 가져오기
-  useEffect(() => {
-    getBookingList();
-  }, [getBookingList]);
 
   if (!isOpen) return null;
 
@@ -50,6 +47,16 @@ const Mypage = ({ isOpen, onClose, nickname, profileUrl }) => {
   };
   const handleGoMyReview = () => {
     nav('/my-review');
+    onClose();
+  };
+
+  const handleGoComingFestival = () => {
+    nav('/festival/list/scheduled');
+    onClose();
+  };
+
+  const handleGoEndedFestival = () => {
+    nav('/festival/list/ended');
     onClose();
   };
 
@@ -127,10 +134,16 @@ const Mypage = ({ isOpen, onClose, nickname, profileUrl }) => {
                   <div className='mt-3 text-xs font-bold'>내가 작성한 후기</div>
                 </div>
               </div>
-              <div className='flex items-center justify-center w-full h-16 text-xs font-bold border-t-2 border-b-2'>
+              <div
+                className='flex items-center justify-center w-full h-16 text-xs font-bold border-t-2 border-b-2'
+                onClick={handleGoComingFestival}
+              >
                 예정 페스티벌
               </div>
-              <div className='flex items-center justify-center w-full h-16 text-xs font-bold border-b-2'>
+              <div
+                className='flex items-center justify-center w-full h-16 text-xs font-bold border-b-2'
+                onClick={handleGoEndedFestival}
+              >
                 지난 페스티벌
               </div>
               <div>

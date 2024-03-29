@@ -1,14 +1,6 @@
 import { create } from 'zustand';
-import axios from 'axios';
 import instance from '../util/token_interceptor';
 
-const token =
-  'eyJhbGciOiJIUzUxMiJ9.eyJhdXRoIjpbIlJPTEVfQURNSU4iXSwiYXVkIjoiaHR0cHM6Ly9qMTBhNjAxLnAuc3NhZnkuaW8vIiwic3ViIjoiMTA3OTQ4MDU4MzM1NzA4NjY1MjYwIiwiaXNzIjoiaHR0cHM6Ly9qMTBhNjAxLnAuc3NhZnkuaW8vIiwiaWF0IjoxNzExMDA0MzM2LCJleHAiOjE3MTI4MDQzMzZ9.vZzSd4v5rA1pGDeWNpkFt5HpMzYzAdFZUJIHKKwIl80KaI6rheI1fXiaQIQV9RGvDDdy-snwVOSmmZ2a0CAoUA';
-const accessToken = `Bearer ${token}`;
-const headers = {
-  'Content-Type': 'application/json',
-  Authorization: accessToken,
-};
 const baseURL = `${import.meta.env.VITE_PUBLIC_API_SERVER}`;
 
 const useReviewStore = create((set) => ({
@@ -16,17 +8,10 @@ const useReviewStore = create((set) => ({
   reviewList: [],
   addReviews: async (festivalId) => {
     try {
-      const res = await axios.get(`${baseURL}/festivals/${festivalId}/reviews`, {
-        headers: headers,
-        withCredentials: true,
-      });
-      set((state) => {
-        const existingIds = new Set(state.reviewList.map((review) => review.id));
-        const newReviews = res.data.data.filter((review) => !existingIds.has(review.id));
-        return {
-          reviewList: [...state.reviewList, ...newReviews],
-        };
-      });
+      const res = await instance.get(`${baseURL}/festivals/${festivalId}/reviews`);
+      set((state) => ({
+        reviewList: res.data.data,
+      }));
     } catch (e) {
       console.log(e);
     }
@@ -39,18 +24,9 @@ const useReviewStore = create((set) => ({
       formData.append('festivalId', newReview.festivalId);
       formData.append('contents', newReview.contents);
 
-      const config = {
-        headers: {
-          ...headers,
-          'Content-Type': 'multipart/form-data',
-        },
-        withCredentials: true,
-      };
-
       const res = await instance.post(`${baseURL}/reviews`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
-      console.log(res);
       if (onSuccess) onSuccess();
     } catch (e) {
       console.log(e);
