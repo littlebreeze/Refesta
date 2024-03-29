@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import useUserStore from '../../store/userStore';
-import xBtn from './../../assets/x_bold.png';
-import likeArtist from './../../assets/like_artist.png';
-import likeFesta from './../../assets/like_festa.png';
-import myReview from './../../assets/my_review.png';
-import dropdown from './../../assets/dropdown.png';
-import dropup from './../../assets/dropup.png';
-import wave from './../../assets/wave.png';
+
+import useUserStore from '@store/userStore';
+
+import xBtn from '@assets/x_bold.png';
+import likeArtist from '@assets/like_artist.png';
+import likeFesta from '@assets/like_festa.png';
+import myReview from '@assets/my_review.png';
+import dropdown from '@assets/dropdown.png';
+import dropup from '@assets/dropup.png';
+import wave from '@assets/wave.png';
 const Mypage = ({ isOpen, onClose, nickname, profileUrl }) => {
   const nav = useNavigate();
   const [toggle, setToggle] = useState(false);
