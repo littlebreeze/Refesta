@@ -7,10 +7,10 @@ import com.a601.refesta.login.data.GoogleOAuthTokenRes;
 import com.a601.refesta.login.data.GoogleUserInfoRes;
 import com.a601.refesta.login.data.MemberDetail;
 import com.a601.refesta.login.data.OauthTokenRes;
-import com.a601.refesta.login.repository.RefreshTokenRepository;
+import com.a601.refesta.login.repository.RefreshTokenRedisRepository;
 import com.a601.refesta.member.data.MemberRole;
 import com.a601.refesta.member.domain.Member;
-import com.a601.refesta.member.domain.RefreshToken;
+import com.a601.refesta.member.domain.RefreshTokenRedis;
 import com.a601.refesta.member.repository.MemberRepository;
 import com.google.gson.Gson;
 import lombok.RequiredArgsConstructor;
@@ -32,7 +32,8 @@ public class LoginService {
 
     private final TokenProvider tokenProvider;
     private final MemberRepository memberRepository;
-    private final RefreshTokenRepository refreshTokenRepository;
+    private final RefreshTokenRedisService refreshTokenRedisService;
+    private final RefreshTokenRedisRepository refreshTokenRedisRepository;
 
     private final String GRANT_TYPE = "authorization_code";
 
@@ -128,14 +129,13 @@ public class LoginService {
             throw new CustomException(ErrorCode.MEMBER_NOT_FOUND_ERROR);
         }
         OauthTokenRes oauthTokenRes = tokenProvider.generateTokenDto(member);
-        //refreshtoken 일단 db저장 방식 구현
-        RefreshToken refreshToken = RefreshToken.builder()
-                .member(member)
-                .token(oauthTokenRes.getRefreshToken())
-                .expireDate(LocalDateTime.now().plusSeconds(oauthTokenRes.getRefreshTokenExpiresIn()))
-                .isExpired(false)
-                .build();
-        refreshTokenRepository.save(refreshToken);
+
+        //refreshToken redis에 저장
+        refreshTokenRedisService.saveTokenInfo(
+                member.getId(), oauthTokenRes.getRefreshToken(),
+                LocalDateTime.now().plusSeconds(oauthTokenRes.getRefreshTokenExpiresIn()),
+                false
+        );
 
         if (signUp) oauthTokenRes.isSignUp(true);
 
@@ -144,13 +144,14 @@ public class LoginService {
 
     public OauthTokenRes regenerateToken(String refreshTokenReq) {
         //Refresh Token 일치 확인
-        RefreshToken refreshToken = refreshTokenRepository.findByToken(refreshTokenReq).orElseThrow(() ->
+        RefreshTokenRedis refreshTokenRedis = refreshTokenRedisRepository.findByRefreshToken(refreshTokenReq).orElseThrow(() ->
                 new CustomException(ErrorCode.REFRESH_TOKEN_VALIDATION_ERROR));
 
         //Refresh Token 만료 여부
-        if (!refreshToken.isValid(LocalDateTime.now())) {
+        if (!refreshTokenRedis.isValid(LocalDateTime.now())) {
             throw new CustomException(ErrorCode.REFRESH_TOKEN_VALIDATION_ERROR);
         }
+
         //tokenProvider에서 refreshToken으로 member정보 받기
         MemberDetail memberDetail = tokenProvider.getUserByRefreshToken(refreshTokenReq);
 
@@ -158,16 +159,17 @@ public class LoginService {
         if (member == null) {
             throw new CustomException(ErrorCode.MEMBER_NOT_FOUND_ERROR);
         }
+
         //Member 정보로 토큰 재발급
         OauthTokenRes oauthTokenRes = tokenProvider.generateTokenDto(member);
-        //새로운 refreshtoken 저장 (일단 DB)
-        RefreshToken newRefreshToken = RefreshToken.builder()
-                .member(member)
-                .token(oauthTokenRes.getRefreshToken())
-                .expireDate(LocalDateTime.now().plusSeconds(oauthTokenRes.getRefreshTokenExpiresIn()))
-                .isExpired(false)
-                .build();
-        refreshTokenRepository.save(newRefreshToken);
+
+        //redis에 저장
+        refreshTokenRedisService.saveTokenInfo(
+                member.getId(), oauthTokenRes.getRefreshToken(),
+                LocalDateTime.now().plusSeconds(oauthTokenRes.getRefreshTokenExpiresIn()),
+                false
+        );
+
 
         return oauthTokenRes;
     }

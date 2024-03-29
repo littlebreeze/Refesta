@@ -35,6 +35,10 @@ spring:
 #      http://localhost:5000
 #      https://j10a601.p.ssafy.io
 
+  data:
+    redis:
+      host: j10a601.p.ssafy.io
+      port: 6379
 
 server:
   port: 8081
