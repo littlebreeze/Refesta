@@ -1,12 +1,13 @@
 import React, { useRef, useEffect, useState, useMemo } from 'react';
-import { useParams } from 'react-router-dom';
-import ReactPlayer from 'react-player';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import useReviewStore from '@store/reviewStore';
 
-import Header from './../components/common/Header';
-import xBtn from './../assets/x_black.png';
-import picture from './../assets/picture.png';
-import useReviewStore from '../store/reviewStore';
+import ReactPlayer from 'react-player';
+
+import Header from '@components/common/Header';
+
+import xBtn from '@assets/x_black.png';
+import picture from '@assets/picture.png';
 
 const RegisterReview = ({ isOpen, onClose, selectedFile: propSelectedFile }) => {
   const inputFileRef = useRef(null);

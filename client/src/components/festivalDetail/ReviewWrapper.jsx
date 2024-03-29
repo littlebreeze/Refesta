@@ -1,7 +1,9 @@
-import ReviewList from './ReviewList';
-import RegisterReview from '../../pages/RegisterReviewPage';
-import { useEffect, useRef, useState } from 'react';
-import plus from './../../assets/plus.png';
+import { useRef, useState } from 'react';
+
+import RegisterReview from '@pages/RegisterReviewPage';
+import ReviewList from '@components/festivalDetail/ReviewList';
+
+import plus from '@assets/plus.png';
 
 const ReviewWrapper = () => {
   const [isModalOpen, setModalOpen] = useState(false);

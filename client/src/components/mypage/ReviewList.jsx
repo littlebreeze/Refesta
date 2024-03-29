@@ -1,6 +1,7 @@
-import { useEffect, useState } from 'react';
-import ReviewItem from './ReviewItem';
-import useReviewStore from '../../store/reviewStore';
+import { useEffect } from 'react';
+import useReviewStore from '@store/reviewStore';
+
+import ReviewItem from '@components/mypage/ReviewItem';
 
 const ReviewList = () => {
   const { myReviewList, addMyReviews } = useReviewStore();
