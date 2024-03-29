@@ -1,7 +1,8 @@
-import { getGenreImage } from '@util/get-genre-image';
-import select from '@assets/select.png';
-import { useRef } from 'react';
 import { useState } from 'react';
+
+import { getGenreImage } from '@util/get-genre-image';
+
+import select from '@assets/select.png';
 
 const GenreItem = ({ icon, onClickGenre, selectedGenre }) => {
   const [isSelected, setIsSelected] = useState(false);

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+
 import instance from '@util/token_interceptor';
 
 import FestivalViewAllItem from '@components/home/FestivalViewAllItem';

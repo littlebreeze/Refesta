@@ -1,5 +1,6 @@
 import 'react-responsive-carousel/lib/styles/carousel.min.css'; // requires a loader
 import { Carousel } from 'react-responsive-carousel';
+
 import one from '@assets/carousel/festival1.jpg';
 import two from '@assets/carousel/festival2.jpg';
 import three from '@assets/carousel/festival3.jpg';

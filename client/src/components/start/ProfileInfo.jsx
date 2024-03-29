@@ -1,11 +1,11 @@
+import { useEffect, useRef, useState } from 'react';
+
 import instance from '@util/token_interceptor';
 
-import { useEffect, useRef, useState } from 'react';
+import { useProfileQuery } from '../../queries/profileQueries';
 
 import defaultImg from '@assets/default_img.jpg';
 import editPencil from '@assets/edit_pencil.png';
-
-import { useProfileQuery } from '../../queries/profileQueries';
 
 const ProfileInfo = ({ setStep, stepParam }) => {
   const { data, isLoading, isError, error } = useProfileQuery();
