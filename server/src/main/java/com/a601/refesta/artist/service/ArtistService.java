@@ -82,7 +82,7 @@ public class ArtistService {
     /**
      * 아티스트 좋아요 업데이트
      *
-     * @param memberId     - 구글 식별 ID
+     * @param memberId - 구글 식별 ID
      * @param artistId
      */
     public void updateArtistLike(int memberId, int artistId) {
@@ -109,6 +109,7 @@ public class ArtistService {
 
     /**
      * 아트스트 조회
+     *
      * @param artistId
      * @return Artist
      */

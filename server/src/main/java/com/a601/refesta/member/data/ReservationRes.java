@@ -17,6 +17,4 @@ public class ReservationRes {
     private String name;
     private LocalDate festivalDate;
     private String location;
-
-
 }

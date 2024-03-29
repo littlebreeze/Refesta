@@ -4,7 +4,10 @@ import com.a601.refesta.common.response.SuccessResponse;
 import com.a601.refesta.login.data.OauthTokenRes;
 import com.a601.refesta.login.service.LoginService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/login")
@@ -12,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 public class LoginController {
 
     private final LoginService loginService;
+
     @PostMapping("/oauth2/code/google")
     public SuccessResponse<OauthTokenRes> getAccessTokenJsonData(@RequestBody String code) { // Data를 리턴해주는 컨트롤러 함수
         OauthTokenRes oauthTokenRes = loginService.getAccessTokenJsonData(code);

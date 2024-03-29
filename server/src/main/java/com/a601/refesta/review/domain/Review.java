@@ -38,8 +38,8 @@ public class Review extends BaseEntity {
     @ColumnDefault("false")
     private Boolean isDeleted;
 
-    public void delete(){
-        this.isDeleted=true;
+    public void delete() {
+        this.isDeleted = true;
     }
 
 }

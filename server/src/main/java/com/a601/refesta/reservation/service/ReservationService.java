@@ -64,9 +64,9 @@ public class ReservationService {
         req.put("quantity", reservationReq.getCount());
         req.put("total_amount", festival.getPrice() * reservationReq.getCount());
         req.put("tax_free_amount", 0);
-        req.put("approval_url", REFESTA_URL+"/reservation/approve");
-        req.put("cancel_url", REFESTA_URL+"/reservation/cancel");
-        req.put("fail_url", REFESTA_URL+"/reservation/fail");
+        req.put("approval_url", REFESTA_URL + "/reservation/approve");
+        req.put("cancel_url", REFESTA_URL + "/reservation/cancel");
+        req.put("fail_url", REFESTA_URL + "/reservation/fail");
 
         HttpEntity<Map<String, Object>> requestEntity = new HttpEntity<>(req, headers);
 
@@ -88,12 +88,12 @@ public class ReservationService {
                 .tid(payRes.getTid())
                 .status("READY")
                 .build();
-        
+
         reservationRepository.save(reservation);
 
         return payRes.getNext_redirect_mobile_url();
     }
-    
+
     //카카오에 결제 승인 요청
     public int getKaKaoPayApprove(Integer memberId, String pgToken) {
 
@@ -135,6 +135,7 @@ public class ReservationService {
 
     /**
      * 예매 TID
+     *
      * @param memberId
      * @return TID
      */
@@ -149,6 +150,7 @@ public class ReservationService {
 
     /**
      * 예매상세내역
+     *
      * @param memberId
      * @param reservationId
      * @return 예매상세정보- 페스티벌(포스터, 이름, 날짜, 장소), 예약(장수, 총 가격)
