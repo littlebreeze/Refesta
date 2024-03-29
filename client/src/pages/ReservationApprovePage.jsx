@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import useKakaoStore from '../store/kakaoStore';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+import loading from '../assets/loading.png';
 
 const ReservationApprovePage = () => {
   const { approvePayment } = useKakaoStore();
@@ -20,7 +21,17 @@ const ReservationApprovePage = () => {
     }
   }, []);
 
-  return <div>결제 진행중</div>;
+  return (
+    <div className='flex flex-col items-center justify-center px-10 mx-0 my-auto h-[85vh]'>
+      <div className='w-1/5 '>
+        <img
+          className='w-full mr-3 motion-safe:animate-spin'
+          src={loading}
+        />
+      </div>
+      <div className='my-6 text-lg font-bold text-center'>결제 진행 중</div>
+    </div>
+  );
 };
 
 export default ReservationApprovePage;
