@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import yLogo from '../../assets/youtube_music_logo.png';
-import connect_check from '../../assets/connect_check.png';
+import yLogo from '@assets/youtube_music_logo.png';
+import connect_check from '@assets/connect_check.png';
 
 const YoutubeConnect = ({ setStep, stepParam }) => {
   const [modalOpen, setModalOpen] = useState(false);

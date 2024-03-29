@@ -1,7 +1,6 @@
 import { useNavigate, useParams } from 'react-router';
-import FestivalViewAllList from '../components/home/FestivalViewAllList';
+import FestivalViewAllList from '@components/home/FestivalViewAllList';
 const FestivalList = () => {
-  const nav = useNavigate();
   const { state } = useParams();
   return (
     <div>

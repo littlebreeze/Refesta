@@ -1,5 +1,4 @@
-import { useParams } from 'react-router-dom';
-import RegisterInfo from '../components/start/RegistInfo';
+import RegisterInfo from '@components/start/RegistInfo';
 
 const RegisterInfoPage = () => {
   return (

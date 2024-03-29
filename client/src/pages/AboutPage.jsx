@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import refesta from '../assets/about/refesta_about.png';
+import refesta from '@assets/about/refesta_about.png';
 
 const AboutPage = () => {
   return (

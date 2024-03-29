@@ -3,10 +3,10 @@ import { useParams } from 'react-router-dom';
 import ReactPlayer from 'react-player';
 import { useNavigate } from 'react-router-dom';
 
-import Header from './../components/common/Header';
-import xBtn from './../assets/x_black.png';
-import picture from './../assets/picture.png';
-import useReviewStore from '../store/reviewStore';
+import Header from '@components/common/Header';
+import xBtn from '@assets/x_black.png';
+import picture from '@assets/picture.png';
+import useReviewStore from '@store/reviewStore';
 
 const RegisterReview = ({ isOpen, onClose, selectedFile: propSelectedFile }) => {
   const inputFileRef = useRef(null);
@@ -99,11 +99,7 @@ const RegisterReview = ({ isOpen, onClose, selectedFile: propSelectedFile }) => 
   // 프리뷰
   const preview = useMemo(() => {
     return isImage ? (
-      <img
-        key={`file-preview-${Date.now()}`}
-        className='object-cover w-full h-full'
-        src={fileUrl}
-      />
+      <img key={`file-preview-${Date.now()}`} className='object-cover w-full h-full' src={fileUrl} />
     ) : (
       <ReactPlayer
         key={`file-preview-${Date.now()}`}
@@ -126,10 +122,7 @@ const RegisterReview = ({ isOpen, onClose, selectedFile: propSelectedFile }) => 
       {isOpen && (
         <div className='w-full h-full max-w-[500px] bg-white'>
           <Header />
-          <button
-            className='absolute m-4 mt-6 right-1 top-16'
-            onClick={onClose}
-          >
+          <button className='absolute m-4 mt-6 right-1 top-16' onClick={onClose}>
             <span>
               <img src={xBtn} />
             </span>
@@ -159,10 +152,7 @@ const RegisterReview = ({ isOpen, onClose, selectedFile: propSelectedFile }) => 
                     className='absolute flex items-center justify-center w-12 h-12 bg-gray-300 rounded-full bottom-3 right-10'
                     onClick={handleImageChange}
                   >
-                    <img
-                      className='w-2/3'
-                      src={picture}
-                    />
+                    <img className='w-2/3' src={picture} />
                   </div>
                   <input
                     ref={inputFileRef}

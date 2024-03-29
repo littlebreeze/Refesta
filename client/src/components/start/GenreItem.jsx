@@ -1,5 +1,5 @@
-import { getGenreImage } from '../../util/get-genre-image';
-import select from '../../assets/select.png';
+import { getGenreImage } from '@util/get-genre-image';
+import select from '@assets/select.png';
 import { useRef } from 'react';
 import { useState } from 'react';
 

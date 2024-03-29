@@ -1,6 +1,5 @@
-import { useEffect } from 'react';
-import AutoComplete from '../components/search/AutoComplete';
-import useSearchStore from '../store/searchStore';
+import AutoComplete from '@components/search/AutoComplete';
+import useSearchStore from '@store/searchStore';
 
 const Search = () => {
   const { searchKeyword, changeSearchKeyword } = useSearchStore();

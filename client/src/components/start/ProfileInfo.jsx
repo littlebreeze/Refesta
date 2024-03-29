@@ -1,9 +1,9 @@
-import instance from '../../util/token_interceptor';
+import instance from '@util/token_interceptor';
 
 import { useEffect, useRef, useState } from 'react';
 
-import defaultImg from '../../assets/default_img.jpg';
-import editPencil from '../../assets/edit_pencil.png';
+import defaultImg from '@assets/default_img.jpg';
+import editPencil from '@assets/edit_pencil.png';
 
 import { useProfileQuery } from '../../queries/profileQueries';
 

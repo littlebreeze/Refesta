@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
-import SetListHomeColItem from './SetListHomeColItem';
-import ListTitle from './ListTitle';
+import SetListHomeColItem from '@components/home/SetListHomeColItem';
+import ListTitle from '@components/home/ListTitle';
 
 const SetListHomeList = ({ setListData }) => {
   // 데이터를 2개씩 자른 새로운 배열을 만든다
