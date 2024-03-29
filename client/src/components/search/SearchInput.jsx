@@ -41,7 +41,7 @@ const SearchInput = () => {
     }
 
     // 자동 완성 검색어 요청
-    getAutoComplete();
+    if (searchKeyword) getAutoComplete();
   };
 
   const getAutoComplete = async () => {
