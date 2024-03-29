@@ -21,8 +21,4 @@ public class Artist extends BaseEntity {
 
     @Column(nullable = false, length = 2100)
     private String pictureUrl;
-
-    @Column(nullable = false)
-    @ColumnDefault("0")
-    private Integer viewCount;
 }
