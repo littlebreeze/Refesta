@@ -9,7 +9,7 @@ import Header from '@components/common/Header';
 import xBtn from '@assets/x_black.png';
 import picture from '@assets/picture.png';
 
-const RegisterReview = ({ isOpen, onClose, selectedFile: propSelectedFile }) => {
+const RegisterReviewPage = ({ isOpen, onClose, selectedFile: propSelectedFile }) => {
   const inputFileRef = useRef(null);
   const nav = useNavigate();
   const { id } = useParams();
@@ -186,4 +186,4 @@ const RegisterReview = ({ isOpen, onClose, selectedFile: propSelectedFile }) => 
   );
 };
 
-export default RegisterReview;
+export default RegisterReviewPage;

@@ -1,6 +1,8 @@
 import { useNavigate, useParams } from 'react-router';
+
 import FestivalViewAllList from '@components/home/FestivalViewAllList';
-const FestivalList = () => {
+
+const FestivalListPage = () => {
   const { state } = useParams();
   return (
     <div>
@@ -15,4 +17,4 @@ const FestivalList = () => {
   );
 };
 
-export default FestivalList;
+export default FestivalListPage;

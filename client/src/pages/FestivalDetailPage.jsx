@@ -9,9 +9,6 @@ import FestivalInfoDetail from '@components/festivalDetail/FestivalInfoDetail';
 import ReservationButton from '@components/festivalDetail/ReservationButton';
 import FestivalInfoContainer from '@components/festivalDetail/FestivalInfoContainer';
 
-// assets
-
-// 페스티벌 상세 진행중
 const FestivalDetailPage = () => {
   const { id } = useParams();
   const [festivalInfoData, setFestivalInfoData] = useState(null);
@@ -42,7 +39,7 @@ const FestivalDetailPage = () => {
           setFestivalInfoData(response.data.data);
         }
       } catch (error) {
-        console.error('Error fetching festival info:', error);
+        console.error('Error:', error);
       }
     };
 

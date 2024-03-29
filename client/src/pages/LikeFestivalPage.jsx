@@ -3,7 +3,7 @@ import useLikeStore from '@store/likeStore';
 
 import LikeList from '@components/mypage/LikeList';
 
-const LikeFestival = () => {
+const LikeFestivalPage = () => {
   const { likeFestivalList, getLikeFestivalList } = useLikeStore();
 
   useEffect(() => {
@@ -17,4 +17,4 @@ const LikeFestival = () => {
   );
 };
 
-export default LikeFestival;
+export default LikeFestivalPage;

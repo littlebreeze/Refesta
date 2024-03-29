@@ -1,7 +1,7 @@
 import img404 from '@assets/404img.png';
 import { Link } from 'react-router-dom';
 
-const Notfound = () => {
+const NotfoundPage = () => {
   return (
     <div className='flex flex-col items-center justify-center h-full text-center gap-y-7 px-7'>
       <div>
@@ -19,4 +19,4 @@ const Notfound = () => {
   );
 };
 
-export default Notfound;
+export default NotfoundPage;
