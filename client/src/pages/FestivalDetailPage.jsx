@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import useSetListStore from '@store/setListStore';
+import useFestivalInfoStore from '@store/festivalInfoStore';
 
 import instance from '@util/token_interceptor';
 
@@ -9,13 +10,12 @@ import FestivalInfoDetail from '@components/festivalDetail/FestivalInfoDetail';
 import ReservationButton from '@components/festivalDetail/ReservationButton';
 import FestivalInfoContainer from '@components/festivalDetail/FestivalInfoContainer';
 
-// assets
-
-// 페스티벌 상세 진행중
 const FestivalDetailPage = () => {
   const { id } = useParams();
-  const [festivalInfoData, setFestivalInfoData] = useState(null);
-  const [festivalInfoDetailData, setFestivalInfoDetailData] = useState(null);
+
+  const { festivalInfoData, setFestivalInfoData, festivalInfoDetailData, setFestivalInfoDetailData } =
+    useFestivalInfoStore();
+
   const {
     lineupList,
     addLineupList,
@@ -42,7 +42,7 @@ const FestivalDetailPage = () => {
           setFestivalInfoData(response.data.data);
         }
       } catch (error) {
-        console.error('Error fetching festival info:', error);
+        console.error('Error:', error);
       }
     };
 
@@ -98,13 +98,13 @@ const FestivalDetailPage = () => {
     <div>
       {festivalInfoData && !festivalInfoData.ended ? (
         <div>
-          <FestivalInfo festivalInfoData={festivalInfoData} />
-          <FestivalInfoDetail festivalInfoDetailData={festivalInfoDetailData} />
-          <ReservationButton festivalInfoData={festivalInfoData} />
+          <FestivalInfo />
+          <FestivalInfoDetail />
+          <ReservationButton />
         </div>
       ) : (
         <div>
-          <FestivalInfo festivalInfoData={festivalInfoData} />
+          <FestivalInfo />
           <FestivalInfoContainer />
         </div>
       )}

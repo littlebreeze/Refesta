@@ -1,6 +1,6 @@
 import SearchResultContainer from '@components/search/SearchResultContainer';
 
-const SearchResult = () => {
+const SearchResultPage = () => {
   return (
     <>
       <SearchResultContainer />
@@ -8,4 +8,4 @@ const SearchResult = () => {
   );
 };
 
-export default SearchResult;
+export default SearchResultPage;

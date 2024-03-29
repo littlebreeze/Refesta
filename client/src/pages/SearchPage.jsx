@@ -2,7 +2,7 @@ import useSearchStore from '@store/searchStore';
 
 import AutoComplete from '@components/search/AutoComplete';
 
-const Search = () => {
+const SearchPage = () => {
   const { searchKeyword, changeSearchKeyword } = useSearchStore();
 
   // 입력된 키워드가 없으면 영역 없앰
@@ -15,4 +15,4 @@ const Search = () => {
   );
 };
 
-export default Search;
+export default SearchPage;

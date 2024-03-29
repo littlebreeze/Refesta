@@ -1,4 +1,9 @@
-const FestivalInfoDetail = ({ festivalInfoDetailData }) => {
+import useFestivalInfoStore from '@store/festivalInfoStore';
+
+const FestivalInfoDetail = () => {
+  const { festivalInfoData, setFestivalInfoData, festivalInfoDetailData, setFestivalInfoDetailData } =
+    useFestivalInfoStore();
+
   return (
     <>
       <img src={festivalInfoDetailData} alt='' />

@@ -1,7 +1,7 @@
 import ReviewList from '@components/mypage/ReviewList';
 
-const MyReview = () => {
+const MyReviewPage = () => {
   return <ReviewList />;
 };
 
-export default MyReview;
+export default MyReviewPage;
