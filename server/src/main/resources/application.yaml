@@ -21,34 +21,30 @@ spring:
 
   refesta:
     front:
-      url: http://localhost:5173 #https://j10a601.p.ssafy.io
-
+      url: https://j10a601.p.ssafy.io
+    #      http://localhost:5173
     #      https://j10a601.p.ssafy.io
     #    https://localhost:5173
     back:
-      url: http://localhost:8080 #https://j10a601.p.ssafy.io
-
+      url: https://j10a601.p.ssafy.io
+    #      http://localhost:8080
     #      https://j10a601.p.ssafy.io
     #    https://localhost:8080
     recommend:
       url: http://j10a601.p.ssafy.io:8082
-#      http://localhost:5000
-#      https://j10a601.p.ssafy.io
+  #      http://localhost:5000
+  #      https://j10a601.p.ssafy.io
 
   data:
     redis:
       host: j10a601.p.ssafy.io
       port: 6379
 
-  data:
-    redis:
-      host: j10a601.p.ssafy.io
-      port: 6379
-
-#server:
-#  port: 8081
+server:
+  port: 8081
 
   ssl:
     key-store: classpath:keystore.p12
     key-store-type: PKCS12
     key-store-password: root
+
