@@ -3,6 +3,7 @@ package com.a601.refesta.artist.domain;
 import com.a601.refesta.common.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 
 @Entity
 @Getter
@@ -20,4 +21,8 @@ public class Artist extends BaseEntity {
 
     @Column(nullable = false, length = 2100)
     private String pictureUrl;
+
+    @Column(nullable = false)
+    @ColumnDefault("0")
+    private Integer viewCount;
 }
