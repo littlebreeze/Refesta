@@ -1,20 +1,4 @@
 import { create } from 'zustand';
-import React from 'react';
-import { useParams } from 'react-router-dom';
-import axios from 'axios';
-import instance from '../util/token_interceptor';
-
-// api 예시
-// const getFestivalInfoData = async () => {
-//     try {
-//       const response = await instance.get(`festivals/${id}`);
-//       if (response.data.status === 'success') {
-//         setFestivalInfoData(response.data.data);
-//       }
-//     } catch (error) {
-//       console.error('Error fetching festival info:', error);
-//     }
-//   };
 
 const useSetListStore = create((set) => ({
   // 페스티벌 라인업

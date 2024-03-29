@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useState, useRef } from 'react';
 import ReactPlayer from 'react-player';
 import play_btn from '../../assets/play_btn.png';
@@ -9,11 +9,6 @@ import next_btn from '../../assets/next_btn.png';
 import useSetListStore from '../../store/setListStore';
 
 const SetListPlayer = () => {
-  // const [curr, setCurr] = useState([
-  //   'https://www.youtube.com/watch?v=BedeHi2HkFs',
-  //   'https://www.youtube.com/watch?v=iYu76OnDLhk',
-  //   'https://www.youtube.com/watch?v=xFzSUBzhbE4',
-  // ]);
   const {
     lineupList,
     addLineupList,
@@ -33,6 +28,14 @@ const SetListPlayer = () => {
     setCurrSongList,
     currSinger,
   } = useSetListStore();
+  const [currSongIndex, setCurrSongIndex] = useState(0);
+
+  useEffect(() => {
+    if (currSongList && currSongList.length > 0) {
+      const index = currSongList.findIndex((song) => song === currSong);
+      setCurrSongIndex(index >= 0 ? index : 0); // 현재 곡이 있는 경우 해당 인덱스로 설정
+    }
+  }, [currSongList, currSong]);
 
   // 재생&일시정지
   const onClickPlayButton = () => {
@@ -41,13 +44,28 @@ const SetListPlayer = () => {
 
   // 이전 곡 재생
   const onClickPrevButton = () => {
-    console.log('이전 곡 재생');
+    let newIndex = currSongIndex - 1;
+    if (newIndex < 0) {
+      newIndex = currSongList.length - 1; // 범위를 벗어나면 맨 마지막 곡으로 이동
+    }
+    setCurrSongIndex(newIndex);
+    setCurrSong(currSongList[newIndex]);
   };
 
   // 다음 곡 재생
   const onClickNextButton = () => {
-    console.log('다음 곡 재생');
+    let newIndex = currSongIndex + 1;
+    if (newIndex >= currSongList.length) {
+      newIndex = 0; // 범위를 벗어나면 첫 번째 곡으로 이동
+    }
+    setCurrSongIndex(newIndex);
+    setCurrSong(currSongList[newIndex]);
   };
+
+  // useEffect(() => {
+  //   // currSong이 변경될 때마다 currSong을 출력합니다.
+  //   console.log('Curr Song Updated:', currSong);
+  // }, [currSong]); // currSong이 변경될 때마다 이 효과가 실행됩니다.
 
   return (
     <div className='flex justify-between mx-4 bg-white rounded-md'>
