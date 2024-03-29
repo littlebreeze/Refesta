@@ -6,8 +6,7 @@ import com.a601.refesta.common.exception.CustomException;
 import com.a601.refesta.common.exception.ErrorCode;
 import com.a601.refesta.festival.domain.Festival;
 import com.a601.refesta.festival.service.FestivalService;
-import com.a601.refesta.member.domain.join.FestivalLike;
-import com.a601.refesta.member.domain.join.MemberSong;
+import com.a601.refesta.member.domain.join.MemberSongPreference;
 import com.a601.refesta.member.repository.MemberSongRepository;
 import com.a601.refesta.member.service.MemberService;
 import com.a601.refesta.recommendation.data.ArtistRecommendationRes;
@@ -30,7 +29,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -246,14 +244,14 @@ public class RecommendationService {
     }
 
     public HttpStatus updateSongPreference(int memberId, int songId) {
-        Optional<MemberSong> optFindMemberSong = memberSongRepository.findByMember_IdAndSong_Id(memberId, songId);
+        Optional<MemberSongPreference> optFindMemberSong = memberSongRepository.findByMember_IdAndSong_Id(memberId, songId);
 
         //DB에 없으면 추가
         if (optFindMemberSong.isEmpty()) {
             Song song = songRepository.findById(songId)
                     .orElseThrow(() -> new CustomException(ErrorCode.SONG_NOT_FOUND_ERROR));
 
-            memberSongRepository.save(MemberSong.builder()
+            memberSongRepository.save(MemberSongPreference.builder()
                     .member(memberService.getMember(memberId))
                     .song(song)
                     .preference(1)
@@ -264,7 +262,7 @@ public class RecommendationService {
         }
 
         //DB에 있으면 좋아요 상태 업데이트
-        MemberSong findPreference = optFindMemberSong.get();
+        MemberSongPreference findPreference = optFindMemberSong.get();
         findPreference.updatePreference();
         memberSongRepository.save(findPreference);
 
