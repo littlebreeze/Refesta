@@ -1,11 +1,9 @@
-import instance from '../../util/token_interceptor';
-
 import { useEffect, useRef, useState } from 'react';
 
 import defaultImg from '../../assets/default_img.jpg';
 import editPencil from '../../assets/edit_pencil.png';
 
-import { useProfileQuery } from '../../queries/profileQueries';
+import { useProfileQuery, usePostProfileQuery } from '@/queries/profileQueries';
 
 const ProfileInfo = ({ setStep, stepParam }) => {
   const { data, isLoading, isError, error } = useProfileQuery();
@@ -15,6 +13,9 @@ const ProfileInfo = ({ setStep, stepParam }) => {
     url: '',
     file: null,
   });
+
+  const { data: postData, isLoading: isPostLoading, mutate, mutateAsync } = usePostProfileQuery();
+  console.log(data);
 
   // 사용자 정보 설정
   const getUserProfile = () => {
@@ -77,26 +78,24 @@ const ProfileInfo = ({ setStep, stepParam }) => {
   };
 
   // 사용자 입력 정보 서버로 전달
-  const onClickRegist = async () => {
+  const onClickRegist = () => {
     if (!nickname) {
       alert('닉네임은 비워둘 수 없습니다.');
       return;
     }
-
     const formData = new FormData();
     formData.append('file', imgInfo.file);
     formData.append('nickname', nickname);
 
-    const response = await instance.post('/members', formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    });
+    mutate(formData);
 
-    if (response.data.status !== 'success') {
-      alert('로그인 정보가 유효하지 않습니다!');
+    if (!isLoading) {
+      setStep(stepParam.step2);
     }
-    setStep(stepParam.step2);
+    if (isError) {
+      alert('요청 실패');
+      console.log(error);
+    }
   };
 
   return (
