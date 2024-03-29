@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import useSetListStore from '@store/setListStore';
+import useFestivalInfoStore from '@store/festivalInfoStore';
 
 import instance from '@util/token_interceptor';
 
@@ -11,8 +12,10 @@ import FestivalInfoContainer from '@components/festivalDetail/FestivalInfoContai
 
 const FestivalDetailPage = () => {
   const { id } = useParams();
-  const [festivalInfoData, setFestivalInfoData] = useState(null);
-  const [festivalInfoDetailData, setFestivalInfoDetailData] = useState(null);
+
+  const { festivalInfoData, setFestivalInfoData, festivalInfoDetailData, setFestivalInfoDetailData } =
+    useFestivalInfoStore();
+
   const {
     lineupList,
     addLineupList,
@@ -95,13 +98,13 @@ const FestivalDetailPage = () => {
     <div>
       {festivalInfoData && !festivalInfoData.ended ? (
         <div>
-          <FestivalInfo festivalInfoData={festivalInfoData} />
-          <FestivalInfoDetail festivalInfoDetailData={festivalInfoDetailData} />
-          <ReservationButton festivalInfoData={festivalInfoData} />
+          <FestivalInfo />
+          <FestivalInfoDetail />
+          <ReservationButton />
         </div>
       ) : (
         <div>
-          <FestivalInfo festivalInfoData={festivalInfoData} />
+          <FestivalInfo />
           <FestivalInfoContainer />
         </div>
       )}
