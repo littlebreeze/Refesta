@@ -15,9 +15,13 @@ const Home = () => {
   // 추천 페스티벌 정보 요청
   const getRecommendFestival = async () => {
     const response = await instance.get('recommendations/festivals');
-    setFestivalData(response.data.data.scheduledFestivalList);
-    setSetListData(response.data.data.endedFestivalList);
-    setIsLoading(false);
+    if (response.data.status === 'success') {
+      setFestivalData(response.data.data.scheduledFestivalList);
+      setSetListData(response.data.data.endedFestivalList);
+      setIsLoading(false);
+    } else {
+      alert('로그인 정보가 유효하지 않습니다.');
+    }
   };
 
   useEffect(() => {

@@ -10,9 +10,9 @@ const FestivalHomeItem = ({ id, posterUrl, name, date }) => {
   if (!name) {
     return (
       <div className='w-[120px] h-full'>
-        <div className='motion-safe:animate-pulse w-[120px] h-[160px] rounded-md bg-zinc-100 mb-3' src={posterUrl} />
-        <div className='w-full h-4 mb-3 rounded-md motion-safe:animate-pulse bg-zinc-100'></div>
-        <div className='w-full h-4 mb-3 rounded-md motion-safe:animate-pulse bg-zinc-100'></div>
+        <div className='motion-safe:animate-pulse w-[120px] h-[160px] rounded-md bg-zinc-100 mb-1' src={posterUrl} />
+        <div className='w-full h-4 mb-1 rounded-md motion-safe:animate-pulse bg-zinc-100'></div>
+        <div className='w-full h-4 mb-1 rounded-md motion-safe:animate-pulse bg-zinc-100'></div>
       </div>
     );
   }
