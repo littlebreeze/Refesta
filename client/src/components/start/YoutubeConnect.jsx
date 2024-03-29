@@ -1,17 +1,25 @@
+import { useState } from 'react';
 import yLogo from '../../assets/youtube_music_logo.png';
+import connect_check from '../../assets/connect_check.png';
+
 const YoutubeConnect = ({ setStep, stepParam }) => {
+  const [modalOpen, setModalOpen] = useState(false);
+
   const onClickConnect = () => {
-    alert('연동을 진행합니다');
+    // 재생목록 요청 백으로 보내기
+    setModalOpen(true);
+    setTimeout(() => {
+      setModalOpen(false);
+      setStep(stepParam.step3);
+    }, 3000);
   };
   const onClickSkip = () => {
     setStep(stepParam.step3);
   };
 
   return (
-    <div className='grid gap-y-5'>
-      <div className='mb-5 text-2xl font-bold leading-9 tracking-tight text-center text-ourIndigo'>
-        빠르게 시작하기
-      </div>
+    <div className='relative grid gap-y-5'>
+      <div className='mb-5 text-2xl font-bold leading-9 tracking-tight text-center text-ourIndigo'>빠르게 시작하기</div>
       <img src={yLogo} />
       <div className='mb-20 text-sm text-center'>
         유튜브 재생 목록을 연동하고 <br />
@@ -24,12 +32,22 @@ const YoutubeConnect = ({ setStep, stepParam }) => {
       >
         연동하기
       </button>
-      <div
-        className='text-center underline cursor-pointer'
-        onClick={onClickSkip}
-      >
+      <div className='text-center underline cursor-pointer' onClick={onClickSkip}>
         건너뛰기
       </div>
+      {modalOpen && (
+        <div id='modal-container' className='absolute top-0 left-0 flex w-full h-full '>
+          <div
+            id='modal-content'
+            className='grid content-center justify-center w-full my-32 border bg-white/95 rounded-2xl'
+          >
+            <div className='w-[70px] mx-auto mb-4'>
+              <img className='w-full' src={connect_check} />
+            </div>
+            <div className='text-lg font-bold text-ourIndigo'>연동이 완료되었습니다.</div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -50,6 +50,10 @@ function App() {
               path='/about'
               element={<AboutPage />}
             />
+            <Route
+              path='/reservation/approve'
+              element={<ReservationApprove />}
+            />
           </Route>
           <Route element={<MainLayout />}>
             <Route
@@ -84,10 +88,7 @@ function App() {
               path='/reservation/detail/:id'
               element={<ReservationDetail />}
             />
-            <Route
-              path='/reservation/approve'
-              element={<ReservationApprove />}
-            />
+
             <Route
               path='/like/artist'
               element={<LikeArtist />}

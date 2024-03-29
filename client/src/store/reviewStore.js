@@ -9,13 +9,9 @@ const useReviewStore = create((set) => ({
   addReviews: async (festivalId) => {
     try {
       const res = await instance.get(`${baseURL}/festivals/${festivalId}/reviews`);
-      set((state) => {
-        const existingIds = new Set(state.reviewList.map((review) => review.id));
-        const newReviews = res.data.data.filter((review) => !existingIds.has(review.id));
-        return {
-          reviewList: [...state.reviewList, ...newReviews],
-        };
-      });
+      set((state) => ({
+        reviewList: res.data.data,
+      }));
     } catch (e) {
       console.log(e);
     }
@@ -31,7 +27,6 @@ const useReviewStore = create((set) => ({
       const res = await instance.post(`${baseURL}/reviews`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
-      console.log(res);
       if (onSuccess) onSuccess();
     } catch (e) {
       console.log(e);
