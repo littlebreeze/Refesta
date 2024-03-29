@@ -17,7 +17,7 @@ const Home = () => {
     const response = await instance.get('recommendations/festivals');
     setFestivalData(response.data.data.scheduledFestivalList);
     setSetListData(response.data.data.endedFestivalList);
-    // setIsLoading(false);
+    setIsLoading(false);
   };
 
   useEffect(() => {

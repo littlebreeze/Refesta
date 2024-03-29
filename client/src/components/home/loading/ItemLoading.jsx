@@ -25,7 +25,12 @@ const ItemLoading = ({ type }) => {
   } else if (type === 'artist') {
     return (
       <>
-        <ArtistHomeItem />
+        {dummydata.map((item) => (
+          <ArtistHomeItem key={item.id} />
+        ))}
+        {dummydata.map((item) => (
+          <ArtistHomeItem key={item.id} />
+        ))}
       </>
     );
   }
