@@ -1,9 +1,10 @@
 import { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-
 import useSearchStore from '@store/searchStore';
 
-const AutoCompleteItem = ({ name }) => {
+import instance from '@util/token_interceptor';
+
+const AutoCompleteItem = ({ name, classification }) => {
   const { searchKeyword, changeSearchKeyword } = useSearchStore();
 
   const selectedKeyword = useRef();
@@ -12,9 +13,9 @@ const AutoCompleteItem = ({ name }) => {
   const parts = name.name.split(new RegExp(`(${searchKeyword})`, 'gi'));
 
   const onClickKeyword = () => {
-    console.log('push push');
     changeSearchKeyword(selectedKeyword.current.getAttribute('data-keyword'));
     // 검색 결과 요청
+    const response = instance.patch(`recommendations/${classification}/${name.id}?point=5`);
     nav(`/search/result?word=${selectedKeyword.current.getAttribute('data-keyword')}`);
   };
 
