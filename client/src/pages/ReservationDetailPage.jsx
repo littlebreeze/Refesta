@@ -1,11 +1,11 @@
-import useKakaoStore from '../store/kakaoStore';
-import { useParams } from 'react-router-dom';
-
-import PosterImage from './../components/reservation/PosterImage';
-import BillingResult from './../components/reservation/BillingResult';
 import { useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import useKakaoStore from '@store/kakaoStore';
 
-const ReservationDetail = () => {
+import PosterImage from '@components/reservation/PosterImage';
+import BillingResult from '@components/reservation/BillingResult';
+
+const ReservationDetailPage = () => {
   const { billingResult, getBillingResult } = useKakaoStore();
   const { id } = useParams();
   useEffect(() => {
@@ -20,4 +20,4 @@ const ReservationDetail = () => {
   );
 };
 
-export default ReservationDetail;
+export default ReservationDetailPage;

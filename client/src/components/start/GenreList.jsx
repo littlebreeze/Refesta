@@ -1,9 +1,9 @@
-import instance from '../../util/token_interceptor';
-
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router';
 
-import GenreItem from './GenreItem';
+import instance from '@util/token_interceptor';
+
+import GenreItem from '@components/start/GenreItem';
 
 const lists = [
   { id: 1, title: '랩/힙합', image: 'rap_hiphop', color: '727272' },

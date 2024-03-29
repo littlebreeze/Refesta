@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import useSetListStore from '../../store/setListStore';
-import all_album from '../../assets/all_album.jpg';
-import select from '../../assets/select.png';
-import ArtistItem from './ArtistItem';
+import { useEffect } from 'react';
+import useSetListStore from '@store/setListStore';
+
+import all_album from '@assets/all_album.jpg';
+import select from '@assets/select.png';
+import ArtistItem from '@components/festivalDetail/ArtistItem';
 
 const ArtistList = () => {
   const {
@@ -36,7 +37,7 @@ const ArtistList = () => {
     else {
       // 선택된 라인업을 전체 라인업으로 변경
       setSelectedLineupList([...lineupList]);
-      const allSongs = lineupList.flatMap((artist) => songInfoMap[artist.id].map((song) => song.audioUrl));
+      const allSongs = lineupList.flatMap((artist) => songInfoMap[artist.id].map((song) => song));
       setCurrSongList(allSongs);
     }
     // 버튼 토글

@@ -1,4 +1,4 @@
-import instance from '../util/token_interceptor';
+import instance from '@util/token_interceptor';
 import { useQuery } from 'react-query';
 
 const getUserProfile = async () => {

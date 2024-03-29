@@ -1,17 +1,20 @@
 import React, { useRef, useEffect, useState, useMemo } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import useReviewStore from '@store/reviewStore';
+import festivalInfoStore from '@store/festivalInfoStore';
+
 import ReactPlayer from 'react-player';
-import { useNavigate } from 'react-router-dom';
 
-import Header from './../components/common/Header';
-import xBtn from './../assets/x_black.png';
-import picture from './../assets/picture.png';
-import useReviewStore from '../store/reviewStore';
+import Header from '@components/common/Header';
 
-const RegisterReview = ({ isOpen, onClose, selectedFile: propSelectedFile }) => {
+import xBtn from '@assets/x_black.png';
+import picture from '@assets/picture.png';
+
+const RegisterReviewPage = ({ isOpen, onClose, selectedFile: propSelectedFile }) => {
   const inputFileRef = useRef(null);
   const nav = useNavigate();
   const { id } = useParams();
+  const { festivalInfoData } = festivalInfoStore();
   const { registerReview, addReviews } = useReviewStore();
   const [isPlaying, setIsPlaying] = useState(true);
 
@@ -141,14 +144,14 @@ const RegisterReview = ({ isOpen, onClose, selectedFile: propSelectedFile }) => 
                 <div className='overflow-hidden h-14 w-9'>
                   <img
                     className='object-cover h-full'
-                    src='https://www.seouljazz.co.kr/data/editor/2312/20231205173920_7006427c7339d61b9ea55f8db36041fc_9r59.jpg'
+                    src={festivalInfoData.posterUrl}
                   />
                 </div>
                 <div className='flex flex-col justify-center px-3'>
-                  <div className='font-bold'>제 15회 서울 재즈 페스티벌</div>
-                  <div className='flex text-gray-500'>
-                    <div>2023.07.07</div>
-                    <div className='ml-2'>| 올림픽 공원</div>
+                  <div className='font-bold leading-5 text-left'>{festivalInfoData.name}</div>
+                  <div className='flex mt-1 text-xs text-gray-500'>
+                    <div>{festivalInfoData.date}</div>
+                    <div className='ml-2'>| {festivalInfoData.location}</div>
                   </div>
                 </div>
               </div>
@@ -195,4 +198,4 @@ const RegisterReview = ({ isOpen, onClose, selectedFile: propSelectedFile }) => 
   );
 };
 
-export default RegisterReview;
+export default RegisterReviewPage;

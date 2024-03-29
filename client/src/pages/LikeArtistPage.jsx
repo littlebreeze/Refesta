@@ -1,14 +1,14 @@
-import { useEffect, useState } from 'react';
-import LikeList from '../components/mypage/LikeList';
-import useLikeStore from '../store/likeStore';
+import { useEffect } from 'react';
+import useLikeStore from '@store/likeStore';
 
-const LikeArtist = () => {
+import LikeList from '@components/mypage/LikeList';
+
+const LikeArtistPage = () => {
   const { likeArtistList, getLikeArtistList } = useLikeStore();
 
   useEffect(() => {
     getLikeArtistList();
-    console.log(likeArtistList);
-  }, []); //
+  }, []);
 
   return (
     <div className='bg-gray-200 h-lvh'>
@@ -17,4 +17,4 @@ const LikeArtist = () => {
   );
 };
 
-export default LikeArtist;
+export default LikeArtistPage;

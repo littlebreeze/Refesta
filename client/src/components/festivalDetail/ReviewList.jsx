@@ -1,7 +1,8 @@
 import { useEffect } from 'react';
-import useReviewStore from '../../store/reviewStore';
-import ReviewItem from './ReviewItem';
 import { useParams } from 'react-router';
+import useReviewStore from '@store/reviewStore';
+
+import ReviewItem from '@components/festivalDetail/ReviewItem';
 
 const ReviewList = () => {
   const { addReviews, reviewList } = useReviewStore();

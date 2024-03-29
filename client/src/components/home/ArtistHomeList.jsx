@@ -1,9 +1,11 @@
-import { useEffect, useRef, useState } from 'react';
-import instance from '../../util/token_interceptor';
+import { useEffect, useState } from 'react';
 
-import refresh from '../../assets/refresh.png';
-import ArtistHomeItem from './ArtistHomeItem';
-import ListTitle from './ListTitle';
+import instance from '@util/token_interceptor';
+
+import ArtistHomeItem from '@components/home/ArtistHomeItem';
+import ListTitle from '@components/home/ListTitle';
+
+import refresh from '@assets/refresh.png';
 
 const ArtistHomeList = () => {
   const [artistData, setArtistData] = useState([]);

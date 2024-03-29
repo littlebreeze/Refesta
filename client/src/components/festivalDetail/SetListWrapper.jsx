@@ -1,6 +1,6 @@
-import SetListPlayer from './SetListPlayer';
-import ArtistList from '../festivalDetail/ArtistList';
-import PlayList from '../festivalDetail/PlayList';
+import SetListPlayer from '@components/festivalDetail/SetListPlayer';
+import ArtistList from '@components/festivalDetail/ArtistList';
+import PlayList from '@components/festivalDetail/PlayList';
 
 const SetListWrapper = () => {
   return (

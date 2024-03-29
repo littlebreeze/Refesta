@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 
-import FestivalHomeItem from './FestivalHomeItem';
-import ListTitle from './ListTitle';
+import FestivalHomeItem from '@components/home/FestivalHomeItem';
+import ListTitle from '@components/home/ListTitle';
 
 const FestivalHomeList = ({ festivalData }) => {
   return (
