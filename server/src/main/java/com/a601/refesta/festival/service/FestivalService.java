@@ -17,6 +17,7 @@ import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -67,7 +68,7 @@ public class FestivalService {
      * @param memberId
      * @param festivalId
      */
-    public void updateFestivalLike(int memberId, int festivalId) {
+    public HttpStatus updateFestivalLike(int memberId, int festivalId) {
         Optional<FestivalLike> optFindLike = festivalLikeRepository
                 .findByMember_IdAndFestival_Id(memberId, festivalId);
 
@@ -80,14 +81,15 @@ public class FestivalService {
                     .build()
             );
 
-            return;
+            return HttpStatus.CREATED;
         }
 
         //DB에 있으면 좋아요 상태 업데이트
         FestivalLike findLike = optFindLike.get();
         findLike.updateStatus();
-
         festivalLikeRepository.save(findLike);
+
+        return HttpStatus.OK;
     }
 
     /**
@@ -118,7 +120,7 @@ public class FestivalService {
         checkIsEnded(getFestival(festivalId));
 
         List<Tuple> searchResult = jpaQueryFactory
-                .select(song.title, song.audioUrl, song.imageUrl, artist.id, artist.name, artist.pictureUrl)
+                .select(song.id, song.title, song.audioUrl, song.imageUrl, artist.id, artist.name, artist.pictureUrl)
                 .from(festivalSetlist)
                 .innerJoin(festivalLineup).on(festivalSetlist.festival.id.eq(festivalLineup.festival.id))
                 .innerJoin(artistSong).on(festivalLineup.artist.id.eq(artistSong.artist.id)
@@ -147,8 +149,8 @@ public class FestivalService {
 
             //노래 정보 저장
             List<FestivalSetlistRes.SongInfo> songInfoList = songInfoMap.get(artistId);
-            songInfoList.add(new FestivalSetlistRes.SongInfo
-                    (tuple.get(song.title), tuple.get(song.audioUrl), tuple.get(song.imageUrl), tuple.get(artist.name)));
+            songInfoList.add(new FestivalSetlistRes.SongInfo(tuple.get(song.id), tuple.get(song.title),
+                    tuple.get(song.audioUrl), tuple.get(song.imageUrl), tuple.get(artist.name)));
         }
 
         //셋리스트 정보 반환
@@ -184,7 +186,7 @@ public class FestivalService {
      * @param findFestival
      */
     public void checkIsEnded(Festival findFestival) {
-        if (!findFestival.isEnded()) {
+        if (!findFestival.getIsEnded()) {
             throw new CustomException(ErrorCode.FESTIVAL_IS_NOT_ENDED_ERROR);
         }
     }
@@ -195,7 +197,7 @@ public class FestivalService {
      * @param findFestival
      */
     public void checkIsScheduled(Festival findFestival) {
-        if (findFestival.isEnded()) {
+        if (findFestival.getIsEnded()) {
             throw new CustomException(ErrorCode.FESTIVAL_ALREADY_ENDED_ERROR);
         }
     }

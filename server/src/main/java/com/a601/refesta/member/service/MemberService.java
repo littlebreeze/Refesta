@@ -4,9 +4,9 @@ import com.a601.refesta.common.util.S3Util;
 import com.a601.refesta.genre.repository.GenreRepository;
 import com.a601.refesta.member.data.*;
 import com.a601.refesta.member.domain.Member;
-import com.a601.refesta.member.domain.join.PreferGenre;
+import com.a601.refesta.member.domain.join.MemberGenre;
 import com.a601.refesta.member.repository.MemberRepository;
-import com.a601.refesta.member.repository.PreferGenreRepository;
+import com.a601.refesta.member.repository.MemberGenreRepository;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -33,7 +33,7 @@ import static com.a601.refesta.review.domain.QReview.review;
 public class MemberService {
 
     private final MemberRepository memberRepository;
-    private final PreferGenreRepository preferGenreRepository;
+    private final MemberGenreRepository memberGenreRepository;
     private final GenreRepository genreRepository;
     private final S3Util s3Util;
     private final JPAQueryFactory jpaQueryFactory;
@@ -72,12 +72,12 @@ public class MemberService {
         Member member = getMember(memberId);
         if (genres.getPreferGenres() != null && !genres.getPreferGenres().isEmpty()) {
             for (Integer genreId : genres.getPreferGenres()) {
-                PreferGenre preferGenre =
-                        PreferGenre.builder()
+                MemberGenre memberGenre =
+                        MemberGenre.builder()
                                 .genre(genreRepository.findById(genreId).orElseThrow())
                                 .member(member)
                                 .build();
-                preferGenreRepository.save(preferGenre);
+                memberGenreRepository.save(memberGenre);
             }
         }
 

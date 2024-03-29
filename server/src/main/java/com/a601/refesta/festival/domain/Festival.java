@@ -35,5 +35,5 @@ public class Festival extends BaseEntity {
 
     @Column(nullable = false)
     @ColumnDefault("false")
-    private boolean isEnded;
+    private Boolean isEnded;
 }

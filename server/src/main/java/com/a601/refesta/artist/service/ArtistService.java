@@ -12,6 +12,7 @@ import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -85,7 +86,7 @@ public class ArtistService {
      * @param memberId - 구글 식별 ID
      * @param artistId
      */
-    public void updateArtistLike(int memberId, int artistId) {
+    public HttpStatus updateArtistLike(int memberId, int artistId) {
         Optional<ArtistLike> optFindLike = artistLikeRepository.findByMember_IdAndArtist_Id(memberId, artistId);
 
         //DB에 없으면 추가
@@ -97,14 +98,15 @@ public class ArtistService {
                     .build()
             );
 
-            return;
+            return HttpStatus.CREATED;
         }
 
         //DB에 있으면 좋아요 상태 업데이트 후 저장
         ArtistLike findLike = optFindLike.get();
         findLike.updateStatus();
-
         artistLikeRepository.save(findLike);
+        
+        return HttpStatus.OK;
     }
 
     /**

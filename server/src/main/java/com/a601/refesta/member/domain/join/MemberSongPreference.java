@@ -1,8 +1,8 @@
-package com.a601.refesta.recommendation.domain;
+package com.a601.refesta.member.domain.join;
 
-import com.a601.refesta.artist.domain.Artist;
 import com.a601.refesta.common.entity.BaseEntity;
 import com.a601.refesta.member.domain.Member;
+import com.a601.refesta.song.domain.Song;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
@@ -12,7 +12,7 @@ import org.hibernate.annotations.ColumnDefault;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class MemberArtist extends BaseEntity {
+public class MemberSongPreference extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,6 +23,14 @@ public class MemberArtist extends BaseEntity {
     private Member member;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "artist_id")
-    private Artist artist;
+    @JoinColumn(name = "song_id")
+    private Song song;
+
+    @Column(nullable = false)
+    @ColumnDefault("0")
+    private Integer preference;
+
+    public void updatePreference() {
+        this.preference += 1;
+    }
 }

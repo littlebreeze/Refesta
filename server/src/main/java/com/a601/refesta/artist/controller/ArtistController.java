@@ -28,7 +28,6 @@ public class ArtistController {
     public SuccessResponse<HttpStatus> editArtistLike(HttpServletRequest request,
                                                       @PathVariable(name = "artist_id") int artistId) {
         int memberId = tokenProvider.getMemberIdByToken(request);
-        artistService.updateArtistLike(memberId, artistId);
-        return new SuccessResponse<>(HttpStatus.OK);
+        return new SuccessResponse<>(artistService.updateArtistLike(memberId, artistId));
     }
 }

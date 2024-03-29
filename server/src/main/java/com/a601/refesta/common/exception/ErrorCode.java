@@ -40,7 +40,10 @@ public enum ErrorCode {
 
     //Reservation
     RESERVATION_MEMBER_NOT_EQUAL(404, "REV001", "예매자와 회원정보가 일치하지 않습니다."),
-    RESERVATION_NOT_FOUND_ERROR(404, "REV002", "존재하지 않는 예매내역입니다.");
+    RESERVATION_NOT_FOUND_ERROR(404, "REV002", "존재하지 않는 예매내역입니다."),
+
+    //Song
+    SONG_NOT_FOUND_ERROR(404, "SNG001", "존재하지 않는 노래입니다.");
 
     private final int status;
 

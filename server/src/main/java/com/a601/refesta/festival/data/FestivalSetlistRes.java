@@ -31,6 +31,8 @@ public class FestivalSetlistRes {
     @AllArgsConstructor
     public static class SongInfo {
 
+        private int id;
+
         private String title;
 
         private String audioUrl;

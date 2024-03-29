@@ -3,6 +3,7 @@ package com.a601.refesta.artist.domain;
 import com.a601.refesta.common.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 
 @Entity
 @Getter
