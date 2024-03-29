@@ -32,8 +32,9 @@ const useArtistStore = create((set) => ({
         liked: !state.artist.liked,
       },
     })),
-  // 아티스트 좋아요 버튼
-  updateLike: async (artistId) => {
+
+  // 아티스트 좋아요버튼 요청
+  updateArtistLike: async (artistId) => {
     try {
       const res = await instance.patch(`${baseURL}/artists/${artistId}`);
     } catch (e) {
