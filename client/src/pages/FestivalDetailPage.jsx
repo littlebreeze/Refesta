@@ -1,17 +1,21 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import instance from '../util/token_interceptor';
-import FestivalInfo from '../components/festivalDetail/FestivalInfo';
-import FestivalInfoDetail from '../components/festivalDetail/FestivalInfoDetail';
-import ReservationButton from '../components/festivalDetail/ReservationButton';
-import FestivalInfoContainer from '../components/festivalDetail/FestivalInfoContainer';
-import useSetListStore from '../store/setListStore';
+import useSetListStore from '@store/setListStore';
+import useFestivalInfoStore from '@store/festivalInfoStore';
 
-// 페스티벌 상세 진행중
+import instance from '@util/token_interceptor';
+
+import FestivalInfo from '@components/festivalDetail/FestivalInfo';
+import FestivalInfoDetail from '@components/festivalDetail/FestivalInfoDetail';
+import ReservationButton from '@components/festivalDetail/ReservationButton';
+import FestivalInfoContainer from '@components/festivalDetail/FestivalInfoContainer';
+
 const FestivalDetailPage = () => {
   const { id } = useParams();
-  const [festivalInfoData, setFestivalInfoData] = useState(null);
-  const [festivalInfoDetailData, setFestivalInfoDetailData] = useState(null);
+
+  const { festivalInfoData, setFestivalInfoData, festivalInfoDetailData, setFestivalInfoDetailData } =
+    useFestivalInfoStore();
+
   const {
     lineupList,
     addLineupList,
@@ -38,10 +42,21 @@ const FestivalDetailPage = () => {
           setFestivalInfoData(response.data.data);
         }
       } catch (error) {
-        console.error('Error fetching festival info:', error);
+        console.error('Error:', error);
       }
     };
 
+    // 페스티벌 상세 페이지 접근 데이터 제공
+    const increaseFestivalViewCount = async () => {
+      try {
+        const res = await instance.patch(`festivals/${id}/views`);
+        console.log(res);
+      } catch (e) {
+        console.error('Error:', e);
+      }
+    };
+
+    increaseFestivalViewCount();
     getFestivalInfoData();
   }, []);
 
@@ -94,13 +109,13 @@ const FestivalDetailPage = () => {
     <div>
       {festivalInfoData && !festivalInfoData.ended ? (
         <div>
-          <FestivalInfo festivalInfoData={festivalInfoData} />
-          <FestivalInfoDetail festivalInfoDetailData={festivalInfoDetailData} />
-          <ReservationButton festivalInfoData={festivalInfoData} />
+          <FestivalInfo />
+          <FestivalInfoDetail />
+          <ReservationButton />
         </div>
       ) : (
         <div>
-          <FestivalInfo festivalInfoData={festivalInfoData} />
+          <FestivalInfo />
           <FestivalInfoContainer />
         </div>
       )}

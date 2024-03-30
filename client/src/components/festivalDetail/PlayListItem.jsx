@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import useSetListStore from '../../store/setListStore';
+import useSetListStore from '@store/setListStore';
 
 const PlayListItem = ({ song }) => {
   const {

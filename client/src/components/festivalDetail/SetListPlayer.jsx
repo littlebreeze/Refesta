@@ -1,12 +1,13 @@
-import React, { useEffect } from 'react';
-import { useState, useRef } from 'react';
+import { useState, useEffect } from 'react';
+import useSetListStore from '@store/setListStore';
+
 import ReactPlayer from 'react-player';
-import play_btn from '../../assets/play_btn.png';
-import pause_btn from '../../assets/pause_btn.png';
-import default_album_poster from '../../assets/default_album_poster.jpg';
-import previous_btn from '../../assets/previous_btn.png';
-import next_btn from '../../assets/next_btn.png';
-import useSetListStore from '../../store/setListStore';
+
+import play_btn from '@assets/play_btn.png';
+import pause_btn from '@assets/pause_btn.png';
+import previous_btn from '@assets/previous_btn.png';
+import next_btn from '@assets/next_btn.png';
+import default_album_poster from '@assets/default_album_poster.jpg';
 
 const SetListPlayer = () => {
   const {
@@ -44,28 +45,30 @@ const SetListPlayer = () => {
 
   // 이전 곡 재생
   const onClickPrevButton = () => {
-    let newIndex = currSongIndex - 1;
-    if (newIndex < 0) {
-      newIndex = currSongList.length - 1; // 범위를 벗어나면 맨 마지막 곡으로 이동
+    if (currSongList.length > 1) {
+      let newIndex = currSongIndex - 1;
+      if (newIndex < 0) {
+        newIndex = currSongList.length - 1; // 범위를 벗어나면 맨 마지막 곡으로 이동
+      }
+      setCurrSongIndex(newIndex);
+      setCurrSong(currSongList[newIndex]);
     }
-    setCurrSongIndex(newIndex);
-    setCurrSong(currSongList[newIndex]);
   };
 
   // 다음 곡 재생
   const onClickNextButton = () => {
-    let newIndex = currSongIndex + 1;
-    if (newIndex >= currSongList.length) {
-      newIndex = 0; // 범위를 벗어나면 첫 번째 곡으로 이동
+    if (currSongList.length > 1) {
+      let newIndex = currSongIndex + 1;
+      if (newIndex >= currSongList.length) {
+        newIndex = 0; // 범위를 벗어나면 첫 번째 곡으로 이동
+      }
+      setCurrSongIndex(newIndex);
+      setCurrSong(currSongList[newIndex]);
     }
-    setCurrSongIndex(newIndex);
-    setCurrSong(currSongList[newIndex]);
   };
 
-  // useEffect(() => {
-  //   // currSong이 변경될 때마다 currSong을 출력합니다.
-  //   console.log('Curr Song Updated:', currSong);
-  // }, [currSong]); // currSong이 변경될 때마다 이 효과가 실행됩니다.
+  console.log('currSongList', currSongList);
+  console.log('currSong', currSong);
 
   return (
     <div className='flex justify-between mx-4 bg-white rounded-md'>

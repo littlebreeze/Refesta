@@ -1,19 +1,21 @@
 import React, { useRef, useEffect, useState, useMemo } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import useReviewStore from '@store/reviewStore';
+import festivalInfoStore from '@store/festivalInfoStore';
+
 import ReactPlayer from 'react-player';
-import { useNavigate } from 'react-router-dom';
 
-import Header from './../components/common/Header';
-import xBtn from './../assets/x_black.png';
-import picture from './../assets/picture.png';
-import useReviewStore from '../store/reviewStore';
+import xBtn from '@assets/x_black.png';
+import picture from '@assets/picture.png';
 
-const RegisterReview = ({ isOpen, onClose, selectedFile: propSelectedFile }) => {
+const RegisterReviewPage = ({ isOpen, onClose, selectedFile: propSelectedFile }) => {
   const inputFileRef = useRef(null);
   const nav = useNavigate();
   const { id } = useParams();
+  const { festivalInfoData } = festivalInfoStore();
   const { registerReview, addReviews } = useReviewStore();
   const [isPlaying, setIsPlaying] = useState(true);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [newReview, setNewReview] = useState({});
 
@@ -50,6 +52,7 @@ const RegisterReview = ({ isOpen, onClose, selectedFile: propSelectedFile }) => 
     }));
   }, [id]);
 
+  // textarea 변경사항 세팅시키기
   const handleContentsChange = (e) => {
     const { value } = e.target;
     setNewReview((prev) => ({
@@ -58,7 +61,7 @@ const RegisterReview = ({ isOpen, onClose, selectedFile: propSelectedFile }) => 
     }));
   };
 
-  // 넘겨받은 file 세팅
+  // file 변경사항 세팅시키기
   useEffect(() => {
     if (propSelectedFile) {
       setNewReview((prev) => ({
@@ -71,6 +74,7 @@ const RegisterReview = ({ isOpen, onClose, selectedFile: propSelectedFile }) => 
     }
   }, [propSelectedFile]);
 
+  // 파일이 바뀌었을 때
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -85,15 +89,23 @@ const RegisterReview = ({ isOpen, onClose, selectedFile: propSelectedFile }) => 
     }
   };
 
+  // 아이콘 클릭으로 input 파일 등록 대신하기
   const handleImageChange = () => {
     inputFileRef.current.click();
   };
 
+  // 등록 버튼 누르기
   const handleReviewSubmit = async () => {
-    await registerReview(newReview, async () => {
+    setIsSubmitting(true);
+    try {
+      await registerReview(newReview);
       await addReviews(id);
+    } catch (e) {
+      console.log('리뷰 등록 실패', e);
+    } finally {
+      setIsSubmitting(false);
       onClose();
-    });
+    }
   };
 
   // 프리뷰
@@ -124,31 +136,33 @@ const RegisterReview = ({ isOpen, onClose, selectedFile: propSelectedFile }) => 
   return (
     <div className='fixed inset-0 z-50 flex items-center justify-center'>
       {isOpen && (
-        <div className='w-full h-full max-w-[500px] bg-white'>
-          <Header />
+        <div className='w-full h-lvh max-w-[500px] bg-white overflow-y-auto'>
+          {/* <Header /> */}
           <button
-            className='absolute m-4 mt-6 right-1 top-16'
+            className='absolute top-0 m-4 mt-6 right-1'
             onClick={onClose}
           >
             <span>
               <img src={xBtn} />
             </span>
           </button>
-          <div className='w-full h-full'>
-            <div className='flex items-center justify-center h-10 text-lg font-bold py-7 border-y-2'>후기 작성</div>
+          <div className='flex flex-col items-center justify-between w-full h-full pb-10'>
+            <div className='flex items-center justify-center w-full h-10 text-lg font-bold py-7 border-y-2'>
+              후기 작성
+            </div>
             <section className='flex flex-col'>
               <div className='flex my-5 px-7'>
                 <div className='overflow-hidden h-14 w-9'>
                   <img
                     className='object-cover h-full'
-                    src='https://www.seouljazz.co.kr/data/editor/2312/20231205173920_7006427c7339d61b9ea55f8db36041fc_9r59.jpg'
+                    src={festivalInfoData.posterUrl}
                   />
                 </div>
                 <div className='flex flex-col justify-center px-3'>
-                  <div className='font-bold'>제 15회 서울 재즈 페스티벌</div>
-                  <div className='flex text-gray-500'>
-                    <div>2023.07.07</div>
-                    <div className='ml-2'>| 올림픽 공원</div>
+                  <div className='font-bold leading-5 text-left'>{festivalInfoData.name}</div>
+                  <div className='flex mt-1 text-xs text-gray-500'>
+                    <div>{festivalInfoData.date}</div>
+                    <div className='ml-2'>| {festivalInfoData.location}</div>
                   </div>
                 </div>
               </div>
@@ -174,20 +188,21 @@ const RegisterReview = ({ isOpen, onClose, selectedFile: propSelectedFile }) => 
                   />
                 </div>
                 <textarea
-                  className='w-full h-40 mt-5 overflow-y-scroll px-7 mx-7 focus:outline-none scrollbar-hide'
+                  className='w-full mt-5 overflow-y-scroll h-52 px-7 mx-7 focus:outline-none scrollbar-hide'
                   name=''
                   id=''
                   placeholder='문구 작성...'
                   onChange={handleContentsChange}
                 ></textarea>
-                <button
-                  className='flex items-center justify-center w-11/12 mt-3 text-white rounded-md bg-ourIndigo h-14'
-                  onClick={handleReviewSubmit}
-                >
-                  등록하기
-                </button>
               </div>
             </section>
+            <button
+              className='flex items-center justify-center w-11/12 mt-3 text-white rounded-md bg-ourIndigo h-14'
+              onClick={handleReviewSubmit}
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? '등록 중...' : '등록하기'}
+            </button>
           </div>
         </div>
       )}
@@ -195,4 +210,4 @@ const RegisterReview = ({ isOpen, onClose, selectedFile: propSelectedFile }) => 
   );
 };
 
-export default RegisterReview;
+export default RegisterReviewPage;

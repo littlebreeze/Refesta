@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import useUserStore from '../../store/userStore';
-import xBtn from './../../assets/x_bold.png';
-import likeArtist from './../../assets/like_artist.png';
-import likeFesta from './../../assets/like_festa.png';
-import myReview from './../../assets/my_review.png';
-import dropdown from './../../assets/dropdown.png';
-import dropup from './../../assets/dropup.png';
-import wave from './../../assets/wave.png';
+
+import useUserStore from '@store/userStore';
+
+import xBtn from '@assets/x_bold.png';
+import likeArtist from '@assets/like_artist.png';
+import likeFesta from '@assets/like_festa.png';
+import myReview from '@assets/my_review.png';
+import dropdown from '@assets/dropdown.png';
+import dropup from '@assets/dropup.png';
+import wave from '@assets/wave.png';
 const Mypage = ({ isOpen, onClose, nickname, profileUrl }) => {
   const nav = useNavigate();
   const [toggle, setToggle] = useState(false);
@@ -103,8 +105,8 @@ const Mypage = ({ isOpen, onClose, nickname, profileUrl }) => {
                 >
                   <div className='flex items-center justify-center w-[4.5rem] h-[4.5rem] border-2 border-gray-300 border-solid rounded-full'>
                     <img
-                      className='object-scale-down w-4/5'
-                      src={likeArtist}
+                      className='object-scale-down w-3/5'
+                      src={likeFesta}
                     />
                   </div>
                   <div className='mt-3 text-xs font-bold'>좋아요한 페스티벌</div>
@@ -115,8 +117,8 @@ const Mypage = ({ isOpen, onClose, nickname, profileUrl }) => {
                 >
                   <div className='flex items-center justify-center w-[4.5rem] h-[4.5rem] border-2 border-gray-300 border-solid rounded-full'>
                     <img
-                      className='object-scale-down w-4/5'
-                      src={likeFesta}
+                      className='object-scale-down w-3/5'
+                      src={likeArtist}
                     />
                   </div>
                   <div className='mt-3 text-xs font-bold'>좋아요한 아티스트</div>
@@ -127,7 +129,7 @@ const Mypage = ({ isOpen, onClose, nickname, profileUrl }) => {
                 >
                   <div className='flex items-center justify-center w-[4.5rem] h-[4.5rem] border-2 border-gray-300 border-solid rounded-full'>
                     <img
-                      className='object-scale-down w-4/5'
+                      className='object-scale-down w-3/5'
                       src={myReview}
                     />
                   </div>

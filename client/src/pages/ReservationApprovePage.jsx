@@ -1,7 +1,8 @@
 import { useEffect } from 'react';
-import useKakaoStore from '../store/kakaoStore';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import loading from '../assets/loading.png';
+import useKakaoStore from '@store/kakaoStore';
+
+import loading from '@assets/loading.png';
 
 const ReservationApprovePage = () => {
   const { approvePayment } = useKakaoStore();

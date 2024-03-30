@@ -1,9 +1,11 @@
 import { Link } from 'react-router-dom';
 
-import FestivalHomeItem from './FestivalHomeItem';
-import ListTitle from './ListTitle';
+import FestivalHomeItem from '@components/home/FestivalHomeItem';
+import ListTitle from '@components/home/ListTitle';
+import ItemLoading from '@components/home/loading/ItemLoading';
+import { useState } from 'react';
 
-const FestivalHomeList = ({ festivalData }) => {
+const FestivalHomeList = ({ festivalData, isLoading }) => {
   return (
     <div className='h-[271px]'>
       <ListTitle
@@ -16,9 +18,11 @@ const FestivalHomeList = ({ festivalData }) => {
         }
       />
       <div className='flex overflow-x-scroll scrollbar-hide whitespace-nowrap gap-x-3 px-7'>
-        {festivalData.map((item) => (
-          <FestivalHomeItem key={item.id} {...item} />
-        ))}
+        {isLoading ? (
+          <ItemLoading type={'festival'} />
+        ) : (
+          festivalData.map((item) => <FestivalHomeItem key={item.id} {...item} />)
+        )}
       </div>
     </div>
   );

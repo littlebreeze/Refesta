@@ -1,8 +1,9 @@
 import { useEffect } from 'react';
-import LikeList from '../components/mypage/LikeList';
-import useLikeStore from '../store/likeStore';
+import useLikeStore from '@store/likeStore';
 
-const LikeFestival = () => {
+import LikeList from '@components/mypage/LikeList';
+
+const LikeFestivalPage = () => {
   const { likeFestivalList, getLikeFestivalList } = useLikeStore();
 
   useEffect(() => {
@@ -16,4 +17,4 @@ const LikeFestival = () => {
   );
 };
 
-export default LikeFestival;
+export default LikeFestivalPage;

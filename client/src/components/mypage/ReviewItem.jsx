@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import ReactPlayer from 'react-player';
-import DeleteReview from './DeleteReview';
+
+import DeleteReview from '@components/mypage/DeleteReview';
 
 const ReviewItem = ({ review }) => {
   const { reviewId, name, date, location, contents, attachmentUrl, type } = review;

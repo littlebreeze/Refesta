@@ -1,7 +1,9 @@
-import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import useFestivalInfoStore from '@store/festivalInfoStore';
 
-const ReservationButton = ({ festivalInfoData }) => {
+const ReservationButton = () => {
+  const { festivalInfoData } = useFestivalInfoStore();
+
   const nav = useNavigate();
   const onClickReservation = () => {
     nav('/reservation', { state: { festivalInfo: festivalInfoData } });

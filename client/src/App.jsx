@@ -23,6 +23,7 @@ import SubLayout from './layout/SubLayout';
 import TestPage from './pages/TestPage';
 import ReservationApprove from './pages/ReservationApprovePage';
 import AboutPage from './pages/AboutPage';
+import PrivacyPolicyPage from '@pages/PrivacyPolicyPage';
 
 function App() {
   return (
@@ -30,93 +31,37 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route element={<SubLayout />}>
-            <Route
-              path='/login'
-              element={<Login />}
-            />
-            <Route
-              path='/google-login'
-              element={<Google_Login />}
-            />
-            <Route
-              path='/regist'
-              element={<RegisterInfo />}
-            />
-            <Route
-              path='/test'
-              element={<TestPage />}
-            />
-            <Route
-              path='/about'
-              element={<AboutPage />}
-            />
-            <Route
-              path='/reservation/approve'
-              element={<ReservationApprove />}
-            />
+            <Route path='/login' element={<Login />} />
+            <Route path='/google-login' element={<Google_Login />} />
+            <Route path='/regist' element={<RegisterInfo />} />
+            <Route path='/test' element={<TestPage />} />
+            <Route path='/about' element={<AboutPage />} />
+            <Route path='/reservation/approve' element={<ReservationApprove />} />
+            <Route path='/privacy_policy' element={<PrivacyPolicyPage />} />
           </Route>
           <Route element={<MainLayout />}>
-            <Route
-              path='/'
-              element={<Home />}
-            />
-            <Route
-              path='/festival/list/:state'
-              element={<FestivalList />}
-            />
-            <Route
-              path='/festival/:id'
-              element={<FestivalDetail />}
-            />
+            <Route path='/' element={<Home />} />
+            <Route path='/festival/list/:state' element={<FestivalList />} />
+            <Route path='/festival/:id' element={<FestivalDetail />} />
             {/* <Route
               path='/festival/done/:id'
               element={<FestivalDetailDone />}
             /> */}
-            <Route
-              path='/artist/:id'
-              element={<ArtistDetail />}
-            />
-            <Route
-              path='/reservation'
-              element={<Reservation />}
-            />
-            <Route
-              path='/reservation/result/:id'
-              element={<ReservationResult />}
-            />
-            <Route
-              path='/reservation/detail/:id'
-              element={<ReservationDetail />}
-            />
+            <Route path='/artist/:id' element={<ArtistDetail />} />
+            <Route path='/reservation' element={<Reservation />} />
+            <Route path='/reservation/result/:id' element={<ReservationResult />} />
+            <Route path='/reservation/detail/:id' element={<ReservationDetail />} />
 
-            <Route
-              path='/like/artist'
-              element={<LikeArtist />}
-            />
-            <Route
-              path='/like/festival'
-              element={<LikeFestival />}
-            />
-            <Route
-              path='my-review'
-              element={<MyReview />}
-            />
+            <Route path='/like/artist' element={<LikeArtist />} />
+            <Route path='/like/festival' element={<LikeFestival />} />
+            <Route path='my-review' element={<MyReview />} />
           </Route>
 
           <Route element={<SearchLayout />}>
-            <Route
-              path='/search'
-              element={<Search />}
-            />
-            <Route
-              path='/search/result'
-              element={<SearchResult />}
-            />
+            <Route path='/search' element={<Search />} />
+            <Route path='/search/result' element={<SearchResult />} />
           </Route>
-          <Route
-            path='*'
-            element={<Notfound />}
-          />
+          <Route path='*' element={<Notfound />} />
         </Routes>
       </BrowserRouter>
     </div>

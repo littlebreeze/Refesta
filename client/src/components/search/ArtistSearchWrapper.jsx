@@ -1,5 +1,4 @@
-import React from 'react';
-import ArtistSearchList from './ArtistSearchList';
+import ArtistSearchList from '@components/search/ArtistSearchList';
 
 // 통합검색 결과
 const ArtistSearchWrapper = () => {

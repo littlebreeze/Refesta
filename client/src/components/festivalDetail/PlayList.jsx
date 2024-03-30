@@ -1,6 +1,7 @@
-import React, { useEffect } from 'react';
-import useSetListStore from '../../store/setListStore';
-import PlayListItem from './PlayListItem';
+import { useEffect } from 'react';
+import useSetListStore from '@store/setListStore';
+
+import PlayListItem from '@components/festivalDetail/PlayListItem';
 
 const PlayList = () => {
   const {
