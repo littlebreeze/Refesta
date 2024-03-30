@@ -25,9 +25,12 @@ const Login = () => {
       <img src={logo} />
       <h3 className='text-2xl font-bold leading-9 tracking-tight text-center text-ourIndigo'>당신만을 위한 페스티벌</h3>
       <h2 className='text-3xl font-bold leading-9 tracking-tight text-center text-ourIndigo'>Refesta</h2>
-      <div className='flex items-center justify-center w-full font-semibold bg-white shadow-md shadow-zinc-400 h-14 mt-14'>
+      <div
+        className='flex items-center justify-center w-full font-semibold bg-white shadow-md cursor-pointer shadow-zinc-400 h-14 mt-14'
+        onClick={handleGoogleLogin}
+      >
         <img className='mr-4 max-w-4' src={glogo} />
-        <button onClick={handleGoogleLogin}>Google로 시작하기</button>
+        <button>Google로 시작하기</button>
       </div>
     </div>
   );
