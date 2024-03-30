@@ -17,11 +17,16 @@ const useArtistStore = create((set) => ({
   addArtist: async (artistId) => {
     try {
       const res = await instance.get(`${baseURL}/artists/${artistId}`);
-      set(() => ({
-        artist: res.data.data,
-      }));
+      if (res.data.status === 'success') {
+        set(() => ({
+          artist: res.data.data,
+        }));
+      } else {
+        throw new Error('Server Error');
+      }
     } catch (e) {
       console.log(e);
+      throw e;
     }
   },
   // 아티스트 좋아요 버튼
