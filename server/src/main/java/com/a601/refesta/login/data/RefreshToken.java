@@ -1,7 +1,6 @@
-package com.a601.refesta.member.domain;
+package com.a601.refesta.login.data;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.redis.core.RedisHash;
@@ -11,9 +10,8 @@ import java.time.LocalDateTime;
 
 @AllArgsConstructor
 @Getter
-@Builder
 @RedisHash(value = "refreshTokenRedis", timeToLive = 60 * 60 * 24 * 7)//레디스 데이터 유효기간 :7일
-public class RefreshTokenRedis {
+public class RefreshToken {
 
     @Id
     private String id;
