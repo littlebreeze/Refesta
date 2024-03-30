@@ -2,8 +2,9 @@ import { Link } from 'react-router-dom';
 
 import SetListHomeColItem from '@components/home/SetListHomeColItem';
 import ListTitle from '@components/home/ListTitle';
+import ItemLoading from '@components/home/loading/ItemLoading';
 
-const SetListHomeList = ({ setListData }) => {
+const SetListHomeList = ({ setListData, isLoading }) => {
   // 데이터를 2개씩 자른 새로운 배열을 만든다
   const chunkArray = (array, chunkSize) => {
     const chunkedArray = [];
@@ -27,10 +28,14 @@ const SetListHomeList = ({ setListData }) => {
         }
       />
       <div className='flex overflow-x-scroll gap-x-4 scrollbar-hide whitespace-nowrap px-7'>
-        {chunkArray(setListData, 2).map((chunkItem, idx) => (
-          // 2개씩 끊어서 보내줘야지
-          <SetListHomeColItem key={idx} chunkItem={chunkItem} />
-        ))}
+        {isLoading ? (
+          <ItemLoading type={'setList'} />
+        ) : (
+          chunkArray(setListData, 2).map((chunkItem, idx) => (
+            // 2개씩 끊어서 보내줘야지
+            <SetListHomeColItem key={idx} chunkItem={chunkItem} />
+          ))
+        )}
       </div>
     </div>
   );
