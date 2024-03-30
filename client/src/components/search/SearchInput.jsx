@@ -64,7 +64,7 @@ const SearchInput = () => {
         );
       }
 
-      //nav(`/search/result?word=${searchKeyword}`);
+      nav(`/search/result?word=${searchKeyword}`);
     }
 
     // 자동 완성 검색어 요청
