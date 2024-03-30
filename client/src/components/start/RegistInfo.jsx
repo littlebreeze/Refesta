@@ -11,8 +11,6 @@ const stepParam = {
   step3: 'genre',
 };
 
-//
-
 const RegisterInfo = () => {
   const [steps, setStep] = useState(stepParam.step1);
 
