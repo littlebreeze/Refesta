@@ -96,6 +96,10 @@ const RegisterReviewPage = ({ isOpen, onClose, selectedFile: propSelectedFile })
 
   // 등록 버튼 누르기
   const handleReviewSubmit = async () => {
+    if (!(newReview.contents?.trim() || '')) {
+      alert('문구를 작성해주세요.');
+      return;
+    }
     setIsSubmitting(true);
     try {
       await registerReview(newReview);
@@ -104,6 +108,10 @@ const RegisterReviewPage = ({ isOpen, onClose, selectedFile: propSelectedFile })
       console.log('리뷰 등록 실패', e);
     } finally {
       setIsSubmitting(false);
+      setNewReview((prev) => ({
+        ...prev,
+        contents: '',
+      }));
       onClose();
     }
   };
