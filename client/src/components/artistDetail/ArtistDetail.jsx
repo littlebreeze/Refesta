@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import useArtistStore from '@store/artistStore';
 
 import instance from '@util/token_interceptor';
@@ -12,9 +12,24 @@ import heart from '@assets/heart.png';
 const ArtistDetail = () => {
   const { addArtist, artist, toggleLike, updateArtistLike } = useArtistStore();
   const { id } = useParams();
+  const nav = useNavigate();
 
   useEffect(() => {
-    addArtist(id);
+    // 파라미터에 문자열 입력했을 경우, 404페이지
+    if (isNaN(id)) {
+      nav('/Notfound');
+    }
+
+    // 아티스트 정보 가져오기
+    const fetchArtist = async () => {
+      try {
+        await addArtist(id);
+      } catch (e) {
+        nav('/Notfound');
+      }
+    };
+
+    fetchArtist();
 
     // 아티스트 상세 페이지 접근 데이터 제공
     const increaseArtistViewCount = async () => {
@@ -29,6 +44,7 @@ const ArtistDetail = () => {
     increaseArtistViewCount();
   }, [addArtist, id]);
 
+  // 좋아요 버튼
   const handleLikeBtn = () => {
     toggleLike();
     updateArtistLike(id);
