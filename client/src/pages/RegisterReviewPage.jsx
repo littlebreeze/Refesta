@@ -5,8 +5,6 @@ import festivalInfoStore from '@store/festivalInfoStore';
 
 import ReactPlayer from 'react-player';
 
-import Header from '@components/common/Header';
-
 import xBtn from '@assets/x_black.png';
 import picture from '@assets/picture.png';
 
@@ -17,6 +15,7 @@ const RegisterReviewPage = ({ isOpen, onClose, selectedFile: propSelectedFile })
   const { festivalInfoData } = festivalInfoStore();
   const { registerReview, addReviews } = useReviewStore();
   const [isPlaying, setIsPlaying] = useState(true);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [newReview, setNewReview] = useState({});
 
@@ -53,6 +52,7 @@ const RegisterReviewPage = ({ isOpen, onClose, selectedFile: propSelectedFile })
     }));
   }, [id]);
 
+  // textarea 변경사항 세팅시키기
   const handleContentsChange = (e) => {
     const { value } = e.target;
     setNewReview((prev) => ({
@@ -61,7 +61,7 @@ const RegisterReviewPage = ({ isOpen, onClose, selectedFile: propSelectedFile })
     }));
   };
 
-  // 넘겨받은 file 세팅
+  // file 변경사항 세팅시키기
   useEffect(() => {
     if (propSelectedFile) {
       setNewReview((prev) => ({
@@ -74,6 +74,7 @@ const RegisterReviewPage = ({ isOpen, onClose, selectedFile: propSelectedFile })
     }
   }, [propSelectedFile]);
 
+  // 파일이 바뀌었을 때
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -88,15 +89,23 @@ const RegisterReviewPage = ({ isOpen, onClose, selectedFile: propSelectedFile })
     }
   };
 
+  // 아이콘 클릭으로 input 파일 등록 대신하기
   const handleImageChange = () => {
     inputFileRef.current.click();
   };
 
+  // 등록 버튼 누르기
   const handleReviewSubmit = async () => {
-    await registerReview(newReview, async () => {
+    setIsSubmitting(true);
+    try {
+      await registerReview(newReview);
       await addReviews(id);
+    } catch (e) {
+      console.log('리뷰 등록 실패', e);
+    } finally {
+      setIsSubmitting(false);
       onClose();
-    });
+    }
   };
 
   // 프리뷰
@@ -127,18 +136,20 @@ const RegisterReviewPage = ({ isOpen, onClose, selectedFile: propSelectedFile })
   return (
     <div className='fixed inset-0 z-50 flex items-center justify-center'>
       {isOpen && (
-        <div className='w-full h-full max-w-[500px] bg-white'>
-          <Header />
+        <div className='w-full h-lvh max-w-[500px] bg-white overflow-y-auto'>
+          {/* <Header /> */}
           <button
-            className='absolute m-4 mt-6 right-1 top-16'
+            className='absolute top-0 m-4 mt-6 right-1'
             onClick={onClose}
           >
             <span>
               <img src={xBtn} />
             </span>
           </button>
-          <div className='w-full h-full'>
-            <div className='flex items-center justify-center h-10 text-lg font-bold py-7 border-y-2'>후기 작성</div>
+          <div className='flex flex-col items-center justify-between w-full h-full pb-10'>
+            <div className='flex items-center justify-center w-full h-10 text-lg font-bold py-7 border-y-2'>
+              후기 작성
+            </div>
             <section className='flex flex-col'>
               <div className='flex my-5 px-7'>
                 <div className='overflow-hidden h-14 w-9'>
@@ -177,20 +188,21 @@ const RegisterReviewPage = ({ isOpen, onClose, selectedFile: propSelectedFile })
                   />
                 </div>
                 <textarea
-                  className='w-full h-40 mt-5 overflow-y-scroll px-7 mx-7 focus:outline-none scrollbar-hide'
+                  className='w-full mt-5 overflow-y-scroll h-52 px-7 mx-7 focus:outline-none scrollbar-hide'
                   name=''
                   id=''
                   placeholder='문구 작성...'
                   onChange={handleContentsChange}
                 ></textarea>
-                <button
-                  className='flex items-center justify-center w-11/12 mt-3 text-white rounded-md bg-ourIndigo h-14'
-                  onClick={handleReviewSubmit}
-                >
-                  등록하기
-                </button>
               </div>
             </section>
+            <button
+              className='flex items-center justify-center w-11/12 mt-3 text-white rounded-md bg-ourIndigo h-14'
+              onClick={handleReviewSubmit}
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? '등록 중...' : '등록하기'}
+            </button>
           </div>
         </div>
       )}
