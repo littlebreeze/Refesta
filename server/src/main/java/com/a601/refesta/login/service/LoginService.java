@@ -7,10 +7,10 @@ import com.a601.refesta.login.data.GoogleOAuthTokenRes;
 import com.a601.refesta.login.data.GoogleUserInfoRes;
 import com.a601.refesta.login.data.MemberDetail;
 import com.a601.refesta.login.data.OauthTokenRes;
-import com.a601.refesta.login.repository.RefreshTokenRedisRepository;
+import com.a601.refesta.login.repository.RefreshTokenRepository;
 import com.a601.refesta.member.data.MemberRole;
 import com.a601.refesta.member.domain.Member;
-import com.a601.refesta.member.domain.RefreshTokenRedis;
+import com.a601.refesta.login.data.RefreshToken;
 import com.a601.refesta.member.repository.MemberRepository;
 import com.google.gson.Gson;
 import lombok.RequiredArgsConstructor;
@@ -32,8 +32,8 @@ public class LoginService {
 
     private final TokenProvider tokenProvider;
     private final MemberRepository memberRepository;
-    private final RefreshTokenRedisService refreshTokenRedisService;
-    private final RefreshTokenRedisRepository refreshTokenRedisRepository;
+    private final RefreshTokenService refreshTokenService;
+    private final RefreshTokenRepository refreshTokenRepository;
 
     private final String GRANT_TYPE = "authorization_code";
 
@@ -132,7 +132,7 @@ public class LoginService {
         OauthTokenRes oauthTokenRes = tokenProvider.generateTokenDto(member);
 
         //refreshToken redis에 저장
-        refreshTokenRedisService.saveTokenInfo(
+        refreshTokenService.saveTokenInfo(
                 member.getId(), oauthTokenRes.getRefreshToken(),
                 LocalDateTime.now().plusSeconds(oauthTokenRes.getRefreshTokenExpiresIn()),
                 false
@@ -145,11 +145,11 @@ public class LoginService {
 
     public OauthTokenRes regenerateToken(String refreshTokenReq) {
         //Refresh Token 일치 확인
-        RefreshTokenRedis refreshTokenRedis = refreshTokenRedisRepository.findByRefreshToken(refreshTokenReq).orElseThrow(() ->
+        RefreshToken refreshToken = refreshTokenRepository.findByRefreshToken(refreshTokenReq).orElseThrow(() ->
                 new CustomException(ErrorCode.REFRESH_TOKEN_VALIDATION_ERROR));
 
         //Refresh Token 만료 여부
-        if (!refreshTokenRedis.isValid(LocalDateTime.now())) {
+        if (!refreshToken.isValid(LocalDateTime.now())) {
             throw new CustomException(ErrorCode.REFRESH_TOKEN_VALIDATION_ERROR);
         }
 
@@ -165,7 +165,7 @@ public class LoginService {
         OauthTokenRes oauthTokenRes = tokenProvider.generateTokenDto(member);
 
         //redis에 저장
-        refreshTokenRedisService.saveTokenInfo(
+        refreshTokenService.saveTokenInfo(
                 member.getId(), oauthTokenRes.getRefreshToken(),
                 LocalDateTime.now().plusSeconds(oauthTokenRes.getRefreshTokenExpiresIn()),
                 false
