@@ -1,21 +1,58 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import ReactPlayer from 'react-player';
 
 const ReviewItem = ({ review }) => {
   const { writer, profileUrl, attachmentUrl, mediaType, contents } = review;
-  const [isPlaying, setPlaying] = useState(true);
+  const [isPlaying, setPlaying] = useState(false);
+
+  // Intersection Observer
+  const videoRef = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const [entry] = entries;
+        if (entry.isIntersecting) {
+          setPlaying(true);
+        } else {
+          setPlaying(false);
+        }
+      },
+      {
+        threshold: 0.5,
+      }
+    );
+    if (videoRef.current) {
+      observer.observe(videoRef.current);
+    }
+
+    return () => {
+      if (videoRef.current) {
+        observer.unobserve(videoRef.current);
+      }
+    };
+  }, [videoRef]);
   return (
     <div className='flex flex-col pb-5 mx-5 mb-5 border-b-2'>
       <div className='flex items-center'>
         <div className='overflow-hidden rounded-full h-7 w-7'>
-          <img className='object-cover w-full h-full' src={profileUrl} />
+          <img
+            className='object-cover w-full h-full'
+            src={profileUrl}
+          />
         </div>
         <div className='ml-2 text-sm font-bold'>{writer}</div>
       </div>
-      <div className='flex items-center justify-center mt-2 overflow-hidden w-80 h-80'>
+      <div
+        className='flex items-center justify-center mt-2 overflow-hidden w-80 h-80'
+        ref={videoRef}
+      >
         {mediaType === 'IMAGE' ? (
-          <img className='object-cover w-full h-full' src={attachmentUrl} />
+          <img
+            className='object-cover w-full h-full'
+            src={attachmentUrl}
+          />
         ) : (
           <ReactPlayer
             url={attachmentUrl}
