@@ -1,5 +1,7 @@
 import FestivalItem from '@components/artistDetail/FestivalItem';
 
+import artistfesta from '@assets/artistfesta.png';
+
 const FestivalList = ({ festivalList }) => {
   if (festivalList && festivalList.length > 0) {
     return (
@@ -13,7 +15,14 @@ const FestivalList = ({ festivalList }) => {
       </div>
     );
   } else {
-    return <div className='w-full mt-16 text-lg font-bold text-center'>아티스트가 참여한 페스티벌이 없습니다.</div>;
+    return (
+      <div className='flex flex-col items-center justify-center w-full mt-16 text-center'>
+        <div className='w-20'>
+          <img src={artistfesta} />
+        </div>
+        <div className='mt-3 font-bold'>참여한 페스티벌이 없습니다.</div>
+      </div>
+    );
   }
 };
 
