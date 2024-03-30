@@ -34,7 +34,7 @@ const SearchInput = () => {
     const artistKeyword = autoCompleteList.artistWordList;
     festivalKeyword.map((keyword) => {
       if (keyword.name === searchKeyword) {
-        result = { ...keyword, type: 'festivals' };
+        result = { ...keyword, classification: 'festivals' };
       }
     });
     artistKeyword.map((keyword) => {
@@ -57,11 +57,14 @@ const SearchInput = () => {
 
       // 자동완성 리스트에 검색어와 완전 일치하는 경우가 있어도 선호도 반영
       const searchKeywordByAutocomplete = includeSearchKeywordInAutocomplete();
-      const response = instance.patch(
-        `recommendations/${searchKeywordByAutocomplete.classification}/${searchKeywordByAutocomplete.id}?point=5`
-      );
+      console.log(searchKeywordByAutocomplete);
+      if (searchKeyword) {
+        const response = instance.patch(
+          `recommendations/${searchKeywordByAutocomplete.classification}/${searchKeywordByAutocomplete.id}?point=5`
+        );
+      }
 
-      nav(`/search/result?word=${searchKeyword}`);
+      //nav(`/search/result?word=${searchKeyword}`);
     }
 
     // 자동 완성 검색어 요청
