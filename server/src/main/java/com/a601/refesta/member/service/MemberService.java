@@ -2,11 +2,15 @@ package com.a601.refesta.member.service;
 
 import com.a601.refesta.common.util.S3Util;
 import com.a601.refesta.genre.repository.GenreRepository;
+import com.a601.refesta.login.repository.GoogleAccessTokenRepository;
 import com.a601.refesta.member.data.*;
 import com.a601.refesta.member.domain.Member;
 import com.a601.refesta.member.domain.join.MemberGenre;
+import com.a601.refesta.member.domain.join.MemberSongPreference;
 import com.a601.refesta.member.repository.MemberGenreRepository;
 import com.a601.refesta.member.repository.MemberRepository;
+import com.a601.refesta.member.repository.MemberSongRepository;
+import com.a601.refesta.song.repository.SongRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -44,6 +48,9 @@ public class MemberService {
     private final GenreRepository genreRepository;
     private final S3Util s3Util;
     private final JPAQueryFactory jpaQueryFactory;
+    private final SongRepository songRepository;
+    private final MemberSongRepository memberSongRepository;
+    private final GoogleAccessTokenRepository googleAccessTokenRepository;
 
     @Value("${spring.refesta.recommend.url}")
     private String REFESTA_URL;
@@ -179,16 +186,30 @@ public class MemberService {
 
     }
 
+    // 플리 음악 MemberSongPreference에 넣기
     public void createMemberSongPreference(int memberId) {
-        String googleAccessToken = "redis에서 가져오기";
+        String googleAccessToken = googleAccessTokenRepository.findById(String.valueOf(memberId)).orElseThrow().getGoogleAccessToken();
+        System.out.println("레디스에서 꺼낸" + googleAccessToken);
+        //        String googleAccessToken = "ya29.a0Ad52N38pogy74OtzbkSzsaZTXd1CJcf4RtNuC-OJvSM3pFSOn_6mEEua3eSx7wHq323n3A7PDR8kUx1yCZROWaonYme9QxzSnvnw_d-oWO8cu-b2740F5X_PHnhYFRRUZAXKCX5uxkZKl0bWUwDkpRsrRWES8JJBwAoaCgYKAZISARESFQHGX2Mi1QYJR2TvdsvQ0IoYIIASRA0170";
         // 유저의 유튜브 채널 ID 다 가져오기
         List<String> channelIds = getMemberYoutubeChannels(googleAccessToken);
         if (channelIds != null) {
+            //채널 ID의 재생목록 가져오기
             List<String> playlists = getMemberYoutubePlaylists(channelIds);
             if (playlists != null) {
-                List<String> songs = getMemberYoutubeSongs(playlists);
-//                System.out.println(songs.size());
-                //이제 곡이랑 비교해서 membersongpreference 테이블에 넣기
+                //재생목록의 노래들 가져오기
+                List<String> videoIds = getMemberYoutubeSongs(playlists);
+
+                //곡이랑 비교 후 membersongpreference 테이블에 넣기
+                for (String videoId : videoIds) {
+                    songRepository.findByVideoId("https://www.youtube.com/watch?v=" + videoId + "%")
+                            .ifPresent(song -> memberSongRepository.save(MemberSongPreference.builder()
+                                    .song(song)
+                                    .member(memberRepository.findById(memberId).orElseThrow())
+                                    .preference(10)
+                                    .build())
+                            );
+                }
             }
         }
     }
@@ -196,7 +217,7 @@ public class MemberService {
     private List<String> getMemberYoutubeSongs(List<String> playlists) {
         if (playlists.isEmpty()) return null;
         RestTemplate rt = new RestTemplate();
-        List<String> songs = new ArrayList<>();
+        List<String> videoIds = new ArrayList<>();
         for (String playlist : playlists) {
             ResponseEntity<String> response = rt.exchange(
                     "https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=100&status=&playlistId=" + playlist + "&key=" + API_KEY,
@@ -214,14 +235,14 @@ public class MemberService {
                 // "items" 배열의 각 객체에서 "videoId" 값을 추출하여 리스트에 저장
                 for (JsonNode item : jsonNode.get("items")) {
                     String videoId = item.get("snippet").get("resourceId").get("videoId").asText();
-                    songs.add(videoId);
+                    videoIds.add(videoId);
                 }
             } catch (JsonProcessingException e) {
                 // JSON 처리 예외가 발생
                 e.printStackTrace();
             }
         }
-        return songs;
+        return videoIds;
     }
 
     private List<String> getMemberYoutubePlaylists(List<String> channelIds) {
