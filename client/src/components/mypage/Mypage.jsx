@@ -52,6 +52,10 @@ const Mypage = ({ isOpen, onClose, nickname, profileUrl }) => {
     onClose();
   };
 
+  const handleGoHome = () => {
+    nav('/');
+    onClose();
+  };
   const handleGoComingFestival = () => {
     nav('/festival/list/scheduled');
     onClose();
@@ -138,6 +142,12 @@ const Mypage = ({ isOpen, onClose, nickname, profileUrl }) => {
               </div>
               <div
                 className='flex items-center justify-center w-full h-16 text-xs font-bold border-t-2 border-b-2'
+                onClick={handleGoHome}
+              >
+                홈으로
+              </div>
+              <div
+                className='flex items-center justify-center w-full h-16 text-xs font-bold border-b-2'
                 onClick={handleGoComingFestival}
               >
                 예정 페스티벌
@@ -161,8 +171,8 @@ const Mypage = ({ isOpen, onClose, nickname, profileUrl }) => {
                   </button>
                 </div>
               </div>
-              <div>
-                {toggle && bookingList && bookingList.length > 0 ? (
+              <div className={`reservation-list ${toggle ? 'open' : ''}`}>
+                {bookingList && bookingList.length > 0 ? (
                   bookingList.map((reservation, reservationId) => (
                     <div
                       key={reservationId}
@@ -186,7 +196,7 @@ const Mypage = ({ isOpen, onClose, nickname, profileUrl }) => {
                     </div>
                   ))
                 ) : (
-                  <div></div>
+                  <div className='mt-8 text-lg font-bold text-center text-gray-500'>예매 내역이 없습니다.</div>
                 )}
               </div>
             </section>

@@ -1,12 +1,40 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import ReactPlayer from 'react-player';
 
 import DeleteReview from '@components/mypage/DeleteReview';
 
 const ReviewItem = ({ review }) => {
   const { reviewId, name, date, location, contents, attachmentUrl, type } = review;
-  const [isPlaying, setPlaying] = useState(true);
+  const [isPlaying, setPlaying] = useState(false);
   const [isModalOpen, setModalOpen] = useState(false);
+
+  // Intersection Observer
+  const videoRef = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const [entry] = entries;
+        if (entry.isIntersecting) {
+          setPlaying(true);
+        } else {
+          setPlaying(false);
+        }
+      },
+      {
+        threshold: 0.5,
+      }
+    );
+    if (videoRef.current) {
+      observer.observe(videoRef.current);
+    }
+
+    return () => {
+      if (videoRef.current) {
+        observer.unobserve(videoRef.current);
+      }
+    };
+  }, [videoRef]);
 
   return (
     <div className='flex flex-col pb-5 mx-5 mb-5 border-b-2'>
@@ -28,7 +56,10 @@ const ReviewItem = ({ review }) => {
           삭제
         </button>
       </div>
-      <div className='flex items-center justify-center w-full mt-2 overflow-hidden h-96'>
+      <div
+        className='flex items-center justify-center w-full mt-2 overflow-hidden h-96'
+        ref={videoRef}
+      >
         {type === 'IMAGE' ? (
           <img
             className='object-cover w-full h-full'

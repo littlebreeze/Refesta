@@ -18,10 +18,10 @@ const LikeList = ({ contents }) => {
     }
   };
 
-  return (
-    <div className='grid grid-cols-2 gap-3 bg-gray-200'>
-      {contents && contents.length > 0 ? (
-        contents.map((content) => {
+  if (contents && contents.length > 0) {
+    return (
+      <div className='grid grid-cols-2 gap-3 p-2 bg-gray-200'>
+        {contents.map((content) => {
           const modifiedContents = {
             ...content,
             id: content.festivalId || content.artistId,
@@ -35,28 +35,30 @@ const LikeList = ({ contents }) => {
               onClick={() => handleItemClick(modifiedContents.id, modifiedContents.type)}
             />
           );
-        })
-      ) : pageType === 'festival' ? (
-        <div className='absolute flex flex-col items-center w-full h-full bg-white pt-52'>
-          <div className='w-24'>
-            <img src={wishlist} />
-          </div>
-          <div className='mt-5 text-lg font-bold'>좋아하는 페스티벌이 없어요</div>
-          <div className='text-xs text-gray-500'>페스티벌 상세 화면에서 하트 아이콘을 눌러</div>
-          <div className='text-xs text-gray-500'>나만의 페스티벌 목록을 만들어보세요!</div>
+        })}
+      </div>
+    );
+  } else {
+    return pageType === 'festival' ? (
+      <div className='absolute flex flex-col items-center w-full h-full bg-white pt-52'>
+        <div className='w-24'>
+          <img src={wishlist} />
         </div>
-      ) : (
-        <div className='absolute flex flex-col items-center w-full bg-white pt-52'>
-          <div className='w-24'>
-            <img src={wishlist} />
-          </div>
-          <div className='mt-5 text-lg font-bold'>좋아하는 아티스트가 없어요</div>
-          <div className='text-xs text-gray-500'>아티스트 상세 화면에서 하트 아이콘을 눌러</div>
-          <div className='text-xs text-gray-500'>나만의 아티스트 목록을 만들어보세요!</div>
+        <div className='mt-5 text-lg font-bold'>좋아하는 페스티벌이 없어요</div>
+        <div className='text-xs text-gray-500'>페스티벌 상세 화면에서 하트 아이콘을 눌러</div>
+        <div className='text-xs text-gray-500'>나만의 페스티벌 목록을 만들어보세요!</div>
+      </div>
+    ) : (
+      <div className='absolute flex flex-col items-center w-full h-full bg-white t-0 pt-52'>
+        <div className='w-24'>
+          <img src={wishlist} />
         </div>
-      )}
-    </div>
-  );
+        <div className='mt-5 text-lg font-bold'>좋아하는 아티스트가 없어요</div>
+        <div className='text-xs text-gray-500'>아티스트 상세 화면에서 하트 아이콘을 눌러</div>
+        <div className='text-xs text-gray-500'>나만의 아티스트 목록을 만들어보세요!</div>
+      </div>
+    );
+  }
 };
 
 export default LikeList;

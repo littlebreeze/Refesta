@@ -14,7 +14,7 @@ const AutoComplete = () => {
           <div className='mb-2 text-lg font-semibold'>페스티벌</div>
           <div className='grid gap-2 pl-7'>
             {festivalKeyword.map((item, idx) => (
-              <AutoCompleteItem key={idx} name={item} />
+              <AutoCompleteItem key={idx} name={item} classification={'festivals'} />
             ))}
           </div>
         </div>
@@ -23,7 +23,7 @@ const AutoComplete = () => {
           <div className='mb-2 text-lg font-semibold'>아티스트</div>
           <div className='grid gap-2 pl-7'>
             {artistKeyword.map((item, idx) => (
-              <AutoCompleteItem key={idx} name={item} />
+              <AutoCompleteItem key={idx} name={item} classification={'artists'} />
             ))}
           </div>
         </div>
