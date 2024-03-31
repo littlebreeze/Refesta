@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import logo from '@assets/refesta_logo.png';
 import glogo from '@assets/google_small_logo.png';
@@ -31,6 +31,16 @@ const Login = () => {
       >
         <img className='mr-4 max-w-4' src={glogo} />
         <button>Google로 시작하기</button>
+      </div>
+      <div className='text-xs text-zinc-300 mt-7'>
+        Refesta는 Google API에서 받은 정보를 사용하고 다른 앱으로 전송하는 것은 제한된 사용 요구 사항을 포함하여{' '}
+        <Link
+          className='underline text-zinc-400'
+          to='https://developers.google.com/terms/api-services-user-data-policy'
+        >
+          Google API Services User Data Policy
+        </Link>
+        을 준수합니다.
       </div>
     </div>
   );
