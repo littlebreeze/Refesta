@@ -1,7 +1,19 @@
+import { Link } from 'react-router-dom';
+
 const PrivacyPolicyPage = () => {
   return (
     <div className='flex flex-col items-center justify-center h-full text-center gap-y-7 px-7'>
-      <div>개인정보 처리방침</div>
+      <div className='text-xl'>개인정보 처리방침</div>
+      <div>
+        Refesta는 Google API에서 받은 정보를 사용하고 다른 앱으로 전송하는 것은 제한된 사용 요구 사항을 포함하여{' '}
+        <Link
+          className='text-blue-500 underline'
+          to='https://developers.google.com/terms/api-services-user-data-policy'
+        >
+          Google API 서비스 사용자 데이터 정책
+        </Link>
+        을 준수합니다.
+      </div>
       <div>
         Refesta 은(는) 정보주체의 자유와 권리 보호를 위해 「개인정보 보호법」 및 관계 법령이 정한 바를 준수하여,
         적법하게 개인정보를 처리하고 안전하게 관리하고 있습니다. 이에 「개인정보 보호법」 제30조에 따라 정보주체에게
@@ -95,8 +107,8 @@ const PrivacyPolicyPage = () => {
         정보주체의 개인정보에 관하여 미성년자 본인이 권리를 행사하거나 법정대리인을 통하여 권리를 행사할 수도 있습니다.
       </div>
       <div>
-        ② 권리 행사는 에 대해 「개인정보 보호법」 시행령 제41조 제1항에 따라 서면, 전자우편, 모사전송(FAX) 등을 통하여
-        하실 수 있으며, 은(는) 이에 대해 지체없이 조치하겠습니다.
+        ② 권리 행사는 Refesta 에 대해 「개인정보 보호법」 시행령 제41조 제1항에 따라 서면, 전자우편, 모사전송(FAX) 등을
+        통하여 하실 수 있으며, 은(는) 이에 대해 지체없이 조치하겠습니다.
       </div>
       <div>
         ③ 권리 행사는 정보주체의 법정대리인이나 위임을 받은 자 등 대리인을 통하여 하실 수도 있습니다. 이 경우 “개인정보
