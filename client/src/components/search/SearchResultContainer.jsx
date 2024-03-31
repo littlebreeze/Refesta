@@ -12,11 +12,12 @@ import ArtistSearchWrapper from '@components/search//ArtistSearchWrapper';
 const SearchResultContainer = () => {
   const [openSearchTab, setOpenSearchTab] = useState(1);
   const [isTotal, setIsTotal] = useState(true);
-  const [searchParams, setSearchParams] = useSearchParams();
+  const { setFestivalList, setArtistList } = useSearchResultStore();
+  const [searchParams] = useSearchParams();
   const word = searchParams.get('word');
 
-  const { festivalList, artistList, setFestivalList, setArtistList } = useSearchResultStore();
-
+  // 검색 결과 탭이 처음 렌더링될 때
+  // 검색어를 바탕으로 결괄르 받아오는 함수 실행
   useEffect(() => {
     const getSearchResultData = async () => {
       try {

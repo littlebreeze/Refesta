@@ -1,9 +1,11 @@
 import { useNavigate } from 'react-router-dom';
 
+// 검색 결과로 표시할 개별 아티스트
 const ArtistSearchItem = ({ artist }) => {
-  const nav = useNavigate(); // useNavigate 훅 사용
+  const nav = useNavigate();
 
-  // 아티스트 아이템을 클릭했을 때 새로운 경로로 이동하는 함수
+  // 아티스트 아이템을 클릭했을 때
+  // 해당 아티스트 상세보기로 이동하는 함수
   const handleClick = () => {
     nav(`/artist/${artist.id}`);
   };

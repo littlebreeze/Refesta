@@ -1,6 +1,6 @@
 import FestivalSearchList from '@components/search/FestivalSearchList';
 
-// 통합검색 결과
+// 검색 결과 중 페스티벌 탭
 const FestivalSearchWrapper = ({ festivalListData }) => {
   return (
     <>

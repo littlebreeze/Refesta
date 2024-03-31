@@ -6,20 +6,20 @@ import instance from '@util/token_interceptor';
 import heart from '@assets/heart.png';
 import heart_full from '@assets/heart_full.png';
 
-// 페스티벌 상세 정보
+// 페스티벌 정보(예정/완료 공통)
 const FestivalInfo = () => {
-  const { festivalInfoData, setFestivalInfoData, festivalInfoDetailData, setFestivalInfoDetailData } =
-    useFestivalInfoStore();
+  const { festivalInfoData } = useFestivalInfoStore();
+  const [likedFestival, setLikedFestival] = useState(festivalInfoData && festivalInfoData.liked);
 
-  const [likedFestival, setLikedFestival] = useState(festivalInfoData && festivalInfoData.liked); // 좋아요 상태를 저장하는 상태 변수
-
+  // 페스티벌 정보가 변경될 때
+  // 페스티벌 좋아요 초기 정보를 설정하는 함수 실행
   useEffect(() => {
-    // festivalInfoData가 변경될 때 likedFestival 상태 업데이트
     if (festivalInfoData) {
       setLikedFestival(festivalInfoData.liked);
     }
   }, [festivalInfoData]);
 
+  // 좋아요 상태를 토글하는 함수
   const handleLike = async () => {
     try {
       const response = await instance.patch(`festivals/${festivalInfoData.id}`);

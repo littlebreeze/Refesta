@@ -1,10 +1,13 @@
 import { useNavigate } from 'react-router-dom';
 
+// 검색 결과로 표시할 개별 페스티벌
 const FestivalSearchItem = ({ festival }) => {
-  const navigate = useNavigate(); // useNavigate 훅 사용
+  const nav = useNavigate();
 
+  // 페스티벌 아이템을 클릭했을 때
+  // 해당 페스티벌 상세보기로 이동하는 함수
   const handleClick = () => {
-    navigate(`/festival/${festival.id}`);
+    nav(`/festival/${festival.id}`);
   };
 
   return (

@@ -3,32 +3,15 @@ import useSetListStore from '@store/setListStore';
 
 import PlayListItem from '@components/festivalDetail/PlayListItem';
 
+// 셋리스트 재생목록
 const PlayList = () => {
-  const {
-    lineupList,
-    addLineupList,
-    selectedLineupList,
-    setSelectedLineupList,
-    songInfoMap,
-    addSongInfoMap,
-    sortedSongInfoMap,
-    sortSongInfoMapByLineupList,
-    selectedSongInfoMap,
-    setSelectedSongInfoMap,
-    playing,
-    setPlaying,
-    currSong,
-    setCurrSong,
-    currSongList,
-    setCurrSongList,
-    currSinger,
-    setCurrSinger,
-  } = useSetListStore();
+  const { selectedLineupList, songInfoMap, selectedSongInfoMap, setSelectedSongInfoMap } = useSetListStore();
 
-  // selectedLineupList가 변경될 때마다 해당하는 노래 정보를 가져와 selectedSongInfoMap에 저장
+  // 선택된 라인업 목록이 변경될 때마다
+  // 해당하는 노래 정보를 가져와 선택된 노래 목록을 변경
   useEffect(() => {
     const updatedSelectedSongInfoMap = selectedLineupList.map((artist) => {
-      return songInfoMap[artist.id] || []; // 해당 아티스트의 노래가 없을 경우 빈 배열 반환
+      return songInfoMap[artist.id] || [];
     });
     setSelectedSongInfoMap(updatedSelectedSongInfoMap);
   }, [selectedLineupList]);
@@ -37,11 +20,11 @@ const PlayList = () => {
     <div className='h-full m-4 bg-white'>
       {selectedSongInfoMap.length > 0 && (
         <div className='overflow-x-auto whitespace-nowrap'>
-          {selectedSongInfoMap.map((songs, index) => (
-            <div key={index} className='my-2'>
+          {selectedSongInfoMap.map((songs, idx1) => (
+            <div key={idx1} className='my-2'>
               <ul className=''>
-                {songs.map((song, idx) => (
-                  <PlayListItem key={idx} song={song} />
+                {songs.map((song, idx2) => (
+                  <PlayListItem key={idx2} song={song} />
                 ))}
               </ul>
             </div>
