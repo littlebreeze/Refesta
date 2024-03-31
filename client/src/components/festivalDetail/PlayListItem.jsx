@@ -1,35 +1,17 @@
 import useSetListStore from '@store/setListStore';
 
+// 셋리스트 재생목록의 각 노래
 const PlayListItem = ({ song }) => {
-  const {
-    lineupList,
-    addLineupList,
-    selectedLineupList,
-    setSelectedLineupList,
-    songInfoMap,
-    addSongInfoMap,
-    sortedSongInfoMap,
-    sortSongInfoMapByLineupList,
-    selectedSongInfoMap,
-    setSelectedSongInfoMap,
-    playing,
-    setPlaying,
-    currSong,
-    setCurrSong,
-    currSongList,
-    setCurrSongList,
-    currSinger,
-    setCurrSinger,
-  } = useSetListStore();
+  const { currSong, setCurrSong } = useSetListStore();
 
-  // 노래 선택 핸들러
+  // 노래를 선택했을 때 현재 노래를 변경하는 함수
   const handleSongSelect = () => {
     setCurrSong(song);
   };
 
   return (
     <div
-      className={`border-b border-y-gray-400 ${currSong === song ? 'bg-gray-200 transform scale-103' : ''}`} // 조건부 스타일링 적용
+      className={`border-b border-y-gray-400 ${currSong === song ? 'bg-gray-200 transform scale-103' : ''}`}
       onClick={handleSongSelect}
     >
       <li className='flex items-center py-2 ml-4'>

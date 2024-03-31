@@ -7,13 +7,16 @@ import instance from '@util/token_interceptor';
 import backspace from '@assets/backspace.png';
 import x_btn from '@assets/x_btn.png';
 
+// 검색어 입력 인풋
 const SearchInput = () => {
   const { searchKeyword, changeSearchKeyword, setAutoCompleteList, autoCompleteList } = useSearchStore();
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const [urlSearchKeyword, setUrlSearchKeyword] = useState('');
   const nav = useNavigate();
   const inputDiv = useRef();
 
+  // 검색어의 쿼리 파라미터가 변경되었을 때
+  // 해당 단어를 가져와 검색어 창에 반영하는 함수 실행
   useEffect(() => {
     const urlKeyword = searchParams.get('word') || '';
     setUrlSearchKeyword(urlKeyword);
@@ -29,7 +32,6 @@ const SearchInput = () => {
 
   const includeSearchKeywordInAutocomplete = () => {
     let result = {};
-    // 배열.includes
     const festivalKeyword = autoCompleteList.festivalWordList;
     const artistKeyword = autoCompleteList.artistWordList;
     festivalKeyword.map((keyword) => {
@@ -47,8 +49,9 @@ const SearchInput = () => {
 
   const onKeyUpInput = (e) => {
     // 뒤로가기 키보드 버튼(Backspace)이 눌렸을 때
+    // 검색어를 초기화하는 함수
     if (e.keyCode === 8) {
-      setUrlSearchKeyword(''); // urlSearchKeyword 초기화
+      setUrlSearchKeyword('');
     }
 
     // 엔터 누르면 검색 결과 페이지로

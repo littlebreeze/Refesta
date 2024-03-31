@@ -4,13 +4,13 @@ import SetListWrapper from '@components/festivalDetail/SetListWrapper';
 import ReviewWrapper from '@components/festivalDetail/ReviewWrapper';
 
 // 완료된 페스티벌 탭(셋리스트/후기게시판)
-const FestivalInfoContainer = ({ id }) => {
+const FestivalInfoContainer = () => {
   const [openInfoTab, setOpenInfoTab] = useState(1);
 
   return (
     <div className=''>
       <ul className='flex h-full mx-4 '>
-        {/* 셋리스트 */}
+        {/* 셋리스트 탭 */}
         <li
           className={`w-1/2 text-center ${openInfoTab === 1 ? 'border-t-2 border-r-2 border-l-2 border-ourIndigo' : 'border-b-2 border-ourIndigo'}`}
         >
@@ -25,7 +25,7 @@ const FestivalInfoContainer = ({ id }) => {
             </span>
           </button>
         </li>
-        {/* 후기게시판 */}
+        {/* 후기게시판 탭 */}
         <li
           className={`w-1/2 text-center ${openInfoTab === 2 ? 'border-t-2 border-r-2 border-l-2 border-ourIndigo' : 'border-b-2 border-ourIndigo'}`}
         >

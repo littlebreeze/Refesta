@@ -2,19 +2,21 @@ import useSearchResultStore from '@store/searchResultStore';
 
 import FestivalSearchItem from '@components/search/FestivalSearchItem';
 
+// 검색 결과로 표시할 페스티벌 목록
 const FestivalSearchList = ({ isTotal, setOpenSearchTab }) => {
-  const { festivalList, artistList, setFestivalList, setArtistList } = useSearchResultStore();
+  const { festivalList } = useSearchResultStore();
 
+  // 통합검색의 경우 일부 결과만 출력하기 위해
+  // 검색된 페스티벌의 목록이 6개보다 많을 때 렌더링할 페스티벌목록 수정
   let renderFestivalListData = festivalList;
   if (isTotal && renderFestivalListData.length > 6) {
     renderFestivalListData = festivalList.slice(0, 6);
   }
 
+  // 페스티벌 전체 보기를 위한 탭 이동
   const onClickTotalBtn = () => {
     setOpenSearchTab(2);
   };
-
-  console.log(festivalList);
 
   return (
     <div className='mb-8'>
