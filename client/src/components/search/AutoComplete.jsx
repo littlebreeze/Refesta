@@ -2,11 +2,13 @@ import useSearchStore from '@store/searchStore';
 
 import AutoCompleteItem from '@components/search/AutoCompleteItem';
 
+// 검색 창 자동완성
 const AutoComplete = () => {
   const { autoCompleteList } = useSearchStore();
 
   const festivalKeyword = autoCompleteList.festivalWordList;
   const artistKeyword = autoCompleteList.artistWordList;
+
   return (
     <div className=''>
       <div>

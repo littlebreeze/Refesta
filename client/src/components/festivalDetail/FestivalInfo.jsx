@@ -6,7 +6,7 @@ import instance from '@util/token_interceptor';
 import heart from '@assets/heart.png';
 import heart_full from '@assets/heart_full.png';
 
-// 페스티벌 상세 정보
+// 페스티벌 정보(예정/완료 공통)
 const FestivalInfo = () => {
   const { festivalInfoData } = useFestivalInfoStore();
   const [likedFestival, setLikedFestival] = useState(festivalInfoData && festivalInfoData.liked);
@@ -19,7 +19,7 @@ const FestivalInfo = () => {
     }
   }, [festivalInfoData]);
 
-  //
+  // 좋아요 상태를 토글하는 함수
   const handleLike = async () => {
     try {
       const response = await instance.patch(`festivals/${festivalInfoData.id}`);
