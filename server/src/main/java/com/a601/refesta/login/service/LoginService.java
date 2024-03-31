@@ -100,7 +100,6 @@ public class LoginService {
     public OauthTokenRes getAccessTokenJsonData(String code) {
         //코드로 토큰받기
         GoogleOAuthTokenRes oauthTokenData = getTokenbyCode(code);
-        System.out.println("구글 access토큰" + oauthTokenData.getAccess_token());
 
         //토큰으로 사용자 정보 받기
         GoogleUserInfoRes googleUserInfoRes = getUserInfoByToken(oauthTokenData.getAccess_token());
