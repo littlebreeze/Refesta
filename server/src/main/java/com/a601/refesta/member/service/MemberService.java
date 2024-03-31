@@ -86,7 +86,9 @@ public class MemberService {
      * 선호장르 저장
      */
     public void createPreferGenre(int memberId, PreferGenreReq genres) {
+
         Member member = getMember(memberId);
+        memberGenreRepository.deleteAllByMember(member);
         if (genres.getPreferGenres() != null && !genres.getPreferGenres().isEmpty()) {
             for (Integer genreId : genres.getPreferGenres()) {
                 MemberGenre memberGenre =
