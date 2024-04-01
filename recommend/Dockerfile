@@ -16,6 +16,13 @@ RUN adduser \
     --uid "${UID}" \
     appuser
 
+RUN mkdir -p /table
+RUN chown -R appuser /table
+RUN chmod -R 755 /table
+
+RUN chmod -R +r /table
+
+
 RUN apt update
 RUN apt install -y gcc pkg-config default-libmysqlclient-dev curl
 
