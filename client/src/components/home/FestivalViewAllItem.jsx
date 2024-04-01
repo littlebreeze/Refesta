@@ -25,11 +25,11 @@ const FestivalViewAllItem = ({ id, name, date, location, posterUrl, lineup }) =>
       <div className='w-3/5 '>
         <div className='mb-4 text-lg font-semibold'>{name}</div>
         <div className='flex items-center'>
-          <div className='text-sm font-semibold text-zinc-400'>일시 ♪</div>
+          <div className='w-1/4 text-sm font-semibold text-zinc-400'>일시 ♪</div>
           <div className='ml-2'>{dateFormat(new Date(date))}</div>
         </div>
         <div className='flex items-center mb-2'>
-          <div className='text-sm font-semibold text-zinc-400'>장소 ♪</div>
+          <div className='w-1/4 text-sm font-semibold text-zinc-400'>장소 ♪</div>
           <div className='ml-2 text-ourBrightIndigo'>{location}</div>
         </div>
         <div>
