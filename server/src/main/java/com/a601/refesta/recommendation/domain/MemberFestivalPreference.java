@@ -1,5 +1,6 @@
 package com.a601.refesta.recommendation.domain;
 
+import com.a601.refesta.common.entity.BaseEntity;
 import com.a601.refesta.festival.domain.Festival;
 import com.a601.refesta.member.domain.Member;
 import jakarta.persistence.*;
@@ -11,7 +12,7 @@ import org.hibernate.annotations.ColumnDefault;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class MemberFestivalPreference {
+public class MemberFestivalPreference extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
