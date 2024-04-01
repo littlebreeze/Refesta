@@ -75,7 +75,7 @@ const SearchResultContainer = () => {
           </button>
         </li>
       </ul>
-      <div className='h-full min-w-0 mx-4 mt-4 break-words'>
+      <div className='h-full min-w-0 px-4 mt-4 break-words'>
         <div className='flex-auto'>
           <div className={openSearchTab === 1 ? 'block' : 'hidden'}>
             <SearchResultWrapper isTotal={isTotal} openSearchTab={openSearchTab} setOpenSearchTab={setOpenSearchTab} />

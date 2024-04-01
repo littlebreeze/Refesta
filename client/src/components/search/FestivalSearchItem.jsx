@@ -11,11 +11,11 @@ const FestivalSearchItem = ({ festival }) => {
   };
 
   return (
-    <div className='w-[29%] mx-1 my-2' onClick={handleClick}>
+    <div className='w-full' onClick={handleClick}>
       <div>
         <img className='object-cover rounded-md aspect-square' src={festival.posterUrl} alt={festival.name} />
       </div>
-      <div className='mt-2 text-sm text-left'>{festival.name}</div>
+      <div className='mt-2 text-xs text-left'>{festival.name}</div>
     </div>
   );
 };

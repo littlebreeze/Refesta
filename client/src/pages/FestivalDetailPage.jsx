@@ -26,6 +26,7 @@ const FestivalDetailPage = () => {
     setSelectedSongInfoMap,
     setCurrSong,
     setCurrSongList,
+    setPlaying,
   } = useSetListStore();
 
   // 페이지가 처음 렌더링 될 때
@@ -64,8 +65,6 @@ const FestivalDetailPage = () => {
       nav('/Notfound');
     }
   }, [id]);
-
-  console.log(festivalInfoData);
 
   // 페스티벌 정보를 바탕으로
   // 예정 페스티벌과 완료 페스티벌에 따라
@@ -117,6 +116,14 @@ const FestivalDetailPage = () => {
       setCurrSongList(allSongs);
     }
   }, [sortedSongInfoMap]);
+
+  // 페이지가 unmount될 때
+  // 재생 여부를 false로 초기화
+  useEffect(() => {
+    return () => {
+      setPlaying(false);
+    };
+  }, []);
 
   return (
     <div>
