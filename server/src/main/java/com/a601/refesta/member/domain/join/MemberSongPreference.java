@@ -33,4 +33,8 @@ public class MemberSongPreference extends BaseEntity {
     public void updatePreference() {
         this.preference += 1;
     }
+
+    public void plusPlayListPreference() {
+        this.preference += 30;
+    }
 }
