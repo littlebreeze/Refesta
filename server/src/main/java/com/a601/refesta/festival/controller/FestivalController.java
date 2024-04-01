@@ -2,10 +2,7 @@ package com.a601.refesta.festival.controller;
 
 import com.a601.refesta.common.jwt.TokenProvider;
 import com.a601.refesta.common.response.SuccessResponse;
-import com.a601.refesta.festival.data.FestivalDetailRes;
-import com.a601.refesta.festival.data.FestivalInfoRes;
-import com.a601.refesta.festival.data.FestivalReviewRes;
-import com.a601.refesta.festival.data.FestivalSetlistRes;
+import com.a601.refesta.festival.data.*;
 import com.a601.refesta.festival.service.FestivalService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -49,5 +46,12 @@ public class FestivalController {
                                                         @PathVariable(name = "festival_id") int festivalId) {
         int memberId = tokenProvider.getMemberIdByToken(request);
         return new SuccessResponse<>(festivalService.updateFestivalLike(memberId, festivalId));
+    }
+
+    @PostMapping("/playlists")
+    public SuccessResponse<HttpStatus> addYoutubePlaylist(HttpServletRequest request, @RequestBody FestivalSetlistReq festivalSetlistReq) {
+        int memberId = tokenProvider.getMemberIdByToken(request);
+        festivalService.createYoutubePlaylist(memberId, festivalSetlistReq);
+        return new SuccessResponse<>(HttpStatus.OK);
     }
 }
