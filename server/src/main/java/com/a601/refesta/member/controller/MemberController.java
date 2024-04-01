@@ -74,4 +74,11 @@ public class MemberController {
         data.put("reviewList", memberService.getReviews(memberId));
         return new SuccessResponse<>(data);
     }
+
+    @PostMapping("/playlists")
+    public SuccessResponse<Integer> addMemberSongPreference(HttpServletRequest request) {
+        int memberId = tokenProvider.getMemberIdByToken(request);
+        memberService.createMemberSongPreference(memberId);
+        return new SuccessResponse<>(HttpStatus.SC_CREATED);
+    }
 }

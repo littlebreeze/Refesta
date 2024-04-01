@@ -3,14 +3,10 @@ package com.a601.refesta.login.service;
 import com.a601.refesta.common.exception.CustomException;
 import com.a601.refesta.common.exception.ErrorCode;
 import com.a601.refesta.common.jwt.TokenProvider;
-import com.a601.refesta.login.data.GoogleOAuthTokenRes;
-import com.a601.refesta.login.data.GoogleUserInfoRes;
-import com.a601.refesta.login.data.MemberDetail;
-import com.a601.refesta.login.data.OauthTokenRes;
-import com.a601.refesta.login.repository.RefreshTokenRedisRepository;
+import com.a601.refesta.login.data.*;
+import com.a601.refesta.login.repository.RefreshTokenRepository;
 import com.a601.refesta.member.data.MemberRole;
 import com.a601.refesta.member.domain.Member;
-import com.a601.refesta.member.domain.RefreshTokenRedis;
 import com.a601.refesta.member.repository.MemberRepository;
 import com.google.gson.Gson;
 import lombok.RequiredArgsConstructor;
@@ -32,8 +28,9 @@ public class LoginService {
 
     private final TokenProvider tokenProvider;
     private final MemberRepository memberRepository;
-    private final RefreshTokenRedisService refreshTokenRedisService;
-    private final RefreshTokenRedisRepository refreshTokenRedisRepository;
+    private final RefreshTokenService refreshTokenService;
+    private final RefreshTokenRepository refreshTokenRepository;
+    private final GoogleAccessTokenService googleAccessTokenService;
 
     private final String GRANT_TYPE = "authorization_code";
 
@@ -103,15 +100,15 @@ public class LoginService {
     public OauthTokenRes getAccessTokenJsonData(String code) {
         //코드로 토큰받기
         GoogleOAuthTokenRes oauthTokenData = getTokenbyCode(code);
-        System.out.println("구글 access토큰"+oauthTokenData.getAccess_token());
+
         //토큰으로 사용자 정보 받기
         GoogleUserInfoRes googleUserInfoRes = getUserInfoByToken(oauthTokenData.getAccess_token());
 
         //받아온 사용자 정보(로그인/회원가입한 유저)로 우리 토큰 만들기
-        return generateTokenbyUserInfo(googleUserInfoRes);
+        return generateTokenbyUserInfo(googleUserInfoRes, oauthTokenData.getAccess_token());
     }
 
-    private OauthTokenRes generateTokenbyUserInfo(GoogleUserInfoRes googleUserInfoRes) {
+    private OauthTokenRes generateTokenbyUserInfo(GoogleUserInfoRes googleUserInfoRes, String googleAccessToken) {
         boolean signUp = false;
         if (memberRepository.findByGoogleId(googleUserInfoRes.getId()) == null) { //우리 회원이 아니면
             Member newMember = Member.builder()
@@ -123,7 +120,13 @@ public class LoginService {
                     .build();
             memberRepository.save(newMember);
             signUp = true;
+
+
         }
+        //회원가입: 레디스에 구글 accessToken 저장 test 위해서 밖으로 빼놓음
+        googleAccessTokenService.saveTokenInfo(
+                memberRepository.findByGoogleId(googleUserInfoRes.getId()).getId(), googleAccessToken
+        );
 
         Member member = memberRepository.findByGoogleId(googleUserInfoRes.getId());
         if (member == null) {
@@ -132,7 +135,7 @@ public class LoginService {
         OauthTokenRes oauthTokenRes = tokenProvider.generateTokenDto(member);
 
         //refreshToken redis에 저장
-        refreshTokenRedisService.saveTokenInfo(
+        refreshTokenService.saveTokenInfo(
                 member.getId(), oauthTokenRes.getRefreshToken(),
                 LocalDateTime.now().plusSeconds(oauthTokenRes.getRefreshTokenExpiresIn()),
                 false
@@ -145,11 +148,11 @@ public class LoginService {
 
     public OauthTokenRes regenerateToken(String refreshTokenReq) {
         //Refresh Token 일치 확인
-        RefreshTokenRedis refreshTokenRedis = refreshTokenRedisRepository.findByRefreshToken(refreshTokenReq).orElseThrow(() ->
+        RefreshToken refreshToken = refreshTokenRepository.findByRefreshToken(refreshTokenReq).orElseThrow(() ->
                 new CustomException(ErrorCode.REFRESH_TOKEN_VALIDATION_ERROR));
 
         //Refresh Token 만료 여부
-        if (!refreshTokenRedis.isValid(LocalDateTime.now())) {
+        if (!refreshToken.isValid(LocalDateTime.now())) {
             throw new CustomException(ErrorCode.REFRESH_TOKEN_VALIDATION_ERROR);
         }
 
@@ -165,7 +168,7 @@ public class LoginService {
         OauthTokenRes oauthTokenRes = tokenProvider.generateTokenDto(member);
 
         //redis에 저장
-        refreshTokenRedisService.saveTokenInfo(
+        refreshTokenService.saveTokenInfo(
                 member.getId(), oauthTokenRes.getRefreshToken(),
                 LocalDateTime.now().plusSeconds(oauthTokenRes.getRefreshTokenExpiresIn()),
                 false

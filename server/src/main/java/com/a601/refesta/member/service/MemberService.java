@@ -2,15 +2,25 @@ package com.a601.refesta.member.service;
 
 import com.a601.refesta.common.util.S3Util;
 import com.a601.refesta.genre.repository.GenreRepository;
+import com.a601.refesta.login.repository.GoogleAccessTokenRepository;
 import com.a601.refesta.member.data.*;
 import com.a601.refesta.member.domain.Member;
 import com.a601.refesta.member.domain.join.MemberGenre;
-import com.a601.refesta.member.repository.MemberRepository;
+import com.a601.refesta.member.domain.join.MemberSongPreference;
 import com.a601.refesta.member.repository.MemberGenreRepository;
+import com.a601.refesta.member.repository.MemberRepository;
+import com.a601.refesta.member.repository.MemberSongRepository;
+import com.a601.refesta.song.repository.SongRepository;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
@@ -18,6 +28,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.a601.refesta.artist.domain.QArtist.artist;
@@ -37,9 +48,15 @@ public class MemberService {
     private final GenreRepository genreRepository;
     private final S3Util s3Util;
     private final JPAQueryFactory jpaQueryFactory;
+    private final SongRepository songRepository;
+    private final MemberSongRepository memberSongRepository;
+    private final GoogleAccessTokenRepository googleAccessTokenRepository;
 
     @Value("${spring.refesta.recommend.url}")
     private String REFESTA_URL;
+
+    @Value("${spring.security.oauth2.provider.google.api-key}")
+    private String API_KEY;
 
     public Member getMember(int memberId) {
         return memberRepository.findById(memberId).orElseThrow();
@@ -69,7 +86,9 @@ public class MemberService {
      * 선호장르 저장
      */
     public void createPreferGenre(int memberId, PreferGenreReq genres) {
+
         Member member = getMember(memberId);
+        memberGenreRepository.deleteAllByMember(member);
         if (genres.getPreferGenres() != null && !genres.getPreferGenres().isEmpty()) {
             for (Integer genreId : genres.getPreferGenres()) {
                 MemberGenre memberGenre =
@@ -91,8 +110,6 @@ public class MemberService {
                 parameters,
                 String.class
         );
-        // System.out.println(response.getBody());
-
     }
 
     /**
@@ -168,6 +185,129 @@ public class MemberService {
                 .where(member.id.eq(memberId), review.isDeleted.eq(false))
                 .orderBy(review.createdDate.desc())
                 .fetch();
+
+    }
+
+    /**
+     * 플리 음악 MemberSongPreference에 넣기
+     */
+    public void createMemberSongPreference(int memberId) {
+
+        String googleAccessToken = googleAccessTokenRepository.findById(String.valueOf(memberId)).orElseThrow().getGoogleAccessToken();
+        // 유저의 유튜브 채널 ID 다 가져오기
+        List<String> channelIds = getMemberYoutubeChannels(googleAccessToken);
+        if (channelIds != null) {
+            //채널 ID의 재생목록 가져오기
+            List<String> playlists = getMemberYoutubePlaylists(channelIds);
+            if (playlists != null) {
+                //재생목록의 노래들 가져오기
+                List<String> videoIds = getMemberYoutubeSongs(playlists);
+                if (videoIds!=null&&!videoIds.isEmpty()) {
+                    //곡이랑 비교 후 membersongpreference 테이블에 넣기
+                    for (String videoId : videoIds) {
+                        songRepository.findByVideoId("https://www.youtube.com/watch?v=" + videoId + "%")
+                                .ifPresent(song -> memberSongRepository.save(MemberSongPreference.builder()
+                                        .song(song)
+                                        .member(memberRepository.findById(memberId).orElseThrow())
+                                        .preference(10)
+                                        .build())
+                                );
+                    }
+                }
+            }
+        }
+    }
+
+    private List<String> getMemberYoutubeSongs(List<String> playlists) {
+        if (playlists.isEmpty()) return null;
+        RestTemplate rt = new RestTemplate();
+        List<String> videoIds = new ArrayList<>();
+        for (String playlist : playlists) {
+            ResponseEntity<String> response = rt.exchange(
+                    "https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=100&status=&playlistId=" + playlist + "&key=" + API_KEY,
+                    HttpMethod.GET,
+                    null,
+                    String.class
+            );
+            try {
+                // JSON 문자열을 객체로 매핑하기 위한 ObjectMapper 생성
+                ObjectMapper objectMapper = new ObjectMapper();
+
+                // ResponseEntity의 body를 JSON 문자열로부터 JsonNode 객체로 변환
+                JsonNode jsonNode = objectMapper.readTree(response.getBody());
+
+                // "items" 배열의 각 객체에서 "videoId" 값을 추출하여 리스트에 저장
+                for (JsonNode item : jsonNode.get("items")) {
+                    String videoId = item.get("snippet").get("resourceId").get("videoId").asText();
+                    videoIds.add(videoId);
+                }
+            } catch (JsonProcessingException e) {
+                // JSON 처리 예외가 발생
+                e.printStackTrace();
+            }
+        }
+        return videoIds;
+    }
+
+    private List<String> getMemberYoutubePlaylists(List<String> channelIds) {
+        if (channelIds.isEmpty()) return null;
+        RestTemplate rt = new RestTemplate();
+        List<String> playlists = new ArrayList<>();
+        for (String channelId : channelIds) {
+            ResponseEntity<String> response = rt.exchange(
+                    "https://youtube.googleapis.com/youtube/v3/playlists?channelId=" + channelId + "&key=" + API_KEY,
+                    HttpMethod.GET,
+                    null,
+                    String.class
+            );
+            try {
+                ObjectMapper objectMapper = new ObjectMapper();
+
+                // ResponseEntity의 body를 JSON 문자열로부터 JsonNode 객체로 변환
+                JsonNode jsonNode = objectMapper.readTree(response.getBody());
+                for (JsonNode item : jsonNode.get("items")) {
+                    playlists.add(item.get("id").asText());
+                }
+
+            } catch (JsonProcessingException e) {
+                // JSON 처리 예외가 발생
+                e.printStackTrace();
+            }
+        }
+        return playlists;
+    }
+
+    private List<String> getMemberYoutubeChannels(String googleAccessToken) {
+        RestTemplate rt = new RestTemplate();
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", "Bearer " + googleAccessToken);
+        headers.add("Content-Type", "application/x-www-form-urlencoded;charset=utf-8");
+
+        HttpEntity<MultiValueMap<String, String>> req = new HttpEntity<>(headers);
+
+        ResponseEntity<String> response = rt.exchange(
+                "https://youtube.googleapis.com/youtube/v3/channels?part=statistics&mine=true&key=" + API_KEY,
+                HttpMethod.GET,
+                req,
+                String.class
+        );
+
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+
+            // ResponseEntity의 body를 JSON 문자열로부터 JsonNode 객체로 변환
+            JsonNode jsonNode = objectMapper.readTree(response.getBody());
+
+            List<String> channelIds = new ArrayList<>();
+            for (JsonNode item : jsonNode.get("items")) {
+                channelIds.add(item.get("id").asText());
+            }
+            return channelIds;
+        } catch (JsonProcessingException e) {
+            // JSON 처리 예외가 발생
+            e.printStackTrace();
+            return null;
+        }
 
     }
 }
