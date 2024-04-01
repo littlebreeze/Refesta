@@ -1,8 +1,11 @@
 import { create } from 'zustand';
+import { useNavigate } from 'react-router-dom';
 
 import instance from '@util/token_interceptor';
 
 const baseURL = `${import.meta.env.VITE_PUBLIC_API_SERVER}`;
+
+const nav = useNavigate;
 
 // approval_url => reservation/result
 const useKakaoStore = create((set) => ({
@@ -26,6 +29,7 @@ const useKakaoStore = create((set) => ({
         billingResult: res.data.data,
       }));
     } catch (e) {
+      nav('/Notfound');
       console.log(e);
     }
   },
