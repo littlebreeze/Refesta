@@ -34,4 +34,11 @@ export const useGenreQuery = () => {
   return useMutation('postGenre', postGenre);
 };
 
-// 구글 재생목록 가져와서 저장하는 로직 추가 예정
+const postYoutube = async () => {
+  const response = await instance.post('members/playlists');
+  return response;
+};
+
+export const useYoutubeConnectQuery = () => {
+  return useMutation('postYoutube', postYoutube);
+};
