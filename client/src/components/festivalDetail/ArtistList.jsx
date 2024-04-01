@@ -1,62 +1,50 @@
 import { useEffect } from 'react';
 import useSetListStore from '@store/setListStore';
 
-import all_album from '@assets/all_album.jpg';
-import select from '@assets/select.png';
 import ArtistItem from '@components/festivalDetail/ArtistItem';
 
+import all_album from '@assets/all_album.jpg';
+import select from '@assets/select.png';
+
+// 셋리스트 아티스트 리스트
 const ArtistList = () => {
   const {
     lineupList,
-    addLineupList,
     selectedLineupList,
     setSelectedLineupList,
     songInfoMap,
-    addSongInfoMap,
-    sortedSongInfoMap,
-    sortSongInfoMapByLineupList,
-    selectedSongInfoMap,
-    setSelectedSongInfoMap,
     isAllSelected,
     setAllSelected,
-    currSong,
-    setCurrSong,
-    currSongList,
     setCurrSongList,
   } = useSetListStore();
 
-  // 라인업 전체 버튼을 관리하는 함수
-  const toggleAllSelect = () => {
-    // 라인업이 전체 선택되어 있을 때 전체 버튼을 누를 경우
-    if (isAllSelected) {
-      // 선택된 라인업 전체를 초기화
-      setSelectedLineupList([]);
-      setCurrSongList([]);
-    }
-    // 라인업이 일부만 선택되어 있을 때 전체 버튼을 누를 경우
-    else {
-      // 선택된 라인업을 전체 라인업으로 변경
-      setSelectedLineupList([...lineupList]);
-      const allSongs = lineupList.flatMap((artist) => songInfoMap[artist.id].map((song) => song));
-      setCurrSongList(allSongs);
-    }
-    // 버튼 토글
-    setAllSelected(!isAllSelected);
-  };
-
+  // 라인업의 상태가 변할 때
+  // 전체 선택 여부를 판단하는 함수 실행
   useEffect(() => {
-    // lineupList와 selectedLineupList의 길이가 동일한 경우 isAllSelected를 true로 설정
     if (lineupList.length === selectedLineupList.length) {
       setAllSelected(true);
     } else {
       setAllSelected(false);
     }
-  }, [selectedLineupList, lineupList, setAllSelected]);
+  }, [lineupList, selectedLineupList, setAllSelected]);
+
+  // 셋리스트 라인업에서 전체선택 버튼을 관리하는 함수
+  const toggleAllSelect = () => {
+    if (isAllSelected) {
+      setSelectedLineupList([]); // 라인업 초기화
+      setCurrSongList([]); // 현재 재생목록 초기화
+    } else {
+      setSelectedLineupList([...lineupList]); // 라인업 전체 추가
+      const allSongs = lineupList.flatMap((artist) => songInfoMap[artist.id].map((song) => song));
+      setCurrSongList(allSongs); // 재생목록 전체 노래 추가
+    }
+    setAllSelected(!isAllSelected); // 버튼 토글
+  };
 
   return (
     <div>
       <ul className='flex p-4 overflow-x-auto text-white scrollbar-hide'>
-        {/* 전체 가수 */}
+        {/* 전체선택 */}
         <li className='flex-col p-2'>
           <div onClick={toggleAllSelect} className='relative mb-2'>
             {isAllSelected && <img className='absolute w-12 rounded-full ' src={select} alt='' />}
@@ -64,7 +52,7 @@ const ArtistList = () => {
           </div>
           <div className='w-12 text-xs truncate'>전체</div>
         </li>
-        {/* 개별 가수 */}
+        {/* 개별가수선택 */}
         {lineupList.map((artist) => (
           <ArtistItem key={artist.id} artist={artist} isSelected={selectedLineupList.includes(artist)} />
         ))}

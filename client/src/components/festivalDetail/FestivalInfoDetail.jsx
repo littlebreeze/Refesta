@@ -1,8 +1,8 @@
 import useFestivalInfoStore from '@store/festivalInfoStore';
 
+// 예정 페스티벌의 상세 이미지 정보
 const FestivalInfoDetail = () => {
-  const { festivalInfoData, setFestivalInfoData, festivalInfoDetailData, setFestivalInfoDetailData } =
-    useFestivalInfoStore();
+  const { festivalInfoDetailData } = useFestivalInfoStore();
 
   return (
     <>

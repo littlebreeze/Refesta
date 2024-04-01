@@ -1,10 +1,13 @@
 import { useNavigate } from 'react-router-dom';
 import useFestivalInfoStore from '@store/festivalInfoStore';
 
+// 예정 페스티벌에 출력되는 예매하기 버튼
 const ReservationButton = () => {
+  const nav = useNavigate();
   const { festivalInfoData } = useFestivalInfoStore();
 
-  const nav = useNavigate();
+  // 예매하기 버튼을 클릭하면
+  // 페스티벌 정보를 가지고 다른 페이지로 이동
   const onClickReservation = () => {
     nav('/reservation', { state: { festivalInfo: festivalInfoData } });
   };

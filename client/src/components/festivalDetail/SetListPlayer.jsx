@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import useSetListStore from '@store/setListStore';
 
+import instance from '@util/token_interceptor';
 import ReactPlayer from 'react-player';
 
 import play_btn from '@assets/play_btn.png';
@@ -9,66 +10,57 @@ import previous_btn from '@assets/previous_btn.png';
 import next_btn from '@assets/next_btn.png';
 import default_album_poster from '@assets/default_album_poster.jpg';
 
+// 셋리스트 음악 플레이어
 const SetListPlayer = () => {
-  const {
-    lineupList,
-    addLineupList,
-    selectedLineupList,
-    setSelectedLineupList,
-    songInfoMap,
-    addSongInfoMap,
-    sortedSongInfoMap,
-    sortSongInfoMapByLineupList,
-    selectedSongInfoMap,
-    setSelectedSongInfoMap,
-    playing,
-    setPlaying,
-    currSong,
-    setCurrSong,
-    currSongList,
-    setCurrSongList,
-    currSinger,
-  } = useSetListStore();
+  const { playing, setPlaying, currSong, setCurrSong, currSongList } = useSetListStore();
   const [currSongIndex, setCurrSongIndex] = useState(0);
 
+  // 현재 재생목록 및 현재 재생 노래가 변경될 때
+  // 현재 재생하는 노래의 인덱스를 변경하는 함수 실행
   useEffect(() => {
     if (currSongList && currSongList.length > 0) {
       const index = currSongList.findIndex((song) => song === currSong);
-      setCurrSongIndex(index >= 0 ? index : 0); // 현재 곡이 있는 경우 해당 인덱스로 설정
+      setCurrSongIndex(index >= 0 ? index : 0);
     }
   }, [currSongList, currSong]);
 
-  // 재생&일시정지
+  // 재생 & 일시정지 함수
   const onClickPlayButton = () => {
     setPlaying(!playing);
   };
 
-  // 이전 곡 재생
+  // 이전 곡을 재생하는 함수
   const onClickPrevButton = () => {
     if (currSongList.length > 1) {
       let newIndex = currSongIndex - 1;
       if (newIndex < 0) {
-        newIndex = currSongList.length - 1; // 범위를 벗어나면 맨 마지막 곡으로 이동
+        newIndex = currSongList.length - 1;
       }
       setCurrSongIndex(newIndex);
       setCurrSong(currSongList[newIndex]);
     }
   };
 
-  // 다음 곡 재생
+  // 다음 곡을 재생하는 함수
   const onClickNextButton = () => {
     if (currSongList.length > 1) {
       let newIndex = currSongIndex + 1;
       if (newIndex >= currSongList.length) {
-        newIndex = 0; // 범위를 벗어나면 첫 번째 곡으로 이동
+        newIndex = 0;
       }
       setCurrSongIndex(newIndex);
       setCurrSong(currSongList[newIndex]);
     }
   };
 
-  console.log('currSongList', currSongList);
-  console.log('currSong', currSong);
+  // 음악을 30초 이상 들을 때마다 해당 노래의 선호도를 증가시키는 함수
+  const increaseSongPreference = async () => {
+    try {
+      await instance.patch(`recommendations/songs/${currSong.id}`);
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
 
   return (
     <div className='flex justify-between mx-4 bg-white rounded-md'>
@@ -86,11 +78,15 @@ const SetListPlayer = () => {
       <div className='m-2'>
         <ReactPlayer
           className='react-player'
-          width='0px' // 플레이어 크기 (가로)
-          height='0px' // 플레이어 크기 (세로)
-          url={currSong.audioUrl}
-          playing={playing} // 재생
-          controls={false} // 유튜브 재생 컨트롤바 노출 여부
+          width='0px'
+          height='0px'
+          url={currSong.audioUrl} // 현재 재생 곡
+          playing={playing} // 재생 여부
+          onProgress={(progress) => {
+            if (parseInt(progress.playedSeconds) !== 0 && parseInt(progress.playedSeconds) % 30 === 0) {
+              increaseSongPreference(); // 재생 시간 별 선호도 증가
+            }
+          }}
         />
       </div>
       <div className='flex justify-between pr-2 my-auto mr- min-w-20'>

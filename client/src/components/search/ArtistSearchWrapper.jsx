@@ -1,6 +1,6 @@
 import ArtistSearchList from '@components/search/ArtistSearchList';
 
-// 통합검색 결과
+// 검색 결과 중 아티스트 탭
 const ArtistSearchWrapper = () => {
   return (
     <>
