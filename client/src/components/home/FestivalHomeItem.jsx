@@ -7,6 +7,16 @@ const FestivalHomeItem = ({ id, posterUrl, name, date }) => {
     nav(`/festival/${id}`);
   };
 
+  const dateFormat = (festivalDate) => {
+    return (
+      festivalDate.getFullYear() +
+      '.' +
+      (festivalDate.getMonth() + 1 < 9 ? '0' + (festivalDate.getMonth() + 1) : festivalDate.getMonth() + 1) +
+      '.' +
+      (festivalDate.getDate() < 9 ? '0' + festivalDate.getDate() : festivalDate.getDate())
+    );
+  };
+
   if (!name) {
     return (
       <div className='w-[120px] h-full'>
@@ -22,7 +32,7 @@ const FestivalHomeItem = ({ id, posterUrl, name, date }) => {
       <div className='truncate' title={name}>
         {name}
       </div>
-      <div className='text-sm text-zinc-500'>일시 : {new Date(date).toLocaleDateString()}</div>
+      <div className='text-sm text-zinc-500'>{dateFormat(new Date(date))}</div>
     </div>
   );
 };
