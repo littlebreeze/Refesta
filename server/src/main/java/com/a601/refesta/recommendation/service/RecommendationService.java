@@ -189,16 +189,15 @@ public class RecommendationService {
                 .limit(4)
                 .fetch();
 
-        if (findLineup.isEmpty()) {
-            throw new CustomException(ErrorCode.FESTIVAL_LINEUP_NOT_READY_ERROR);
-        }
-
         //라인업 StringBuilder로 변환
         StringBuilder lineup = new StringBuilder();
-        for (String artistName : findLineup) {
-            lineup.append(artistName).append(",");
+
+        if(!findLineup.isEmpty()){
+            for (String artistName : findLineup) {
+                lineup.append(artistName).append(",");
+            }
+            lineup.deleteCharAt(lineup.length() - 1);
         }
-        lineup.deleteCharAt(lineup.length() - 1);
 
         return lineup.toString();
     }
