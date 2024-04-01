@@ -23,9 +23,8 @@ def save_to_csv(data, filename):
         csvwriter = csv.writer(csvfile)
         csvwriter.writerows(data)
 
-def read_from_csv(folder, filename):
-    filepath = os.path.join(folder, filename)
-    with open(filepath, 'r', newline='') as csvfile:
+def read_from_csv(filename):
+    with open(filename, 'r', newline='') as csvfile:
         csvreader = csv.reader(csvfile)
         data = [row for row in csvreader]
     return data
@@ -145,7 +144,7 @@ def memberrecommend(member):
     cur.execute("DELETE FROM member_artist WHERE member_id = %s", (member,))
     conn.commit()
 
-    finalrecommend = read_from_csv('table', 'finaltable.csv')
+    finalrecommend = read_from_csv('finaltable.csv')
 
     sorted = np.argsort(finalrecommend[member-1])[::-1]
 
