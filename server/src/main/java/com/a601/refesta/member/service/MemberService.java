@@ -193,6 +193,8 @@ public class MemberService {
      */
     public void createMemberSongPreference(int memberId) {
 
+        memberSongRepository.deleteAllByMemberId(memberId);
+
         String googleAccessToken = googleAccessTokenRepository.findById(String.valueOf(memberId)).orElseThrow().getGoogleAccessToken();
         // 유저의 유튜브 채널 ID 다 가져오기
         List<String> channelIds = getMemberYoutubeChannels(googleAccessToken);
@@ -202,16 +204,25 @@ public class MemberService {
             if (playlists != null) {
                 //재생목록의 노래들 가져오기
                 List<String> videoIds = getMemberYoutubeSongs(playlists);
-                if (videoIds!=null&&!videoIds.isEmpty()) {
+                if (videoIds != null && !videoIds.isEmpty()) {
                     //곡이랑 비교 후 membersongpreference 테이블에 넣기
                     for (String videoId : videoIds) {
                         songRepository.findByVideoId("https://www.youtube.com/watch?v=" + videoId + "%")
-                                .ifPresent(song -> memberSongRepository.save(MemberSongPreference.builder()
-                                        .song(song)
-                                        .member(memberRepository.findById(memberId).orElseThrow())
-                                        .preference(10)
-                                        .build())
-                                );
+                                .ifPresent(song -> {
+                                    memberSongRepository.findByMember_IdAndSong_Id(memberId, song.getId()).ifPresent(
+                                            memberSongPreference -> {
+                                                memberSongPreference.plusPlayListPreference();
+                                                memberSongRepository.save(memberSongPreference);
+                                            }
+                                    );
+                                    if (memberSongRepository.findByMember_IdAndSong_Id(memberId, song.getId()).isEmpty()) {
+                                        memberSongRepository.save(MemberSongPreference.builder()
+                                                .song(song)
+                                                .member(memberRepository.findById(memberId).orElseThrow())
+                                                .preference(30)
+                                                .build());
+                                    }
+                                });
                     }
                 }
             }
