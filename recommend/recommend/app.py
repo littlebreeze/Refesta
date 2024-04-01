@@ -17,14 +17,9 @@ scheduler = BackgroundScheduler()
 conn = pymysql.connect(host=DB_HOST, user=DB_USER, password=DB_PASSWORD, db='refesta', charset='utf8')
 cur = conn.cursor()
 
-def save_to_csv(data, folder, filename):
+def save_to_csv(data, filename):
 
-    if not os.path.exists(folder):
-        os.makedirs(folder)
-
-    filepath = os.path.join(folder, filename)
-
-    with open(filepath, 'w', newline='') as csvfile:
+    with open(filename, 'w', newline='') as csvfile:
         csvwriter = csv.writer(csvfile)
         csvwriter.writerows(data)
 
@@ -70,7 +65,7 @@ def makeusertable():
             for k in range(9):
                 memberfestivalgenretable[i][j]+=membergenretable[i][k]*lineupgenretable[k][j]
 
-    save_to_csv(memberfestivalgenretable,'table', 'memberfestivalgenretable.csv')
+    save_to_csv(memberfestivalgenretable, 'memberfestivalgenretable.csv')
 
     #3
     cur.execute("SELECT member_id,artist_id,is_liked FROM artist_like")
@@ -90,7 +85,7 @@ def makeusertable():
             for k in cur.fetchall():
                 memberartistliketable[i][k[0]-1]+=j[1]
 
-    save_to_csv(memberartistliketable, 'table', 'memberartistliketable.csv')
+    save_to_csv(memberartistliketable, 'memberartistliketable.csv')
 
     #4
     cur.execute("SELECT member_id,festival_id,is_liked FROM festival_like")
@@ -106,7 +101,7 @@ def makeusertable():
         for j in cur.fetchall():
             memberfestivalliketable[i][j[0]-1]+=j[1]
 
-    save_to_csv(memberfestivalliketable, 'table', 'memberfestivalliketable.csv')
+    save_to_csv(memberfestivalliketable, 'memberfestivalliketable.csv')
 
     #5
     cur.execute("SELECT m.member_id, m.song_id, m.preference, f.festival_id FROM member_song_preference m JOIN festival_setlist f ON m.song_id = f.song_id")
@@ -114,7 +109,7 @@ def makeusertable():
     for i in cur.fetchall():
         membersongliketable[i[0]-1][i[3]-1]+=i[2]
 
-    save_to_csv(membersongliketable, 'table', 'membersongliketable.csv')
+    save_to_csv(membersongliketable, 'membersongliketable.csv')
 
     #6
     cur.execute("select member_id,festival_id from review where is_deleted=0;")
@@ -123,7 +118,7 @@ def makeusertable():
     for i in review:
         memberreviewtable[i[0]-1][i[1]-1]+=1
 
-    save_to_csv(memberreviewtable, 'table', 'memberreviewtable.csv')
+    save_to_csv(memberreviewtable, 'memberreviewtable.csv')
 
     #7
     cur.execute("SELECT member_id, festival_id FROM reservation WHERE status = 'SUCCESS'")
@@ -133,14 +128,14 @@ def makeusertable():
     for i in reserv:
         memberreservtable[i[0]-1][i[1]-1]=1
 
-    save_to_csv(memberreservtable, 'table', 'memberreservtable.csv')
+    save_to_csv(memberreservtable, 'memberreservtable.csv')
 
     #final
     finaltable = [[0 for _ in range(festivalN)] for _ in range(memberN)]
     for i in range(memberN):
         for j in range(festivalN):
             finaltable[i][j] = memberreservtable[i][j]+memberreviewtable[i][j]+membersongliketable[i][j]+memberfestivalliketable[i][j]+memberartistliketable[i][j]+memberfestivalgenretable[i][j]
-    save_to_csv(finaltable, 'table', 'finaltable.csv')
+    save_to_csv(finaltable, 'finaltable.csv')
 
 def memberrecommend(member):
 

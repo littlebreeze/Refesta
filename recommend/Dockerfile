@@ -16,8 +16,6 @@ RUN adduser \
     --uid "${UID}" \
     appuser
 
-RUN mkdir -p /table
-RUN chmod -R 777 /
 
 
 RUN apt update
