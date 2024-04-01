@@ -9,6 +9,7 @@ import FestivalInfo from '@components/festivalDetail/FestivalInfo';
 import FestivalInfoDetail from '@components/festivalDetail/FestivalInfoDetail';
 import ReservationButton from '@components/festivalDetail/ReservationButton';
 import FestivalInfoContainer from '@components/festivalDetail/FestivalInfoContainer';
+import PlayListCreateButton from '@components/festivalDetail/PlayListCreateButton';
 
 // 페스티벌 상세보기 페이지
 const FestivalDetailPage = () => {
@@ -138,6 +139,7 @@ const FestivalDetailPage = () => {
         // 완료 페스티벌
         <div>
           <FestivalInfo /> {/* 페스티벌 기본 정보 */}
+          <PlayListCreateButton /> {/* 유튜브 플레이리스트 저장 버튼 */}
           <FestivalInfoContainer /> {/* 페스티벌 셋리스트 & 후기게시판 탭 */}
         </div>
       )}
