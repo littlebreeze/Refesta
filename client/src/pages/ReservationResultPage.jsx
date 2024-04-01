@@ -8,11 +8,15 @@ import billImg from '@assets/billImg.png';
 
 const ReservationResultPage = () => {
   const [reservationNum, setReservationNum] = useState();
-  const nav = useNavigate();
   const { billingResult, getBillingResult } = useKakaoStore();
   const { id } = useParams();
+  const nav = useNavigate();
 
   useEffect(() => {
+    if (isNaN(id)) {
+      nav('/Notfound');
+    }
+
     getBillingResult(id);
   }, []);
 
@@ -31,10 +35,7 @@ const ReservationResultPage = () => {
     <div className='flex flex-col items-center justify-between w-full min-h-[800] h-lvh'>
       <div>
         <div className='w-full mt-10'>
-          <img
-            className='w-full'
-            src={billImg}
-          />
+          <img className='w-full' src={billImg} />
         </div>
         <div className='w-full mt-5 text-sm text-center text-gray-400'>예매번호 : {reservationNum}</div>
         <BillingResult billingResult={billingResult} />

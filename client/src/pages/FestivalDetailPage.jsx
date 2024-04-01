@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import useSetListStore from '@store/setListStore';
 import useFestivalInfoStore from '@store/festivalInfoStore';
 
@@ -13,6 +13,7 @@ import FestivalInfoContainer from '@components/festivalDetail/FestivalInfoContai
 // 페스티벌 상세보기 페이지
 const FestivalDetailPage = () => {
   const { id } = useParams();
+  const nav = useNavigate();
   const { festivalInfoData, setFestivalInfoData, setFestivalInfoDetailData } = useFestivalInfoStore();
   const {
     lineupList,
@@ -33,27 +34,38 @@ const FestivalDetailPage = () => {
     const getFestivalInfoData = async () => {
       try {
         const response = await instance.get(`festivals/${id}`);
-        if (response.data.status === 'success') {
+        if (response.data.status === 'success' && response.data.data !== null) {
           setFestivalInfoData(response.data.data);
+        } else {
+          nav('/Notfound');
         }
       } catch (error) {
         console.error('Error:', error);
       }
     };
 
-    // 페스티벌 상세 페이지 접근 데이터 제공
+    // 페스티벌 조회수 증가
     const increaseFestivalViewCount = async () => {
       try {
-        const res = await instance.patch(`festivals/${id}/views`);
-        console.log(res);
+        const response = await instance.patch(`festivals/${id}/views`);
       } catch (e) {
         console.error('Error:', e);
       }
     };
 
-    increaseFestivalViewCount();
     getFestivalInfoData();
+    increaseFestivalViewCount();
   }, []);
+
+  // 파라미터에 정상적인 값이 들어가지 않았을 때
+  // 404페이지로 이동
+  useEffect(() => {
+    if (isNaN(id)) {
+      nav('/Notfound');
+    }
+  }, [id]);
+
+  console.log(festivalInfoData);
 
   // 페스티벌 정보를 바탕으로
   // 예정 페스티벌과 완료 페스티벌에 따라
