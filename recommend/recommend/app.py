@@ -17,8 +17,6 @@ conn = pymysql.connect(host=DB_HOST, user=DB_USER, password=DB_PASSWORD, db='ref
 cur = conn.cursor()
 
 def save_to_csv(data, folder, filename):
-    if not os.path.exists(folder):
-        os.makedirs(folder)
 
     filepath = os.path.join(folder, filename)
 
