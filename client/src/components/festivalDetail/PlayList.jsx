@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import useSetListStore from '@store/setListStore';
 
 import PlayListItem from '@components/festivalDetail/PlayListItem';

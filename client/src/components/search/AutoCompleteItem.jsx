@@ -19,7 +19,13 @@ const AutoCompleteItem = ({ name, classification }) => {
   };
 
   return (
-    <div title={name.name} data-keyword={name.name} ref={selectedKeyword} onClick={onClickKeyword}>
+    <div
+      className='cursor-pointer'
+      title={name.name}
+      data-keyword={name.name}
+      ref={selectedKeyword}
+      onClick={onClickKeyword}
+    >
       {parts.map((part, index) =>
         part.toLowerCase() === searchKeyword.toLowerCase() ? (
           <span className='font-semibold text-ourPink' key={index}>

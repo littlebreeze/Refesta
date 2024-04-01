@@ -1,12 +1,15 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
-import Header from '../components/common/Header';
+
+import ScrollToTop from '@pages/ScrollToTop';
+import Header from '@components/common/Header';
 
 const MainLayout = () => {
   return (
     <>
       <Header />
       <main>
+        <ScrollToTop />
         <Outlet />
       </main>
     </>
