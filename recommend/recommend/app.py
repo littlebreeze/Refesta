@@ -19,6 +19,9 @@ cur = conn.cursor()
 
 def save_to_csv(data, folder, filename):
 
+    if not os.path.exists(folder):
+        os.makedirs(folder)
+
     filepath = os.path.join(folder, filename)
 
     with open(filepath, 'w', newline='') as csvfile:
