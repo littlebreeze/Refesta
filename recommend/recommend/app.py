@@ -8,6 +8,7 @@ from dotenv import load_dotenv
 from flask import Flask, request
 
 load_dotenv()
+current_directory = os.getcwd()
 DB_HOST = os.environ.get('DB_HOST')
 DB_USER = os.environ.get('DB_USER')
 DB_PASSWORD = os.environ.get('DB_PASSWORD')
@@ -200,5 +201,6 @@ def register():
     return "추천 완료"
 
 if __name__ == '__main__':
+    print("현재 작업 디렉토리:", current_directory)
     scheduler.start()
     app.run(host='0.0.0.0', port=8082)
