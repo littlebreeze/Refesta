@@ -4,6 +4,7 @@ import useReviewStore from '@store/reviewStore';
 import festivalInfoStore from '@store/festivalInfoStore';
 
 import ReactPlayer from 'react-player';
+import browserImageCompression from '@util/browserImageCompression';
 
 import xBtn from '@assets/x_black.png';
 import picture from '@assets/picture.png';
@@ -75,17 +76,30 @@ const RegisterReviewPage = ({ isOpen, onClose, selectedFile: propSelectedFile })
   }, [propSelectedFile]);
 
   // 파일이 바뀌었을 때
-  const handleFileChange = (e) => {
+  const handleFileChange = async (e) => {
     const file = e.target.files[0];
     if (file) {
       setIsImage(file.type.startsWith('image'));
       const newURL = URL.createObjectURL(file);
       setFileUrl(newURL);
 
-      setNewReview((prev) => ({
-        ...prev,
-        file: file,
-      }));
+      if (isImage) {
+        try {
+          const compressedFile = await browserImageCompression(file);
+          console.log('이미지 리사이징', compressedFile);
+          setNewReview((prev) => ({
+            ...prev,
+            file: compressedFile,
+          }));
+        } catch (e) {
+          console.log('이미지 압축 오류', e);
+        }
+      } else {
+        setNewReview((prev) => ({
+          ...prev,
+          file: file,
+        }));
+      }
     }
   };
 

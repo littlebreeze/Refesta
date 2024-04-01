@@ -1,5 +1,7 @@
 import { useRef, useState } from 'react';
 
+import browserImageCompression from '@util/browserImageCompression';
+
 import RegisterReview from '@pages/RegisterReviewPage';
 import ReviewList from '@components/festivalDetail/ReviewList';
 
@@ -14,10 +16,19 @@ const ReviewWrapper = () => {
     fileInputRef.current.click();
   };
 
-  const handleFileChange = (e) => {
+  const handleFileChange = async (e) => {
     const file = e.target.files[0];
     if (file) {
-      setSelectedFile(file);
+      if (file.type.startsWith('image')) {
+        try {
+          const compressedFile = await browserImageCompression(file);
+          setSelectedFile(compressedFile);
+        } catch (e) {
+          console.log('이미지 압축 오류', e);
+        }
+      } else {
+        setSelectedFile(file);
+      }
       setModalOpen(true);
     }
   };
