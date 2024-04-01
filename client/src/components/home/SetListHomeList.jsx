@@ -27,7 +27,7 @@ const SetListHomeList = ({ setListData, isLoading }) => {
           </div>
         }
       />
-      <div className='flex overflow-x-scroll gap-x-4 scrollbar-hide whitespace-nowrap px-7'>
+      <div className='flex px-4 overflow-x-scroll gap-x-4 scrollbar-hide whitespace-nowrap'>
         {isLoading ? (
           <ItemLoading type={'setList'} />
         ) : (

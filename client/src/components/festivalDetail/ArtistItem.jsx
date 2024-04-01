@@ -26,10 +26,10 @@ const ArtistItem = ({ artist }) => {
   return (
     <li className='flex-col p-2'>
       <div className='relative mb-2' onClick={toggleSelect}>
-        {isSelectedArtist && <img className='absolute w-12 rounded-full ' src={select} alt='' />}
-        <img className='w-12 rounded-full' src={artist.pictureUrl} alt='' />
+        {isSelectedArtist && <img className='absolute w-[44px] rounded-full ' src={select} alt='' />}
+        <img className='w-[44px] rounded-full' src={artist.pictureUrl} alt='' />
       </div>
-      <div className='w-12 text-xs truncate'>{artist.name}</div>
+      <div className='w-[44px] text-xs truncate'>{artist.name}</div>
     </li>
   );
 };

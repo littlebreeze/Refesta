@@ -1,18 +1,27 @@
 import { useState } from 'react';
 
+import { useYoutubeConnectQuery } from '@queries/startPagesQueries';
+
 import yLogo from '@assets/youtube_music_logo.png';
 import connect_check from '@assets/connect_check.png';
 
 const YoutubeConnect = ({ setStep, stepParam }) => {
   const [modalOpen, setModalOpen] = useState(false);
+  const { mutate, data, isLoading, isError, error } = useYoutubeConnectQuery();
 
   const onClickConnect = () => {
     // 재생목록 요청 백으로 보내기
-    setModalOpen(true);
-    setTimeout(() => {
-      setModalOpen(false);
-      setStep(stepParam.step3);
-    }, 3000);
+    mutate();
+    if (!isLoading) {
+      setModalOpen(true);
+      setTimeout(() => {
+        setModalOpen(false);
+        setStep(stepParam.step3);
+      }, 2000);
+    }
+    if (isError) {
+      console.log(error);
+    }
   };
   const onClickSkip = () => {
     setStep(stepParam.step3);

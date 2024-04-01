@@ -26,17 +26,17 @@ const ArtistHomeList = () => {
   }, [data]);
 
   return (
-    <div className='h-[283px]'>
+    <div className='h-[270px]'>
       <ListTitle
         title={'추천 아티스트'}
         description={'아티스트로 페스티벌을 찾아보세요!'}
         btn={
-          <div className='w-[30px] ml-auto mb-2'>
+          <div className='w-[25px] ml-auto mb-2'>
             <img src={refresh} onClick={onClickRefresh} />
           </div>
         }
       />
-      <div className='flex overflow-x-scroll gap-x-3 scrollbar-hide px-7'>
+      <div className='flex px-4 overflow-x-scroll gap-x-3 scrollbar-hide '>
         {isLoading ? (
           <ItemLoading type={'artist'} />
         ) : (

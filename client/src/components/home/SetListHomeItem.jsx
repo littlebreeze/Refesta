@@ -7,6 +7,16 @@ const SetListHomeItem = ({ id, posterUrl, name, date, lineup }) => {
     nav(`/festival/${id}`);
   };
 
+  const dateFormat = (festivalDate) => {
+    return (
+      festivalDate.getFullYear() +
+      '.' +
+      (festivalDate.getMonth() + 1 < 9 ? '0' + (festivalDate.getMonth() + 1) : festivalDate.getMonth() + 1) +
+      '.' +
+      (festivalDate.getDate() <= 9 ? '0' + festivalDate.getDate() : festivalDate.getDate())
+    );
+  };
+
   if (!name) {
     return (
       <div className='flex w-[240px]'>
@@ -28,7 +38,7 @@ const SetListHomeItem = ({ id, posterUrl, name, date, lineup }) => {
         <div className='truncate' title={name}>
           {name}
         </div>
-        <div className='mb-2 text-sm text-zinc-500'>일시 : {new Date(date).toLocaleDateString()}</div>
+        <div className='mb-2 text-sm text-zinc-500'>{dateFormat(new Date(date))}</div>
         <div className='text-xs text-zinc-400 h-[50px] overflow-hidden'>{lineup}</div>
       </div>
     </div>
