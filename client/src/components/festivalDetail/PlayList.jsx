@@ -21,13 +21,11 @@ const PlayList = () => {
       {selectedSongInfoMap.length > 0 && (
         <div className='overflow-x-auto whitespace-nowrap'>
           {selectedSongInfoMap.map((songs, idx1) => (
-            <div key={idx1} className='my-2'>
-              <ul className=''>
-                {songs.map((song, idx2) => (
-                  <PlayListItem key={idx2} song={song} />
-                ))}
-              </ul>
-            </div>
+            <ul key={idx1}>
+              {songs.map((song, idx2) => (
+                <PlayListItem key={idx2} song={song} />
+              ))}
+            </ul>
           ))}
         </div>
       )}

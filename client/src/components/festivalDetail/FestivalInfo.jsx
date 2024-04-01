@@ -32,22 +32,24 @@ const FestivalInfo = () => {
   };
 
   return (
-    <article className='m-6 mb-12 min-h-60'>
+    <article className='m-4 mb-12 min-h-60'>
       {festivalInfoData && (
         <div className='flex'>
           <div className='flex items-center flex-1'>
-            <img className='object-fill h-60' src={festivalInfoData.posterUrl} alt='' />
+            <img className='object-fill h-full' src={festivalInfoData.posterUrl} alt='' />
           </div>
           <div className='relative items-start flex-1 ml-2'>
             <div className='text-sm font-semibold'>{festivalInfoData.name}</div>
-            <div className='mt-2 border-b border-b-black'></div>
+            <div className='mt-2 border-b-2 border-b-gray-500'></div>
             <div className='p-2'>
+              <div className='pb-1 text-sm '>일시</div>
+              <div className='pb-4 text-xs text-gray-500'>{festivalInfoData.date}</div>
               <div className='pb-1 text-sm'>장소</div>
-              <div className='pb-4 pl-1 text-xs'>{festivalInfoData.location}</div>
-              <div className='pb-1 text-sm '>날짜</div>
-              <div className='pb-4 pl-1 text-xs'>{festivalInfoData.date}</div>
+              <div className='pb-4 text-xs text-gray-500'>{festivalInfoData.location}</div>
               <div className='pb-1 text-sm'>가격</div>
-              <div className='pb-4 pl-1 text-xs'>{festivalInfoData.price.toLocaleString()}원</div>
+              <div className='pb-4 text-xs text-gray-500'>
+                {festivalInfoData.price === 0 ? '119,000 원' : festivalInfoData.price.toLocaleString() + ' 원'}
+              </div>
             </div>
             <div className='absolute bottom-0 right-0 flex justify-end pr-1 w-9'>
               <img

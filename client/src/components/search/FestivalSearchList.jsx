@@ -30,10 +30,12 @@ const FestivalSearchList = ({ isTotal, setOpenSearchTab }) => {
       {renderFestivalListData.length === 0 ? (
         <div className='p-4 mt-4 text-lg font-bold text-center '>페스티벌 정보가 없습니다.</div>
       ) : (
-        <div className='flex flex-wrap justify-between'>
-          {renderFestivalListData.map((festival) => (
-            <FestivalSearchItem key={festival.id} festival={festival} />
-          ))}
+        <div className='flex justify-center'>
+          <div className='grid grid-cols-3 gap-2'>
+            {renderFestivalListData.map((festival) => (
+              <FestivalSearchItem key={festival.id} festival={festival} />
+            ))}
+          </div>
         </div>
       )}
     </div>

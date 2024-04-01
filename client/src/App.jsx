@@ -33,7 +33,6 @@ function App() {
             <Route path='/login' element={<Login />} />
             <Route path='/google-login' element={<Google_Login />} />
             <Route path='/regist' element={<RegisterInfo />} />
-            <Route path='/test' element={<TestPage />} />
             <Route path='/about' element={<AboutPage />} />
             <Route path='/reservation/approve' element={<ReservationApprove />} />
             <Route path='/privacy_policy' element={<PrivacyPolicyPage />} />
