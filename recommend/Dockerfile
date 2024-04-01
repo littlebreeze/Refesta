@@ -17,8 +17,7 @@ RUN adduser \
     appuser
 
 RUN mkdir -p /table
-RUN chown -R appuser /
-RUN chmod -R 755 /
+RUN chmod -R 777 /
 
 
 RUN apt update
