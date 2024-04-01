@@ -16,7 +16,7 @@ RUN adduser \
     --uid "${UID}" \
     appuser
 
-RUN mkdir -p
+RUN mkdir -p /table
 RUN chown -R appuser
 RUN chmod -R 755
 
