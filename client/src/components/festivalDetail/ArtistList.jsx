@@ -48,9 +48,9 @@ const ArtistList = () => {
         <li className='flex-col p-2'>
           <div onClick={toggleAllSelect} className='relative mb-2'>
             {isAllSelected && <img className='absolute w-12 rounded-full ' src={select} alt='' />}
-            <img className='w-12 rounded-full' src={all_album} alt='' />
+            <img className='w-[44px] rounded-full' src={all_album} alt='' />
           </div>
-          <div className='w-12 text-xs truncate'>전체</div>
+          <div className='w-[44px] text-xs truncate'>전체</div>
         </li>
         {/* 개별가수선택 */}
         {lineupList.map((artist) => (
