@@ -22,7 +22,7 @@ const ArtistHomeItem = ({ id, name, pictureUrl }) => {
       <div className='w-[120px] h-[200px]'>
         <img className='object-cover w-full h-full rounded-full ' src={pictureUrl} />
       </div>
-      <div className='absolute w-1/2 text-white truncate bottom-2 left-7' title={name}>
+      <div className='absolute w-1/2 text-sm text-white truncate bottom-2 left-7' title={name}>
         {name}
       </div>
     </div>

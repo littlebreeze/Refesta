@@ -13,7 +13,7 @@ const FestivalViewAllItem = ({ id, name, date, location, posterUrl, lineup }) =>
       '.' +
       (festivalDate.getMonth() + 1 < 9 ? '0' + (festivalDate.getMonth() + 1) : festivalDate.getMonth() + 1) +
       '.' +
-      (festivalDate.getDate() < 9 ? '0' + festivalDate.getDate() : festivalDate.getDate())
+      (festivalDate.getDate() <= 9 ? '0' + festivalDate.getDate() : festivalDate.getDate())
     );
   };
 
@@ -33,8 +33,8 @@ const FestivalViewAllItem = ({ id, name, date, location, posterUrl, lineup }) =>
           <div className='ml-2 text-ourBrightIndigo'>{location}</div>
         </div>
         <div>
-          <div className='text-sm text-zinc-500'>주요 라인업</div>
-          <div className='font-medium'>{lineup}</div>
+          <div className='mb-1 text-sm text-zinc-500'>주요 라인업</div>
+          <div className='text-[15px]'>{lineup ? lineup : '추후 공개 예정'}</div>
         </div>
       </div>
     </div>

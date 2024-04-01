@@ -17,7 +17,7 @@ const FestivalHomeList = ({ festivalData, isLoading }) => {
           </div>
         }
       />
-      <div className='flex overflow-x-scroll scrollbar-hide whitespace-nowrap gap-x-3 px-7'>
+      <div className='flex px-4 overflow-x-scroll scrollbar-hide whitespace-nowrap gap-x-3'>
         {isLoading ? (
           <ItemLoading type={'festival'} />
         ) : (

@@ -13,7 +13,7 @@ const FestivalHomeItem = ({ id, posterUrl, name, date }) => {
       '.' +
       (festivalDate.getMonth() + 1 < 9 ? '0' + (festivalDate.getMonth() + 1) : festivalDate.getMonth() + 1) +
       '.' +
-      (festivalDate.getDate() < 9 ? '0' + festivalDate.getDate() : festivalDate.getDate())
+      (festivalDate.getDate() <= 9 ? '0' + festivalDate.getDate() : festivalDate.getDate())
     );
   };
 
