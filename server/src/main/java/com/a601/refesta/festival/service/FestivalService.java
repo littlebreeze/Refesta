@@ -2,23 +2,28 @@ package com.a601.refesta.festival.service;
 
 import com.a601.refesta.common.exception.CustomException;
 import com.a601.refesta.common.exception.ErrorCode;
-import com.a601.refesta.festival.data.FestivalDetailRes;
-import com.a601.refesta.festival.data.FestivalInfoRes;
-import com.a601.refesta.festival.data.FestivalReviewRes;
-import com.a601.refesta.festival.data.FestivalSetlistRes;
+import com.a601.refesta.festival.data.*;
 import com.a601.refesta.festival.domain.Festival;
 import com.a601.refesta.festival.domain.FestivalDetail;
 import com.a601.refesta.festival.repository.FestivalDetailRepository;
 import com.a601.refesta.festival.repository.FestivalRepository;
+import com.a601.refesta.login.repository.GoogleAccessTokenRepository;
 import com.a601.refesta.member.domain.join.FestivalLike;
 import com.a601.refesta.member.repository.FestivalLikeRepository;
 import com.a601.refesta.member.service.MemberService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.*;
 
@@ -41,8 +46,13 @@ public class FestivalService {
     private final FestivalRepository festivalRepository;
     private final FestivalDetailRepository festivalDetailRepository;
     private final FestivalLikeRepository festivalLikeRepository;
+    private final GoogleAccessTokenRepository googleAccessTokenRepository;
 
     private final JPAQueryFactory jpaQueryFactory;
+
+
+    @Value("${spring.security.oauth2.provider.google.api-key}")
+    private String API_KEY;
 
     /**
      * 페스티벌(공통) 정보 조회
@@ -211,5 +221,86 @@ public class FestivalService {
     public Festival getFestival(int festivalId) {
         return festivalRepository.findById(festivalId)
                 .orElseThrow(() -> new CustomException(ErrorCode.FESTIVAL_NOT_FOUND_ERROR));
+    }
+
+
+
+    public void createYoutubePlaylist(int memberId, FestivalSetlistReq festivalSetlistReq) {
+        String googleAccessToken = googleAccessTokenRepository.findById(String.valueOf(memberId)).orElseThrow().getGoogleAccessToken();
+
+        String playlistId = createPlaylist(googleAccessToken, festivalSetlistReq.getFestivalName());
+        putSongInPlaylist(googleAccessToken, playlistId, festivalSetlistReq.getAudioUrlList());
+    }
+
+
+    private void putSongInPlaylist(String googleAccessToken, String playlistId, List<String> audioUrlList) {
+
+        RestTemplate rt = new RestTemplate();
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", "Bearer " + googleAccessToken);
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        for (String audioUrl : audioUrlList) {
+            audioUrl = audioUrl.replace("https://www.youtube.com/watch?v=", "");
+            String[] split = audioUrl.split("&");
+
+            Map<String, Object> requestBody = new LinkedHashMap<>();
+
+            Map<String, Object> snippetMap = new LinkedHashMap<>();
+            snippetMap.put("playlistId", playlistId);
+
+            Map<String, Object> resourceIdMap = new LinkedHashMap<>();
+            resourceIdMap.put("kind", "youtube#video");
+            resourceIdMap.put("videoId", split[0]);
+
+            snippetMap.put("resourceId", resourceIdMap);
+            requestBody.put("snippet", snippetMap);
+
+            HttpEntity<Map<String, Object>> req = new HttpEntity<>(requestBody, headers);
+
+            ResponseEntity<String> response = rt.exchange(
+                    "https://youtube.googleapis.com/youtube/v3/playlistItems?part=snippet&key=" + API_KEY,
+                    HttpMethod.POST,
+                    req,
+                    String.class
+            );
+
+        }
+    }
+
+
+    private String createPlaylist(String googleAccessToken, String festivalName) {
+        System.out.println(festivalName+"???????????????????");
+        RestTemplate rt = new RestTemplate();
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", "Bearer " + googleAccessToken);
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        Map<String, Object> requestBody = new LinkedHashMap<>();
+        requestBody.put("kind", "youtube#playlist");
+
+        Map<String, Object> snippetMap = new LinkedHashMap<>();
+        snippetMap.put("title", "ReFesta-" + festivalName);
+        requestBody.put("snippet", snippetMap);
+
+
+        HttpEntity<Map<String, Object>> req = new HttpEntity<>(requestBody, headers);
+
+        ResponseEntity<String> response = rt.exchange(
+                "https://youtube.googleapis.com/youtube/v3/playlists?part=snippet&key=" + API_KEY,
+                HttpMethod.POST,
+                req,
+                String.class
+        );
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            // ResponseEntity의 body를 JSON 문자열로부터 JsonNode 객체로 변환
+            JsonNode jsonNode = objectMapper.readTree(response.getBody());
+            String playlistId = jsonNode.get("id").asText();
+            return playlistId;
+        } catch (JsonProcessingException e) {
+            // JSON 처리 예외가 발생
+            e.printStackTrace();
+            return null;
+        }
     }
 }
