@@ -18,7 +18,7 @@ const Reservation = () => {
     if (count > 4) {
       Swal.fire({
         title: '예매 개수 초과',
-        text: '최대 4매까지 예약 가능합니다.',
+        html: '최대 4매까지 예약 가능합니다.',
         confirmButtonColor: '#061E58',
         confirmButtonText: '확인',
       });
@@ -42,7 +42,7 @@ const Reservation = () => {
     } else {
       Swal.fire({
         title: '결제 요청 실패',
-        text: '결제에 실패하였습니다.',
+        html: '결제에 실패하였습니다.',
         confirmButtonColor: '#061E58',
         confirmButtonText: '확인',
       });
