@@ -66,11 +66,11 @@ const SetListPlayer = () => {
     <div className='flex justify-between mx-4 bg-white rounded-md'>
       <div className='flex m-2'>
         <div>
-          <img className='w-12 rounded-md min-w-12' src={currSong.imageUrl || default_album_poster} alt='' />
+          <img className='w-[40px] rounded-md min-w-[40px]' src={currSong.imageUrl || default_album_poster} alt='' />
         </div>
         <div className='ml-3'>
           <div className='text-left'>
-            <div className='truncate max-w-28'>{currSong.title}</div>
+            <div className='text-sm selection:truncate max-w-28'>{currSong.title}</div>
             <div className='text-xs text-gray-400 truncate max-w-28'>{currSong.singer}</div>
           </div>
         </div>
@@ -89,17 +89,17 @@ const SetListPlayer = () => {
           }}
         />
       </div>
-      <div className='flex justify-between pr-2 my-auto mr- min-w-20'>
+      <div className='flex justify-between pr-2 my-auto min-w-16'>
         {/* 이전 곡 재생 */}
-        <button className='w-4' onClick={onClickPrevButton}>
+        <button className='w-[12px]' onClick={onClickPrevButton}>
           <img src={previous_btn} />
         </button>
         {/* 재생&일시정지 */}
-        <button onClick={onClickPlayButton} className='w-6'>
+        <button onClick={onClickPlayButton} className='w-[16px]'>
           {playing ? <img src={pause_btn} /> : <img src={play_btn} />}
         </button>
         {/* 다음 곡 재생 */}
-        <button className='w-4' onClick={onClickNextButton}>
+        <button className='w-[12px]' onClick={onClickNextButton}>
           <img src={next_btn} />
         </button>
       </div>
