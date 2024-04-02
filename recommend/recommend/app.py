@@ -72,7 +72,7 @@ def makeusertable():
     cur = conn.cursor()
 
     #1
-    cur.execute("SELECT COUNT(*) from member")
+    cur.execute("SELECT MAX(id) from member")
     memberN = cur.fetchone()[0]
 
     cur.execute("SELECT member_id, genre_id FROM prefer_genre")
@@ -230,7 +230,7 @@ def memberrecommend(member):
 def initialization():
     cur = conn.cursor()
     makeusertable()
-    cur.execute("SELECT COUNT(*) FROM member")
+    cur.execute("SELECT MAX(id) FROM member")
     memberN = cur.fetchone()[0]
     for i in range(memberN):
         memberrecommend(i+1)
@@ -241,7 +241,7 @@ def initialization():
 def recommendusers():
     cur = conn.cursor()
     makeusertable()
-    cur.execute("SELECT COUNT(*) FROM member")
+    cur.execute("SELECT MAX(id) FROM member")
     memberN = cur.fetchone()[0]
     for i in range(memberN):
         memberrecommend(i+1)
