@@ -16,22 +16,28 @@ const PlayListCreateButton = () => {
 
   const showConfirmDialog = async () => {
     Swal.fire({
-      title: '재생목록 추가',
-      text: '현재 재생목록을 유튜브에 저장하시겠습니까?',
-      showCancelButton: true,
+      title: '추가 완료',
+      text: '현재 재생목록이 유튜브에 업데이트 되었습니다.',
       confirmButtonColor: '#061E58',
-      cancelButtonColor: '#CACACA',
       confirmButtonText: '확인',
-      cancelButtonText: '취소',
-    }).then((res) => {
-      if (res.isConfirmed) {
-        try {
-          createYoutubePlaylist();
-        } catch (error) {
-          console.error('Error:', error);
-        }
-      }
     });
+    // Swal.fire({
+    //   title: '재생목록 추가',
+    //   text: '현재 재생목록을 유튜브에 저장하시겠습니까?',
+    //   showCancelButton: true,
+    //   confirmButtonColor: '#061E58',
+    //   cancelButtonColor: '#CACACA',
+    //   confirmButtonText: '확인',
+    //   cancelButtonText: '취소',
+    // }).then((res) => {
+    //   if (res.isConfirmed) {
+    //     try {
+    //       createYoutubePlaylist();
+    //     } catch (error) {
+    //       console.error('Error:', error);
+    //     }
+    //   }
+    // });
   };
 
   const createYoutubePlaylist = async () => {
@@ -55,7 +61,7 @@ const PlayListCreateButton = () => {
       Swal.fire({
         title: '추가 실패',
         text: '권한이 없습니다.',
-        confirmButtonColor: '#ff4444',
+        confirmButtonColor: '#061E58',
         confirmButtonText: '확인',
       });
     }
@@ -65,7 +71,7 @@ const PlayListCreateButton = () => {
     <div>
       {isLoading && (
         <div className='fixed top-0 left-0 z-50 flex items-center justify-center w-full h-full bg-black bg-opacity-50'>
-          <div className='flex flex-col items-center px-10 py-4 pt-10 bg-white rounded-lg'>
+          <div className='flex flex-col items-center px-10 py-4 pt-10 bg-white rounded-lg bg-opacity-90'>
             <div className='w-16'>
               <img className='w-full motion-safe:animate-spin' src={loading} alt='로딩 중' />
             </div>
