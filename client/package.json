@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@sweetalert2/themes": "^5.0.16",
     "axios": "^1.6.8",
     "browser-image-compression": "^2.0.2",
     "korean-regexp": "^1.0.11",
@@ -19,6 +20,7 @@
     "react-query": "^3.39.3",
     "react-responsive-carousel": "^3.2.23",
     "react-router-dom": "^6.22.3",
+    "sweetalert2": "^11.10.7",
     "tailwind-scrollbar-hide": "^1.1.7",
     "zustand": "^4.5.2"
   },
