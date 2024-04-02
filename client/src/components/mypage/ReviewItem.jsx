@@ -43,11 +43,12 @@ const ReviewItem = ({ review }) => {
           <div className='text-lg font-bold leading-5'>{name}</div>
           <div className='flex my-2 text-xs text-gray-400'>
             <div className='mr-3'>{review.festivalDate}</div>
-            <div>| {location}</div>
+            <div>{`|`}</div>
+            <div className='ml-3'>{location}</div>
           </div>
         </div>
         <button
-          className='w-16 text-xs text-center text-gray-400'
+          className='flex items-center justify-center h-12 px-1 text-xs text-center text-gray-400 w-14'
           onClick={(e) => {
             e.stopPropagation();
             setModalOpen(true);

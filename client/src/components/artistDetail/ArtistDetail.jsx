@@ -52,11 +52,11 @@ const ArtistDetail = () => {
 
   return (
     <div className='flex-col'>
-      <section>
+      <section className='pb-5 border-b-2'>
         <div className='flex-col justify-center mt-10 text-center'>
           <div>
             <div className='relative'>
-              <div className='z-0 mx-20 overflow-hidden rounded-full w-13 h-13'>
+              <div className='z-0 flex items-center justify-center mx-20 overflow-hidden rounded-full w-13 h-13'>
                 <img
                   className='object-cover h-full'
                   src={artist.pictureUrl}
@@ -78,13 +78,16 @@ const ArtistDetail = () => {
             <div className='mt-5 text-2xl'>{artist.name}</div>
             <div className='mt-4 text-sm text-gray-500'>
               대표 장르 :{' '}
-              {artist.genreList &&
+              {artist.genreList && artist.genreList.length > 0 ? (
                 artist.genreList.map((genre, index) => (
                   <span key={index}>
                     {genre}
                     {index < artist.genreList.length - 1 ? ', ' : ''}
                   </span>
-                ))}
+                ))
+              ) : (
+                <span>-</span>
+              )}
             </div>
           </div>
         </div>
