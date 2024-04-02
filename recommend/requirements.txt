@@ -5,3 +5,4 @@ python-dotenv==1.0.1
 apscheduler==3.10.4
 numpy==1.26.3
 pandas==2.0.3
+scikit-learn==1.2.2
