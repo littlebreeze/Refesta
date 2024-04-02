@@ -73,7 +73,6 @@ instance.interceptors.response.use(
             return axios(originRequest);
           }
         } catch (error) {
-          alert('로그아웃 되었습니다. 다시 로그인해주세요!');
           // 리프레시 토큰으로 재발급이 안된거니까 로그인 다시!
           localStorage.removeItem('accessToken');
           localStorage.removeItem('refreshToken');
