@@ -8,7 +8,7 @@ const FestivalInfoContainer = () => {
   const [openInfoTab, setOpenInfoTab] = useState(1);
 
   return (
-    <div className='pt-4 pb-20'>
+    <div className='pt-4 '>
       <ul className='flex h-full'>
         {/* 셋리스트 탭 */}
         <li className={`w-1/2 text-center ${openInfoTab === 1 ? 'border-t-2 border-ourIndigo' : ''}`}>
