@@ -90,6 +90,29 @@ def makeusertable():
         lineup = cur.fetchall()
         for j in lineup:
             lineupgenretable[j[1]-1][i]+=1
+    cur.execute("SELECT name FROM festival")
+    festivalName = cur.fetchall()
+    for i in range(festivalN):
+        if "재즈" in festivalName[i]:
+            lineupgenretable[8][i]+=20
+            for j in range(9):
+                if j==8: continue
+                lineupgenretable[j][i]-=15
+        if "힙합" in festivalName[i]:
+            lineupgenretable[2][i]+=20
+            for j in range(9):
+                if j==2: continue
+                lineupgenretable[j][i]-=15
+        if "락" in festivalName[i]:
+            lineupgenretable[5][i]+=20
+            for j in range(9):
+                if j==5: continue
+                lineupgenretable[j][i]-=15
+        if "인디" in festivalName[i]:
+            lineupgenretable[4][i]+=20
+            for j in range(9):
+                if j==4: continue
+                lineupgenretable[j][i]-=15
 
     #1+2
     memberfestivalgenretable = [[0 for _ in range(festivalN)] for _ in range(memberN)]
