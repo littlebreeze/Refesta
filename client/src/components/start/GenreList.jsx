@@ -65,7 +65,6 @@ const GenreList = ({ setStep, stepParam }) => {
     }, 6000);
 
     if (isError) {
-      alert('요청 실패');
       console.log(error);
     }
   };
