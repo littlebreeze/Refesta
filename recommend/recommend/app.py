@@ -44,7 +44,6 @@ def CollaborativeFiltering():
     for i in range(len(data)):
         for j in range(len(data[i])):
             data[i][j] = int(data[i][j])
-    print(data)
     cur.execute("SELECT COUNT(*) from member")
     memx = int(cur.fetchone()[0])
     cur.execute("SELECT COUNT(*) from festival")
@@ -174,6 +173,7 @@ def makeusertable():
     CollaborativeFiltering()
 
 def memberrecommend(member):
+    print(member)
     cur = conn.cursor()
     cur.execute("DELETE FROM member_festival WHERE member_id = %s", (member,))
     conn.commit()
@@ -182,9 +182,8 @@ def memberrecommend(member):
     conn.commit()
 
     finalrecommend = read_from_csv('finaltable.csv')
-
+    print(finalrecommend)
     sorted = np.argsort(finalrecommend[member-1])[::-1]
-
     for i in sorted:
         cur.execute("INSERT INTO member_festival (member_id, festival_id) VALUES (%s, %s)", (member, str(i+1)))
     conn.commit()
