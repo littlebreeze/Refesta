@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import useKakaoStore from '@store/kakaoStore';
 
+import Swal from 'sweetalert2';
+
 import PosterImage from '@components/reservation/PosterImage';
 
 const Reservation = () => {
@@ -14,7 +16,12 @@ const Reservation = () => {
   const [count, setCount] = useState(1);
   useEffect(() => {
     if (count > 4) {
-      alert('최대 4매까지 예약 가능합니다.');
+      Swal.fire({
+        title: '예매 개수 초과',
+        text: '최대 4매까지 예약 가능합니다.',
+        confirmButtonColor: '#061E58',
+        confirmButtonText: '확인',
+      });
       setCount(4);
     }
   }, [count]);
@@ -33,7 +40,12 @@ const Reservation = () => {
     if (redirectUrl) {
       window.location.href = redirectUrl;
     } else {
-      alert('결제 요청 실패');
+      Swal.fire({
+        title: '결제 요청 실패',
+        text: '결제에 실패하였습니다.',
+        confirmButtonColor: '#061E58',
+        confirmButtonText: '확인',
+      });
     }
   };
 
@@ -94,10 +106,7 @@ const Reservation = () => {
           >
             취소
           </button>
-          <button
-            className='flex-1 ml-1 bg-yellow-300 rounded-md'
-            onClick={handleKakaoPay}
-          >
+          <button className='flex-1 ml-1 bg-yellow-300 rounded-md' onClick={handleKakaoPay}>
             카카오결제
           </button>
         </div>

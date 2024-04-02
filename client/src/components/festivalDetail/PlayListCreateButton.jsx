@@ -55,7 +55,7 @@ const PlayListCreateButton = () => {
       Swal.fire({
         title: '추가 실패',
         text: '권한이 없습니다.',
-        confirmButtonColor: '#ff4444',
+        confirmButtonColor: '#061E58',
         confirmButtonText: '확인',
       });
     }
@@ -65,7 +65,7 @@ const PlayListCreateButton = () => {
     <div>
       {isLoading && (
         <div className='fixed top-0 left-0 z-50 flex items-center justify-center w-full h-full bg-black bg-opacity-50'>
-          <div className='flex flex-col items-center px-10 py-4 pt-10 bg-white rounded-lg'>
+          <div className='flex flex-col items-center px-10 py-4 pt-10 bg-white rounded-lg bg-opacity-90'>
             <div className='w-16'>
               <img className='w-full motion-safe:animate-spin' src={loading} alt='로딩 중' />
             </div>

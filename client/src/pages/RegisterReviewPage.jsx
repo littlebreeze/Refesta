@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import useReviewStore from '@store/reviewStore';
 import festivalInfoStore from '@store/festivalInfoStore';
 
+import Swal from 'sweetalert2';
 import ReactPlayer from 'react-player';
 import browserImageCompression from '@util/browserImageCompression';
 
@@ -110,7 +111,12 @@ const RegisterReviewPage = ({ isOpen, onClose, selectedFile: propSelectedFile })
   // 등록 버튼 누르기
   const handleReviewSubmit = async () => {
     if (!(newReview.contents?.trim() || '')) {
-      alert('문구를 작성해주세요.');
+      Swal.fire({
+        title: '등록 실패',
+        text: '문구를 작성해 주세요.',
+        confirmButtonColor: '#061E58',
+        confirmButtonText: '확인',
+      });
       return;
     }
     setIsSubmitting(true);
@@ -132,11 +138,7 @@ const RegisterReviewPage = ({ isOpen, onClose, selectedFile: propSelectedFile })
   // 프리뷰
   const preview = useMemo(() => {
     return isImage ? (
-      <img
-        key={`file-preview-${Date.now()}`}
-        className='object-cover w-full h-full'
-        src={fileUrl}
-      />
+      <img key={`file-preview-${Date.now()}`} className='object-cover w-full h-full' src={fileUrl} />
     ) : (
       <ReactPlayer
         key={`file-preview-${Date.now()}`}
@@ -161,20 +163,14 @@ const RegisterReviewPage = ({ isOpen, onClose, selectedFile: propSelectedFile })
           <div className='flex flex-col items-center justify-between w-full h-full pb-10'>
             <div className='relative flex items-center justify-center w-full h-10 text-lg font-bold py-7 border-y-2'>
               후기 작성
-              <button
-                onClick={onClose}
-                className='absolute right-2'
-              >
+              <button onClick={onClose} className='absolute right-2'>
                 <img src={xBtn} />
               </button>
             </div>
             <section className='flex flex-col'>
               <div className='flex my-5 px-7'>
                 <div className='overflow-hidden h-14 w-9'>
-                  <img
-                    className='object-cover h-full'
-                    src={festivalInfoData.posterUrl}
-                  />
+                  <img className='object-cover h-full' src={festivalInfoData.posterUrl} />
                 </div>
                 <div className='flex flex-col justify-center px-3'>
                   <div className='font-bold leading-5 text-left'>{festivalInfoData.name}</div>
@@ -191,10 +187,7 @@ const RegisterReviewPage = ({ isOpen, onClose, selectedFile: propSelectedFile })
                     className='absolute flex items-center justify-center w-12 h-12 bg-gray-300 rounded-full bottom-3 right-10'
                     onClick={handleImageChange}
                   >
-                    <img
-                      className='w-2/3'
-                      src={picture}
-                    />
+                    <img className='w-2/3' src={picture} />
                   </div>
                   <input
                     ref={inputFileRef}
