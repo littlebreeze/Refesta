@@ -70,7 +70,7 @@ const SetListPlayer = () => {
         </div>
         <div className='ml-3'>
           <div className='text-left'>
-            <div className='text-sm selection:truncate max-w-28'>{currSong.title}</div>
+            <div className='text-sm truncate max-w-28'>{currSong.title}</div>
             <div className='text-xs text-gray-400 truncate max-w-28'>{currSong.singer}</div>
           </div>
         </div>
@@ -89,7 +89,7 @@ const SetListPlayer = () => {
           }}
         />
       </div>
-      <div className='flex justify-between pr-2 my-auto min-w-16'>
+      <div className='flex justify-between pr-2 my-auto mr-2 min-w-16'>
         {/* 이전 곡 재생 */}
         <button className='w-[12px]' onClick={onClickPrevButton}>
           <img src={previous_btn} />

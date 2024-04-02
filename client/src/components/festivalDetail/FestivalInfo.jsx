@@ -40,7 +40,7 @@ const FestivalInfo = () => {
           </div>
           <div className='relative items-start flex-1 ml-2'>
             <div className='text-sm font-semibold'>{festivalInfoData.name}</div>
-            <div className='mt-2 border-b-2 border-b-gray-500'></div>
+            <div className='mt-2 border-b border-b-gray-400'></div>
             <div className='p-2'>
               <div className='pb-1 text-sm '>일시</div>
               <div className='pb-4 text-xs text-gray-500'>{festivalInfoData.date}</div>
