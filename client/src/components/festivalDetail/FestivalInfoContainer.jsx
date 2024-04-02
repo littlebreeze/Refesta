@@ -8,12 +8,10 @@ const FestivalInfoContainer = () => {
   const [openInfoTab, setOpenInfoTab] = useState(1);
 
   return (
-    <div className=''>
-      <ul className='flex h-full mx-4 '>
+    <div className='pt-4'>
+      <ul className='flex h-full'>
         {/* 셋리스트 탭 */}
-        <li
-          className={`w-1/2 text-center ${openInfoTab === 1 ? 'border-t-2 border-r-2 border-l-2 border-ourIndigo' : 'border-b-2 border-ourIndigo'}`}
-        >
+        <li className={`w-1/2 text-center ${openInfoTab === 1 ? 'border-t-2 border-ourIndigo' : ''}`}>
           <button
             className={'w-full h-full text-xs px-2 py-2'}
             onClick={() => {
@@ -26,9 +24,7 @@ const FestivalInfoContainer = () => {
           </button>
         </li>
         {/* 후기게시판 탭 */}
-        <li
-          className={`w-1/2 text-center ${openInfoTab === 2 ? 'border-t-2 border-r-2 border-l-2 border-ourIndigo' : 'border-b-2 border-ourIndigo'}`}
-        >
+        <li className={`w-1/2 text-center ${openInfoTab === 2 ? 'border-t-2 border-ourIndigo' : ''}`}>
           <button
             className={'w-full h-full text-xs px-5 py-2'}
             onClick={() => {
@@ -41,7 +37,7 @@ const FestivalInfoContainer = () => {
           </button>
         </li>
       </ul>
-      <div className='flex flex-col h-full min-w-0 mx-4 mt-4 text-center break-words'>
+      <div className='flex flex-col h-full min-w-0 text-center break-words'>
         <div className='flex-auto'>
           <div className={openInfoTab === 1 ? 'block' : 'hidden'}>
             <SetListWrapper />
