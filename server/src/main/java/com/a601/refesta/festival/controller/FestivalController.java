@@ -53,7 +53,8 @@ public class FestivalController {
         if (tokenProvider.isAdmin(request)) {
             int memberId = tokenProvider.getMemberIdByToken(request);
             festivalService.createYoutubePlaylist(memberId, festivalSetlistReq);
+            return new SuccessResponse<>(HttpStatus.OK);
         }
-        return new SuccessResponse<>(HttpStatus.OK);
+       return new SuccessResponse<>(HttpStatus.ACCEPTED);
     }
 }
