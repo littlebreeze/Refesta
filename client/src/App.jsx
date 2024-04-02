@@ -19,7 +19,6 @@ import MyReview from './pages/MyReviewPage';
 import MainLayout from './layout/MainLayout';
 import SearchLayout from './layout/SearchLayout';
 import SubLayout from './layout/SubLayout';
-import TestPage from './pages/TestPage';
 import ReservationApprove from './pages/ReservationApprovePage';
 import AboutPage from './pages/AboutPage';
 import PrivacyPolicyPage from '@pages/PrivacyPolicyPage';
