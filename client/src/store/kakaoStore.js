@@ -15,7 +15,6 @@ const useKakaoStore = create((set) => ({
         festivalId: festivalId,
         count: count,
       });
-      console.log(res);
       return res.data.data.redirect_url;
     } catch (e) {
       console.log(e);

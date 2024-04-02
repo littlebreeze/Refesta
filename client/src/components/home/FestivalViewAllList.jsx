@@ -72,7 +72,7 @@ const FestivalViewAllList = ({ title, state }) => {
   return (
     <div className='px-4'>
       <div className='mt-2 text-2xl font-semibold text-center mb-7'>{title} 페스티벌</div>
-      <div className='grid gap-y-7'>
+      <div className='grid gap-y-7 mb-7'>
         {festivalData.map((item) => (
           <FestivalViewAllItem key={item.id} {...item} />
         ))}

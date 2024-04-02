@@ -10,10 +10,6 @@ const Reservation = () => {
   const nav = useNavigate();
   const { kakaoPay } = useKakaoStore();
 
-  useEffect(() => {
-    console.log(festivalInfo);
-  }, [festivalInfo]);
-
   // 주문 수량
   const [count, setCount] = useState(1);
   useEffect(() => {
