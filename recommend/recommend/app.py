@@ -6,6 +6,7 @@ import pymysql
 from apscheduler.schedulers.background import BackgroundScheduler
 from dotenv import load_dotenv
 from flask import Flask, request
+from sklearn.metrics.pairwise import cosine_similarity
 
 load_dotenv()
 current_directory = os.getcwd()
@@ -16,6 +17,45 @@ app = Flask(__name__)
 scheduler = BackgroundScheduler()
 conn = pymysql.connect(host=DB_HOST, user=DB_USER, password=DB_PASSWORD, db='refesta', charset='utf8')
 cur = conn.cursor()
+
+def RMSE(y_true, y_pred): # RMSE 함수
+    return np.sqrt(np.mean((np.array(y_true)-np.array(y_pred))**2))
+
+# score(RMSE) 계산
+def CF(data, sim, member):
+    memsim = sim[member]
+    memrating = data[member]
+
+    predict = np.zeros_like(memrating)
+    for i, rating in enumerate(memrating):
+        if rating == 0:
+            weighted_sum = 0
+            weight_sum = 0
+            for j, sim in enumerate(memsim):
+                if j != member and data[j][i] != 0:
+                    weighted_sum += sim * data[j][i]
+                    weight_sum += sim
+            if weight_sum != 0:
+                predict[i] = weighted_sum / weight_sum
+    return predict
+
+def CollaborativeFiltering():
+
+    data = read_from_csv('finaltable.csv')
+    for i in range(len(data)):
+        for j in range(len(data[i])):
+            data[i][j] = int(data[i][j])
+    print(data)
+    cur.execute("SELECT COUNT(*) from member")
+    memx = int(cur.fetchone()[0])
+    cur.execute("SELECT COUNT(*) from festival")
+    fesx = int(cur.fetchone()[0])
+
+    sim = cosine_similarity(data)
+    predict_rating = [[0 for _ in range(fesx)] for _ in range(memx)]
+    for i in range(memx):
+        predict_rating[i] = CF(data, sim, i)
+    save_to_csv(predict_rating, 'CFtable.csv')
 
 def save_to_csv(data, filename):
 
@@ -136,6 +176,8 @@ def makeusertable():
             finaltable[i][j] = memberreservtable[i][j]+memberreviewtable[i][j]+membersongliketable[i][j]+memberfestivalliketable[i][j]+memberartistliketable[i][j]+memberfestivalgenretable[i][j]
     save_to_csv(finaltable, 'finaltable.csv')
 
+    CollaborativeFiltering()
+
 def memberrecommend(member):
 
     cur.execute("DELETE FROM member_festival WHERE member_id = %s", (member,))
@@ -192,12 +234,12 @@ def register():
     row = cur.fetchone()
     if row is None:
         return "유저가없다"
-
+    makeusertable()
     memberrecommend(int(userid))
 
     return "추천 완료"
 
 if __name__ == '__main__':
-    print("현재 작업 디렉토리:", current_directory)
+    makeusertable()
     scheduler.start()
     app.run(host='0.0.0.0', port=8082)
