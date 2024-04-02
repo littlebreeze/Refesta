@@ -26,7 +26,7 @@ const FestivalInfoDetail = () => {
         </div>
       ) : (
         <div>
-          <div className='pt-10 pb-4 pl-4 text-2xl font-bold r'>
+          <div className='pt-10 pb-4 pl-4 text-xl font-bold r'>
             <span className='border-l-8 border-black'></span>
             <span className='pl-3'>공연 상세 & 출연진 정보</span>
           </div>{' '}
