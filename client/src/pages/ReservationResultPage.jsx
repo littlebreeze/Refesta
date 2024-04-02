@@ -41,7 +41,7 @@ const ReservationResultPage = () => {
         <BillingResult billingResult={billingResult} />
       </div>
       <button
-        className='flex items-center justify-center w-11/12 mb-5 mb-8 text-white rounded-md bg-ourIndigo h-14'
+        className='flex items-center justify-center w-11/12 mb-16 text-white rounded-md bg-ourIndigo h-14'
         onClick={() => {
           nav('/', { replace: true });
         }}
