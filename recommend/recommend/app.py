@@ -16,7 +16,6 @@ DB_PASSWORD = os.environ.get('DB_PASSWORD')
 app = Flask(__name__)
 scheduler = BackgroundScheduler()
 conn = pymysql.connect(host=DB_HOST, user=DB_USER, password=DB_PASSWORD, db='refesta', charset='utf8')
-cur = conn.cursor()
 
 def RMSE(y_true, y_pred): # RMSE 함수
     return np.sqrt(np.mean((np.array(y_true)-np.array(y_pred))**2))
@@ -40,7 +39,7 @@ def CF(data, sim, member):
     return predict
 
 def CollaborativeFiltering():
-
+    cur = conn.cursor()
     data = read_from_csv('finaltable.csv')
     for i in range(len(data)):
         for j in range(len(data[i])):
@@ -56,6 +55,7 @@ def CollaborativeFiltering():
     for i in range(memx):
         predict_rating[i] = CF(data, sim, i)
     save_to_csv(predict_rating, 'CFtable.csv')
+    cur.close()
 
 def save_to_csv(data, filename):
 
@@ -179,7 +179,7 @@ def makeusertable():
     CollaborativeFiltering()
 
 def memberrecommend(member):
-
+    cur = conn.cursor()
     cur.execute("DELETE FROM member_festival WHERE member_id = %s", (member,))
     conn.commit()
 
@@ -207,27 +207,34 @@ def memberrecommend(member):
     for i in recomartist:
         cur.execute("INSERT INTO member_artist (member_id, artist_id) VALUES (%s, %s)", (member, str(i)))
     conn.commit()
+    cur.close()
 
 @scheduler.scheduled_job('cron', day_of_week='*', hour=4)
 def initialization():
+    cur = conn.cursor()
     makeusertable()
     cur.execute("SELECT COUNT(*) FROM member")
     memberN = cur.fetchone()[0]
     for i in range(memberN):
         memberrecommend(i+1)
+    cur.close()
     return "추천 갱신 완료"
+
 @app.route('/recommend', methods=['GET'])
 def recommendusers():
+    cur = conn.cursor()
     makeusertable()
     cur.execute("SELECT COUNT(*) FROM member")
     memberN = cur.fetchone()[0]
     for i in range(memberN):
         memberrecommend(i+1)
+    cur.close()
     return "Success initialization"
+
 
 @app.route('/recommend', methods=['POST'])
 def register():
-
+    cur = conn.cursor()
     userid = request.form.get('userId')
 
     cur.execute("SELECT * FROM member WHERE id = %s", (userid,))
@@ -236,7 +243,7 @@ def register():
         return "유저가없다"
     makeusertable()
     memberrecommend(int(userid))
-
+    cur.close()
     return "추천 완료"
 
 if __name__ == '__main__':
