@@ -113,7 +113,7 @@ const RegisterReviewPage = ({ isOpen, onClose, selectedFile: propSelectedFile })
     if (!(newReview.contents?.trim() || '')) {
       Swal.fire({
         title: '등록 실패',
-        text: '문구를 작성해 주세요.',
+        html: '문구를 작성해 주세요.',
         confirmButtonColor: '#061E58',
         confirmButtonText: '확인',
       });

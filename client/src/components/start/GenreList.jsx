@@ -62,7 +62,7 @@ const GenreList = ({ setStep, stepParam }) => {
       if (!isLoading) {
         Swal.fire({
           title: '환영합니다.',
-          text: 'Refesta에서 당신에게 딱 맞는 페스티벌을 찾아보세요!',
+          text: 'Refesta에서 당신에게 <br>딱 맞는 페스티벌을 찾아보세요!',
           confirmButtonColor: '#061E58',
           confirmButtonText: '확인',
         });
