@@ -24,7 +24,6 @@ const ProfileInfo = ({ setStep, stepParam }) => {
       setNickname(nickname ? nickname : '');
       setImgInfo({ ...imgInfo, url: url });
     } else {
-      alert('로그인 정보가 유효하지 않습니다!');
       window.location.replace('/login');
     }
   };

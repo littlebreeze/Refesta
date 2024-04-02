@@ -1,20 +1,23 @@
+import { useState } from 'react';
 import useSetListStore from '@store/setListStore';
 import useFestivalInfoStore from '@store/festivalInfoStore';
 
-import instance from '@util/token_interceptor';
 import Swal from 'sweetalert2';
+import instance from '@util/token_interceptor';
 
 import youtube_music_logo_white from '@assets/youtube_music_logo_white.png';
+import loading from '@assets/loading.png';
 
 // 셋리스트 재생목록의 각 노래
 const PlayListCreateButton = () => {
   const { currSongList } = useSetListStore();
   const { festivalInfoData } = useFestivalInfoStore();
+  const [isLoading, setLoading] = useState(false);
 
   const showConfirmDialog = async () => {
     Swal.fire({
       title: '재생목록 추가',
-      text: '재생목록을 유튜브에 저장하시겠습니까?',
+      text: '현재 재생목록을 유튜브에 저장하시겠습니까?',
       showCancelButton: true,
       confirmButtonColor: '#061E58',
       cancelButtonColor: '#CACACA',
@@ -32,12 +35,13 @@ const PlayListCreateButton = () => {
   };
 
   const createYoutubePlaylist = async () => {
+    setLoading(true);
     const audioUrlList = currSongList.map((song) => song.audioUrl);
     const response = await instance.post(`festivals/playlists`, {
       festivalName: `${festivalInfoData.name}`,
       audioUrlList: audioUrlList,
     });
-    console.log(response.data);
+    setLoading(false);
     if (response.data.data === 'OK') {
       // 성공 모달 띄우기
       Swal.fire({
@@ -59,6 +63,16 @@ const PlayListCreateButton = () => {
 
   return (
     <div>
+      {isLoading && (
+        <div className='fixed top-0 left-0 z-50 flex items-center justify-center w-full h-full bg-black bg-opacity-50'>
+          <div className='flex flex-col items-center px-10 py-4 pt-10 bg-white rounded-lg'>
+            <div className='w-16'>
+              <img className='w-full motion-safe:animate-spin' src={loading} alt='로딩 중' />
+            </div>
+            <div className='my-4 text-center text-gray-800'>정보 가져오는 중</div>
+          </div>
+        </div>
+      )}
       {currSongList.length > 1 && (
         <div className='p-2 mx-4 my-4 text-white rounded-md bg-ourPink' onClick={showConfirmDialog}>
           <button>
