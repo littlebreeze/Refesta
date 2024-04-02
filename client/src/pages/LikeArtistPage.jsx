@@ -11,7 +11,7 @@ const LikeArtistPage = () => {
   }, []);
 
   return (
-    <div className='bg-gray-200 h-lvh'>
+    <div className='h-full bg-gray-200'>
       <LikeList contents={likeArtistList} />
     </div>
   );

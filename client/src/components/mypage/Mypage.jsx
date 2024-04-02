@@ -12,7 +12,7 @@ import dropup from '@assets/dropup.png';
 import wave from '@assets/wave.png';
 const Mypage = ({ isOpen, onClose, nickname, profileUrl }) => {
   const nav = useNavigate();
-  const [toggle, setToggle] = useState(false);
+  const [toggle, setToggle] = useState(true);
   const { bookingList, getBookingList } = useUserStore();
 
   // 스크롤 막기
@@ -33,7 +33,7 @@ const Mypage = ({ isOpen, onClose, nickname, profileUrl }) => {
   useEffect(() => {
     getBookingList();
     if (!isOpen) {
-      setToggle(false);
+      setToggle(true);
     }
   }, [isOpen]);
 

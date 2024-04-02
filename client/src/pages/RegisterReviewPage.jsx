@@ -86,7 +86,6 @@ const RegisterReviewPage = ({ isOpen, onClose, selectedFile: propSelectedFile })
       if (isImage) {
         try {
           const compressedFile = await browserImageCompression(file);
-          console.log('이미지 리사이징', compressedFile);
           setNewReview((prev) => ({
             ...prev,
             file: compressedFile,
@@ -156,21 +155,18 @@ const RegisterReviewPage = ({ isOpen, onClose, selectedFile: propSelectedFile })
 
   if (!isOpen) return null;
   return (
-    <div className='fixed inset-0 z-50 flex items-center justify-center'>
+    <div className='absolute inset-0 z-50 flex items-center justify-center'>
       {isOpen && (
-        <div className='w-full h-lvh max-w-[500px] bg-white overflow-y-auto'>
-          {/* <Header /> */}
-          <button
-            className='absolute top-0 m-4 mt-6 right-1'
-            onClick={onClose}
-          >
-            <span>
-              <img src={xBtn} />
-            </span>
-          </button>
+        <div className='w-full overflow-y-auto bg-white h-lvh'>
           <div className='flex flex-col items-center justify-between w-full h-full pb-10'>
-            <div className='flex items-center justify-center w-full h-10 text-lg font-bold py-7 border-y-2'>
+            <div className='relative flex items-center justify-center w-full h-10 text-lg font-bold py-7 border-y-2'>
               후기 작성
+              <button
+                onClick={onClose}
+                className='absolute right-2'
+              >
+                <img src={xBtn} />
+              </button>
             </div>
             <section className='flex flex-col'>
               <div className='flex my-5 px-7'>
@@ -210,7 +206,7 @@ const RegisterReviewPage = ({ isOpen, onClose, selectedFile: propSelectedFile })
                   />
                 </div>
                 <textarea
-                  className='w-full mt-5 overflow-y-scroll h-52 px-7 mx-7 focus:outline-none scrollbar-hide'
+                  className='w-full mt-5 overflow-y-scroll h-36 px-7 mx-7 focus:outline-none scrollbar-hide'
                   name=''
                   id=''
                   placeholder='문구 작성...'
@@ -219,7 +215,7 @@ const RegisterReviewPage = ({ isOpen, onClose, selectedFile: propSelectedFile })
               </div>
             </section>
             <button
-              className='flex items-center justify-center w-11/12 mt-3 text-white rounded-md bg-ourIndigo h-14'
+              className='flex items-center justify-center w-11/12 h-12 mt-3 text-white rounded-md bg-ourIndigo'
               onClick={handleReviewSubmit}
               disabled={isSubmitting}
             >

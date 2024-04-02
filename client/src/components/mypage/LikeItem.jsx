@@ -21,11 +21,9 @@ const LikeItem = ({ content, onClick }) => {
 
   const handleLikeBtn = () => {
     if (type === 'artist') {
-      console.log(id, type);
       toggleArtistLike(id);
       updateArtistLike(id);
     } else {
-      console.log(id, type);
       handleFestivalLike(id);
       toggleFestivalLike(id);
     }
