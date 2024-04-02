@@ -70,12 +70,7 @@ def read_from_csv(filename):
     return data
 
 def makeusertable():
-    DB_HOST = os.environ.get('DB_HOST')
-    DB_USER = os.environ.get('DB_USER')
-    DB_PASSWORD = os.environ.get('DB_PASSWORD')
-    conn = pymysql.connect(host=DB_HOST, user=DB_USER, password=DB_PASSWORD, db='refesta', charset='utf8')
     cur = conn.cursor()
-
 
     #1
     cur.execute("SELECT COUNT(*) from member")
@@ -175,7 +170,7 @@ def makeusertable():
         for j in range(festivalN):
             finaltable[i][j] = memberreservtable[i][j]+memberreviewtable[i][j]+membersongliketable[i][j]+memberfestivalliketable[i][j]+memberartistliketable[i][j]+memberfestivalgenretable[i][j]
     save_to_csv(finaltable, 'finaltable.csv')
-
+    cur.close()
     CollaborativeFiltering()
 
 def memberrecommend(member):
