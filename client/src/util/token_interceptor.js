@@ -1,16 +1,6 @@
 import axios from 'axios';
 
-class Holder {
-  promise;
-  resolve;
-  reject;
-  constructor() {
-    this.hold();
-  }
-  hold() {
-    this.promise = new Promise((resolve, reject) => Object.assign(this, { reject, resolve }));
-  }
-}
+let isAlertShown = false; // alert가 이미 떠있는지 여부를 저장하는 변수
 
 // 헤더에 토큰이 들어간 axiosInstance
 const instance = axios.create({
@@ -21,8 +11,6 @@ const instance = axios.create({
     'Access-Control-Allow-Methods': 'GET, POST, OPTIONS, PUT, PATCH, DELETE',
   },
 });
-let lock = false;
-const holder = new Holder();
 
 // 토큰 만료시 재발급을 위한 axiosInstance
 const refreshInstance = axios.create({
@@ -69,24 +57,30 @@ instance.interceptors.response.use(
     // 2xx 이외 상태 코드 시 이 함수 트리거
     // 응답 오류가 있는 작업 수행
     if (error.response.status == 401) {
-      const originRequest = error.config;
-      console.log(error.response);
-      try {
-        const res = await regenerateRefreshToken();
-        console.log(res);
-        if (res.status == 200) {
-          const newAccessToken = res.data.data.accessToken;
-          localStorage.setItem('accessToken', res.data.data.accessToken);
-          localStorage.setItem('refreshToken', res.data.data.refreshToken);
-          axios.defaults.headers.common['Authorization'] = `Bearer ${newAccessToken}`;
-          return axios(originRequest);
+      if (!isAlertShown) {
+        // 이미 alert가 띄워진 상태라면 다시 띄우지 않음
+        isAlertShown = true; // alert가 떠있음을 표시
+        const originRequest = error.config;
+        console.log(error.response);
+        try {
+          const res = await regenerateRefreshToken();
+          console.log(res);
+          if (res.status == 200) {
+            const newAccessToken = res.data.data.accessToken;
+            localStorage.setItem('accessToken', res.data.data.accessToken);
+            localStorage.setItem('refreshToken', res.data.data.refreshToken);
+            axios.defaults.headers.common['Authorization'] = `Bearer ${newAccessToken}`;
+            return axios(originRequest);
+          }
+        } catch (error) {
+          alert('로그아웃 되었습니다. 다시 로그인해주세요!');
+          // 리프레시 토큰으로 재발급이 안된거니까 로그인 다시!
+          localStorage.removeItem('accessToken');
+          localStorage.removeItem('refreshToken');
+          window.location.replace('/login');
+        } finally {
+          isAlertShown = false; // alert 창이 닫히면 다시 false로 설정하여 다시 alert가 떠도록 함
         }
-      } catch (error) {
-        alert('로그아웃 되었습니다. 다시 로그인해주세요!');
-        // 리프레시 토큰으로 재발급이 안된거니까 로그인 다시!
-        localStorage.removeItem('accessToken');
-        localStorage.removeItem('refreshToken');
-        window.location.replace('/login');
       }
     }
     return Promise.reject(error);
