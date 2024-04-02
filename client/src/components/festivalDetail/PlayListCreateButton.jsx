@@ -37,30 +37,34 @@ const PlayListCreateButton = () => {
   };
 
   return (
-    // 버튼 버전
-    <div className='p-2 mx-4 my-4 text-white rounded-md bg-ourPink'>
-      <button onClick={createYoutubePlaylist}>
-        <div className='flex text-sm'>
-          <img className='w-[48px] h-full my-auto' src={youtube_music_logo_white} alt='' />
-          <span>&nbsp;에 저장하기</span>
+    <div>
+      {currSongList.length > 1 && (
+        <div className='p-2 mx-4 my-4 text-white rounded-md bg-ourPink'>
+          <button onClick={createYoutubePlaylist}>
+            <div className='flex text-sm'>
+              <span>현재 재생목록&nbsp;</span>
+              <img className='w-[48px] h-full my-auto' src={youtube_music_logo_white} alt='' />
+              <span>&nbsp;에 저장하기</span>
+            </div>
+          </button>
         </div>
-      </button>
+      )}
     </div>
-
-    // 하단 고정 버전
-    // <div className='mt-8 py-3 max-w-[500px] fixed bottom-0 w-full bg-white shadow-lg px-10'>
-    //   <button
-    //     className='w-full py-3 font-semibold text-white rounded-lg 0 bg-ourPink h-14'
-    //     onClick={createYoutubePlaylist}
-    //   >
-    //     <div className='flex justify-center'>
-    //       현재 재생목록 &nbsp;
-    //       <img className='w-[64px] h-full my-auto' src={youtube_music} alt='' />
-    //       &nbsp;에 저장하기
-    //     </div>
-    //   </button>
-    // </div>
   );
 };
 
 export default PlayListCreateButton;
+
+// 하단 고정 버전
+// <div className='mt-8 py-3 max-w-[500px] fixed bottom-0 w-full bg-white shadow-lg px-10'>
+//   <button
+//     className='w-full py-3 font-semibold text-white rounded-lg 0 bg-ourPink h-14'
+//     onClick={createYoutubePlaylist}
+//   >
+//     <div className='flex justify-center'>
+//       현재 재생목록 &nbsp;
+//       <img className='w-[64px] h-full my-auto' src={youtube_music} alt='' />
+//       &nbsp;에 저장하기
+//     </div>
+//   </button>
+// </div>
