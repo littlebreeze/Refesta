@@ -19,7 +19,6 @@ import MyReview from './pages/MyReviewPage';
 import MainLayout from './layout/MainLayout';
 import SearchLayout from './layout/SearchLayout';
 import SubLayout from './layout/SubLayout';
-import TestPage from './pages/TestPage';
 import ReservationApprove from './pages/ReservationApprovePage';
 import AboutPage from './pages/AboutPage';
 import PrivacyPolicyPage from '@pages/PrivacyPolicyPage';
@@ -33,7 +32,6 @@ function App() {
             <Route path='/login' element={<Login />} />
             <Route path='/google-login' element={<Google_Login />} />
             <Route path='/regist' element={<RegisterInfo />} />
-            <Route path='/test' element={<TestPage />} />
             <Route path='/about' element={<AboutPage />} />
             <Route path='/reservation/approve' element={<ReservationApprove />} />
             <Route path='/privacy_policy' element={<PrivacyPolicyPage />} />

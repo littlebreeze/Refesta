@@ -26,6 +26,9 @@ export default {
         modalAnimation: 'slideInFromLeft 0.2s ease-in-out',
       },
     },
+    fontFamily: {
+      Pretendard: ['Pretendard'],
+    },
   },
   plugins: [tailwindScrollbarHide],
 };

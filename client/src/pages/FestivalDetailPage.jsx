@@ -9,6 +9,7 @@ import FestivalInfo from '@components/festivalDetail/FestivalInfo';
 import FestivalInfoDetail from '@components/festivalDetail/FestivalInfoDetail';
 import ReservationButton from '@components/festivalDetail/ReservationButton';
 import FestivalInfoContainer from '@components/festivalDetail/FestivalInfoContainer';
+import PlayListCreateButton from '@components/festivalDetail/PlayListCreateButton';
 
 // 페스티벌 상세보기 페이지
 const FestivalDetailPage = () => {
@@ -26,6 +27,7 @@ const FestivalDetailPage = () => {
     setSelectedSongInfoMap,
     setCurrSong,
     setCurrSongList,
+    setPlaying,
   } = useSetListStore();
 
   // 페이지가 처음 렌더링 될 때
@@ -64,8 +66,6 @@ const FestivalDetailPage = () => {
       nav('/Notfound');
     }
   }, [id]);
-
-  console.log(festivalInfoData);
 
   // 페스티벌 정보를 바탕으로
   // 예정 페스티벌과 완료 페스티벌에 따라
@@ -118,6 +118,14 @@ const FestivalDetailPage = () => {
     }
   }, [sortedSongInfoMap]);
 
+  // 페이지가 unmount될 때
+  // 재생 여부를 false로 초기화
+  useEffect(() => {
+    return () => {
+      setPlaying(false);
+    };
+  }, []);
+
   return (
     <div>
       {festivalInfoData && !festivalInfoData.ended ? (
@@ -131,6 +139,7 @@ const FestivalDetailPage = () => {
         // 완료 페스티벌
         <div>
           <FestivalInfo /> {/* 페스티벌 기본 정보 */}
+          <PlayListCreateButton /> {/* 유튜브 플레이리스트 저장 버튼 */}
           <FestivalInfoContainer /> {/* 페스티벌 셋리스트 & 후기게시판 탭 */}
         </div>
       )}

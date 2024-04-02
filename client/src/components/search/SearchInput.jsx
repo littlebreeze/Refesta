@@ -61,7 +61,7 @@ const SearchInput = () => {
       // 자동완성 리스트에 검색어와 완전 일치하는 경우가 있어도 선호도 반영
       const searchKeywordByAutocomplete = includeSearchKeywordInAutocomplete();
       console.log(searchKeywordByAutocomplete);
-      if (searchKeyword) {
+      if (searchKeyword && !searchKeywordByAutocomplete) {
         const response = instance.patch(
           `recommendations/${searchKeywordByAutocomplete.classification}/${searchKeywordByAutocomplete.id}?point=5`
         );
@@ -86,6 +86,7 @@ const SearchInput = () => {
   };
 
   useEffect(() => {
+    inputDiv.current.focus();
     return changeSearchKeyword('');
   }, []);
 
