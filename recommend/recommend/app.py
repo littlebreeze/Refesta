@@ -44,7 +44,7 @@ def CollaborativeFiltering():
     for i in range(len(data)):
         for j in range(len(data[i])):
             data[i][j] = int(data[i][j])
-    cur.execute("SELECT COUNT(*) from member")
+    cur.execute("SELECT max(id) from member")
     memx = int(cur.fetchone()[0])
     cur.execute("SELECT COUNT(*) from festival")
     fesx = int(cur.fetchone()[0])
@@ -263,7 +263,7 @@ def recommendusers():
 def register():
     cur = conn.cursor()
     userid = request.form.get('userId')
-
+    print(userid)
     cur.execute("SELECT * FROM member WHERE id = %s", (userid,))
     row = cur.fetchone()
     if row is None:
