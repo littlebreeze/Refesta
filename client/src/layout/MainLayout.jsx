@@ -8,7 +8,7 @@ const MainLayout = () => {
   return (
     <>
       <Header />
-      <main>
+      <main className='h-full'>
         <ScrollToTop />
         <Outlet />
       </main>
