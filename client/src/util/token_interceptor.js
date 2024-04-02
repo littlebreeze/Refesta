@@ -70,6 +70,7 @@ instance.interceptors.response.use(
     // 응답 오류가 있는 작업 수행
     if (error.response.status == 401) {
       const originRequest = error.config;
+      console.log(error.response);
       try {
         const res = await regenerateRefreshToken();
         console.log(res);
