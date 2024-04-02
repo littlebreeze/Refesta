@@ -198,7 +198,9 @@ public class SearchService {
                                     .and(memberFestival.member.id.eq(memberId)))
                             .innerJoin(festivalGenre).on(festivalGenre.genre.id.eq(genreIdx)
                                     .and(festivalGenre.festival.id.eq(festival.id)))
-                            .orderBy(festival.isEnded.isTrue().asc(), memberFestival.id.asc())
+                            .orderBy(new CaseBuilder()
+                                        .when(festival.isEnded.isFalse()).then(0)
+                                        .otherwise(1).asc(), memberFestival.id.asc())
                             .fetch();
 
                     festivalResultList.addAll(festivalGenreResult);
