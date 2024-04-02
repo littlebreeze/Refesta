@@ -47,22 +47,32 @@ const GenreList = ({ setStep, stepParam }) => {
     }
   };
 
-  const postGenre = async () => {
-    const response = await instance.post('members/genres', { preferGenres: selectedGenre });
-    return response.data;
-  };
-
   const onClickStart = () => {
-    setModalOpen(true);
-    mutate(selectedGenre);
-    setTimeout(() => {
-      setModalOpen(false);
-      setStep(stepParam.step3);
-      if (!isLoading) {
+    mutate(selectedGenre, {
+      onMutate: () => {
+        console.log('mutate');
+        setModalOpen(true);
+      },
+      onSuccess: (data, variables, context) => {
+        console.log('success');
         alert('서비스를 시작합니다');
         nav('/', { replace: true });
-      }
-    }, 6000);
+      },
+      onError: (error, variables, context) => {
+        console.log(error);
+      },
+      onSettled: (data, error, variables, context) => {
+        console.log('settled');
+      },
+    });
+    // setTimeout(() => {
+    //   setModalOpen(false);
+    //   setStep(stepParam.step3);
+    //   if (!isLoading) {
+    //     alert('서비스를 시작합니다');
+    //     nav('/', { replace: true });
+    //   }
+    // }, 6000);
 
     if (isError) {
       console.log(error);
@@ -75,7 +85,7 @@ const GenreList = ({ setStep, stepParam }) => {
   };
 
   return (
-    <div className='relative grid gap-y-5'>
+    <div className='grid gap-y-5'>
       <div>
         <div className='text-2xl font-bold leading-9 tracking-tight text-center text-ourIndigo'>선호 장르 선택하기</div>
         <div className='mb-5 text-sm text-center'>3개까지 선택 가능</div>
@@ -95,15 +105,12 @@ const GenreList = ({ setStep, stepParam }) => {
         건너뛰기
       </div>
       {modalOpen && (
-        <div id='modal-container' className='absolute top-0 left-0 flex w-full h-full '>
-          <div
-            id='modal-content'
-            className='grid content-center w-full my-40 text-center border bg-white/95 rounded-2xl'
-          >
-            <div className='w-1/5 mx-auto mb-5'>
-              <img className='w-full mr-3 motion-safe:animate-spin' src={loading} />
+        <div className='fixed top-0 left-0 z-50 flex items-center justify-center w-full h-full bg-black bg-opacity-50'>
+          <div className='flex flex-col items-center px-10 py-4 pt-10 bg-white rounded-lg bg-opacity-90'>
+            <div className='w-16'>
+              <img className='w-full motion-safe:animate-spin' src={loading} alt='로딩 중' />
             </div>
-            <div className='text-lg font-bold text-ourIndigo'>추천 데이터를 만드는 중입니다.</div>
+            <div className='my-4 text-center text-gray-800'>정보 가져오는 중</div>
           </div>
         </div>
       )}
