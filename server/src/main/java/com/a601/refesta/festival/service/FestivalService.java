@@ -21,8 +21,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.*;
@@ -224,10 +222,10 @@ public class FestivalService {
     }
 
 
-
     public void createYoutubePlaylist(int memberId, FestivalSetlistReq festivalSetlistReq) {
         String googleAccessToken = googleAccessTokenRepository.findById(String.valueOf(memberId)).orElseThrow().getGoogleAccessToken();
-
+        if (festivalSetlistReq.getAudioUrlList().isEmpty())
+            throw new CustomException(ErrorCode.PLAYLIST_SETLIST_NULL_ERROR);
         String playlistId = createPlaylist(googleAccessToken, festivalSetlistReq.getFestivalName());
         putSongInPlaylist(googleAccessToken, playlistId, festivalSetlistReq.getAudioUrlList());
     }
@@ -269,7 +267,6 @@ public class FestivalService {
 
 
     private String createPlaylist(String googleAccessToken, String festivalName) {
-        System.out.println(festivalName+"???????????????????");
         RestTemplate rt = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", "Bearer " + googleAccessToken);
@@ -295,8 +292,7 @@ public class FestivalService {
             ObjectMapper objectMapper = new ObjectMapper();
             // ResponseEntity의 body를 JSON 문자열로부터 JsonNode 객체로 변환
             JsonNode jsonNode = objectMapper.readTree(response.getBody());
-            String playlistId = jsonNode.get("id").asText();
-            return playlistId;
+            return jsonNode.get("id").asText();
         } catch (JsonProcessingException e) {
             // JSON 처리 예외가 발생
             e.printStackTrace();

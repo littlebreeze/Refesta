@@ -43,7 +43,10 @@ public enum ErrorCode {
     RESERVATION_NOT_FOUND_ERROR(404, "REV002", "존재하지 않는 예매내역입니다."),
 
     //Song
-    SONG_NOT_FOUND_ERROR(404, "SNG001", "존재하지 않는 노래입니다.");
+    SONG_NOT_FOUND_ERROR(404, "SNG001", "존재하지 않는 노래입니다."),
+
+    //Playlist
+    PLAYLIST_SETLIST_NULL_ERROR(400,"PLL001","선택한 셋리스트가 없습니다.");
 
     private final int status;
 

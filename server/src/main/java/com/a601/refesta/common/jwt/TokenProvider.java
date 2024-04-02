@@ -41,6 +41,8 @@ public class TokenProvider {
     @Autowired
     private MemberRepository memberRepository;
 
+    @Value("${spring.google.admin.googleId}")
+    private String adminGoogleId;
 
     public TokenProvider(@Value("${spring.security.oauth2.jwt.secret}") String secret) {
         byte[] keyBytes = Decoders.BASE64.decode(secret);
@@ -156,5 +158,13 @@ public class TokenProvider {
         Claims claims = parseClaims(accessToken);
         String googleId = claims.getSubject();
         return memberRepository.findByGoogleId(googleId).getId();
+    }
+
+    public boolean isAdmin(HttpServletRequest request){
+        String accessToken = request.getHeader(AUTHORIZATION_HEADER).substring(7);
+        //복호화를 통해 googleID로 memberId꺼내기
+        Claims claims = parseClaims(accessToken);
+        String googleId = claims.getSubject();
+        return googleId.equals(adminGoogleId);
     }
 }

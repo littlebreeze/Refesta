@@ -50,8 +50,11 @@ public class FestivalController {
 
     @PostMapping("/playlists")
     public SuccessResponse<HttpStatus> addYoutubePlaylist(HttpServletRequest request, @RequestBody FestivalSetlistReq festivalSetlistReq) {
-        int memberId = tokenProvider.getMemberIdByToken(request);
-        festivalService.createYoutubePlaylist(memberId, festivalSetlistReq);
-        return new SuccessResponse<>(HttpStatus.OK);
+        if (tokenProvider.isAdmin(request)) {
+            int memberId = tokenProvider.getMemberIdByToken(request);
+            festivalService.createYoutubePlaylist(memberId, festivalSetlistReq);
+            return new SuccessResponse<>(HttpStatus.OK);
+        }
+       return new SuccessResponse<>(HttpStatus.ACCEPTED);
     }
 }
