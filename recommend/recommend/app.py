@@ -205,7 +205,17 @@ def memberrecommend(member):
     conn.commit()
 
     finalrecommend = read_from_csv('finaltable.csv')
-    print(finalrecommend)
+
+    cfrecommend = read_from_csv('CFtable.csv')
+    for i in range(len(finalrecommend)):
+        for j in range(len(finalrecommend[i])):
+            finalrecommend[i][j] = int(finalrecommend[i][j])
+            cfrecommend[i][j] = int(cfrecommend[i][j])
+
+    for i in range(len(finalrecommend)):
+        for j in range(len(finalrecommend[i])):
+            finalrecommend[i][j] = finalrecommend[i][j] + int(cfrecommend[i][j] / 100)
+
     sorted = np.argsort(finalrecommend[member-1])[::-1]
     for i in sorted:
         cur.execute("INSERT INTO member_festival (member_id, festival_id) VALUES (%s, %s)", (member, str(i+1)))
