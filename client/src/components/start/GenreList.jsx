@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
 
+import Swal from 'sweetalert2';
 import instance from '@util/token_interceptor';
 import { useGenreQuery } from '@/queries/startPagesQueries';
 
@@ -59,7 +60,13 @@ const GenreList = ({ setStep, stepParam }) => {
       setModalOpen(false);
       setStep(stepParam.step3);
       if (!isLoading) {
-        alert('서비스를 시작합니다');
+        Swal.fire({
+          title: '환영합니다.',
+          text: 'Refesta에서 당신에게 딱 맞는 페스티벌을 찾아보세요!',
+          confirmButtonColor: '#061E58',
+          confirmButtonText: '확인',
+        });
+
         nav('/', { replace: true });
       }
     }, 6000);

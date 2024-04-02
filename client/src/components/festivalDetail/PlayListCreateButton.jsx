@@ -16,28 +16,22 @@ const PlayListCreateButton = () => {
 
   const showConfirmDialog = async () => {
     Swal.fire({
-      title: '추가 완료',
-      text: '현재 재생목록이 유튜브에 업데이트 되었습니다.',
+      title: '재생목록 추가',
+      text: '현재 재생목록을 유튜브에 저장하시겠습니까?',
+      showCancelButton: true,
       confirmButtonColor: '#061E58',
+      cancelButtonColor: '#CACACA',
       confirmButtonText: '확인',
+      cancelButtonText: '취소',
+    }).then((res) => {
+      if (res.isConfirmed) {
+        try {
+          createYoutubePlaylist();
+        } catch (error) {
+          console.error('Error:', error);
+        }
+      }
     });
-    // Swal.fire({
-    //   title: '재생목록 추가',
-    //   text: '현재 재생목록을 유튜브에 저장하시겠습니까?',
-    //   showCancelButton: true,
-    //   confirmButtonColor: '#061E58',
-    //   cancelButtonColor: '#CACACA',
-    //   confirmButtonText: '확인',
-    //   cancelButtonText: '취소',
-    // }).then((res) => {
-    //   if (res.isConfirmed) {
-    //     try {
-    //       createYoutubePlaylist();
-    //     } catch (error) {
-    //       console.error('Error:', error);
-    //     }
-    //   }
-    // });
   };
 
   const createYoutubePlaylist = async () => {
