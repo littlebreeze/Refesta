@@ -1,5 +1,7 @@
 package com.a601.refesta.member.service;
 
+import com.a601.refesta.common.exception.CustomException;
+import com.a601.refesta.common.exception.ErrorCode;
 import com.a601.refesta.common.util.S3Util;
 import com.a601.refesta.genre.repository.GenreRepository;
 import com.a601.refesta.login.repository.GoogleAccessTokenRepository;
@@ -110,7 +112,12 @@ public class MemberService {
                 parameters,
                 String.class
         );
+        String res = response.getBody();
+        if (res == null || !res.equals("추천 완료")) {
+            throw new CustomException(ErrorCode.RECOMMENDATION_NOT_READY_ERROR);
+        }
     }
+
 
     /**
      * 좋아요한 페스티벌 목록
