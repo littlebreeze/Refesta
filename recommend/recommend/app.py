@@ -15,7 +15,7 @@ DB_USER = os.environ.get('DB_USER')
 DB_PASSWORD = os.environ.get('DB_PASSWORD')
 app = Flask(__name__)
 scheduler = BackgroundScheduler()
-conn = pymysql.connect(host=DB_HOST, user=DB_USER, password=DB_PASSWORD, db='refesta', charset='utf8')
+
 
 def RMSE(y_true, y_pred): # RMSE 함수
     return np.sqrt(np.mean((np.array(y_true)-np.array(y_pred))**2))
@@ -39,6 +39,7 @@ def CF(data, sim, member):
     return predict
 
 def CollaborativeFiltering():
+    conn = pymysql.connect(host=DB_HOST, user=DB_USER, password=DB_PASSWORD, db='refesta', charset='utf8')
     cur = conn.cursor()
     data = read_from_csv('finaltable.csv')
     for i in range(len(data)):
@@ -55,6 +56,7 @@ def CollaborativeFiltering():
         predict_rating[i] = CF(data, sim, i)
     save_to_csv(predict_rating, 'CFtable.csv')
     cur.close()
+    conn.close()
 
 def save_to_csv(data, filename):
 
@@ -69,7 +71,9 @@ def read_from_csv(filename):
     return data
 
 def makeusertable():
+    conn = pymysql.connect(host=DB_HOST, user=DB_USER, password=DB_PASSWORD, db='refesta', charset='utf8')
     cur = conn.cursor()
+
 
     #1
     cur.execute("SELECT MAX(id) from member")
@@ -193,10 +197,12 @@ def makeusertable():
             finaltable[i][j] = memberreservtable[i][j]+memberreviewtable[i][j]+membersongliketable[i][j]+memberfestivalliketable[i][j]+memberartistliketable[i][j]+memberfestivalgenretable[i][j]
     save_to_csv(finaltable, 'finaltable.csv')
     cur.close()
+    conn.close()
     CollaborativeFiltering()
 
 def memberrecommend(member):
     print(member)
+    conn = pymysql.connect(host=DB_HOST, user=DB_USER, password=DB_PASSWORD, db='refesta', charset='utf8')
     cur = conn.cursor()
     cur.execute("DELETE FROM member_festival WHERE member_id = %s", (member,))
     conn.commit()
@@ -235,9 +241,11 @@ def memberrecommend(member):
         cur.execute("INSERT INTO member_artist (member_id, artist_id) VALUES (%s, %s)", (member, str(i)))
     conn.commit()
     cur.close()
+    conn.close()
 
 @scheduler.scheduled_job('cron', day_of_week='*', hour=4)
 def initialization():
+    conn = pymysql.connect(host=DB_HOST, user=DB_USER, password=DB_PASSWORD, db='refesta', charset='utf8')
     cur = conn.cursor()
     makeusertable()
     cur.execute("SELECT MAX(id) FROM member")
@@ -245,10 +253,12 @@ def initialization():
     for i in range(memberN):
         memberrecommend(i+1)
     cur.close()
+    conn.close()
     return "추천 갱신 완료"
 
 @app.route('/recommend', methods=['GET'])
 def recommendusers():
+    conn = pymysql.connect(host=DB_HOST, user=DB_USER, password=DB_PASSWORD, db='refesta', charset='utf8')
     cur = conn.cursor()
     makeusertable()
     cur.execute("SELECT MAX(id) FROM member")
@@ -256,11 +266,13 @@ def recommendusers():
     for i in range(memberN):
         memberrecommend(i+1)
     cur.close()
+    conn.close()
     return "Success initialization"
 
 
 @app.route('/recommend', methods=['POST'])
 def register():
+    conn = pymysql.connect(host=DB_HOST, user=DB_USER, password=DB_PASSWORD, db='refesta', charset='utf8')
     cur = conn.cursor()
     userid = request.form.get('userId')
     print(userid)
@@ -271,6 +283,7 @@ def register():
     makeusertable()
     memberrecommend(int(userid))
     cur.close()
+    conn.close()
     return "추천 완료"
 
 if __name__ == '__main__':
