@@ -7,8 +7,8 @@ const browserImageCompression = async (file) => {
       maxWidthOrHeight: 1024,
     };
     return await imageCompression(file, options);
-  } catch (e) {
-    console.log(e);
+  } catch (error) {
+    //error
   }
   return;
 };

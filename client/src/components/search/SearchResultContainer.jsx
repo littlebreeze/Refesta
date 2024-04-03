@@ -29,7 +29,7 @@ const SearchResultContainer = () => {
         setFestivalList(response.data.data.festivalList);
         setArtistList(response.data.data.artistList);
       } catch (error) {
-        console.error('Error:', error);
+        //error
       }
     };
     getSearchResultData();

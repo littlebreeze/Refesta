@@ -20,7 +20,7 @@ const YoutubeConnect = ({ setStep, stepParam }) => {
       }, 2000);
     }
     if (isError) {
-      console.log(error);
+      //error
     }
   };
   const onClickSkip = () => {

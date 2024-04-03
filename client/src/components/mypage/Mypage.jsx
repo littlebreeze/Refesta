@@ -66,19 +66,6 @@ const Mypage = ({ isOpen, onClose, nickname, profileUrl }) => {
     onClose();
   };
 
-  const reservationResults = [
-    {
-      name: '사운드베리 2024',
-      date: new Date(),
-      location: 'KBS 아레나홀',
-    },
-    {
-      name: '워터밤 서울 2023',
-      date: new Date(),
-      location: '잠실 종합운동장 보조 경기장',
-    },
-  ];
-
   return (
     <div className={`fixed inset-0 z-50 flex items-center justify-center ${isOpen ? 'animate-modalAnimation' : ''}`}>
       {isOpen && (
@@ -95,7 +82,7 @@ const Mypage = ({ isOpen, onClose, nickname, profileUrl }) => {
             <header className='w-full h-[80px] bg-ourIndigo flex items-center'>
               <div className='w-12 h-12 mx-5 overflow-hidden rounded-full'>
                 <img
-                  className='h-full'
+                  className='object-cover w-full h-full'
                   src={profileUrl}
                 />
               </div>

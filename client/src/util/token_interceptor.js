@@ -24,9 +24,9 @@ const regenerateRefreshToken = async () => {
   };
   const refreshToken = localStorage.getItem('refreshToken');
 
-  const res = await refreshInstance.post('/login/oauth/token', refreshToken, { headers: headers });
+  const response = await refreshInstance.post('/login/oauth/token', refreshToken, { headers: headers });
 
-  return res;
+  return response;
 };
 
 // 요청 인터셉터
@@ -38,7 +38,7 @@ instance.interceptors.request.use(
   },
   (error) => {
     // 요청 오류 시 작업 수행
-    console.log(error);
+    //error
     return Promise.reject(error);
   }
 );
@@ -61,14 +61,13 @@ instance.interceptors.response.use(
         // 이미 alert가 띄워진 상태라면 다시 띄우지 않음
         isAlertShown = true; // alert가 떠있음을 표시
         const originRequest = error.config;
-        console.log(error.response);
+        //error
         try {
-          const res = await regenerateRefreshToken();
-          console.log(res);
-          if (res.status == 200) {
-            const newAccessToken = res.data.data.accessToken;
-            localStorage.setItem('accessToken', res.data.data.accessToken);
-            localStorage.setItem('refreshToken', res.data.data.refreshToken);
+          const response = await regenerateRefreshToken();
+          if (response.status == 200) {
+            const newAccessToken = response.data.data.accessToken;
+            localStorage.setItem('accessToken', response.data.data.accessToken);
+            localStorage.setItem('refreshToken', response.data.data.refreshToken);
             axios.defaults.headers.common['Authorization'] = `Bearer ${newAccessToken}`;
             return axios(originRequest);
           }

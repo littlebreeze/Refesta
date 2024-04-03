@@ -14,8 +14,8 @@ const LikeItem = ({ content, onClick }) => {
   const handleFestivalLike = async (id) => {
     try {
       const response = await instance.patch(`festivals/${id}`);
-    } catch (e) {
-      console.error('페스티벌 좋아요 실패', e);
+    } catch (error) {
+      //error
     }
   };
 
@@ -30,15 +30,9 @@ const LikeItem = ({ content, onClick }) => {
   };
 
   return (
-    <div
-      className='relative flex flex-col w-full overflow-hidden rounded-2xl'
-      onClick={onClick}
-    >
+    <div className='relative flex flex-col w-full overflow-hidden rounded-2xl' onClick={onClick}>
       <div className='h-44'>
-        <img
-          className='object-cover w-full h-full'
-          src={url}
-        />
+        <img className='object-cover w-full h-full' src={url} />
       </div>
       <div className='px-3 py-2 text-xs font-bold text-center truncate bg-white'>{name}</div>
       <div
@@ -48,10 +42,7 @@ const LikeItem = ({ content, onClick }) => {
           handleLikeBtn();
         }}
       >
-        <img
-          src={like ? `${heartFull}` : `${heart}`}
-          className='h-full'
-        />
+        <img src={like ? `${heartFull}` : `${heart}`} className='h-full' />
       </div>
     </div>
   );

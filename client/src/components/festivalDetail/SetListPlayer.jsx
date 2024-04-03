@@ -58,7 +58,7 @@ const SetListPlayer = () => {
     try {
       await instance.patch(`recommendations/songs/${currSong.id}`);
     } catch (error) {
-      console.error('Error:', error);
+      //error
     }
   };
 
