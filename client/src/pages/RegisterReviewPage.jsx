@@ -91,8 +91,8 @@ const RegisterReviewPage = ({ isOpen, onClose, selectedFile: propSelectedFile })
             ...prev,
             file: compressedFile,
           }));
-        } catch (e) {
-          console.log('이미지 압축 오류', e);
+        } catch (error) {
+          console.log('이미지 압축 오류:', error);
         }
       } else {
         setNewReview((prev) => ({
@@ -123,8 +123,8 @@ const RegisterReviewPage = ({ isOpen, onClose, selectedFile: propSelectedFile })
     try {
       await registerReview(newReview);
       await addReviews(id);
-    } catch (e) {
-      console.log('리뷰 등록 실패', e);
+    } catch (error) {
+      console.log('리뷰 등록 실패:', error);
     } finally {
       setIsSubmitting(false);
       setNewReview((prev) => ({

@@ -71,7 +71,7 @@ const GenreList = ({ setStep, stepParam }) => {
     }, 6000);
 
     if (isError) {
-      console.log(error);
+      console.log('장르 선택 오류:', error);
     }
   };
 

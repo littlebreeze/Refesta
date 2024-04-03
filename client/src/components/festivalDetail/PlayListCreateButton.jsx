@@ -23,12 +23,12 @@ const PlayListCreateButton = () => {
       cancelButtonColor: '#CACACA',
       confirmButtonText: '확인',
       cancelButtonText: '취소',
-    }).then((res) => {
-      if (res.isConfirmed) {
+    }).then((response) => {
+      if (response.isConfirmed) {
         try {
           createYoutubePlaylist();
         } catch (error) {
-          console.error('Error:', error);
+          console.error('유튜브 재생목록 오류:', error);
         }
       }
     });

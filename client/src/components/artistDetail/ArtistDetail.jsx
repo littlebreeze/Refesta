@@ -34,10 +34,9 @@ const ArtistDetail = () => {
     // 아티스트 상세 페이지 접근 데이터 제공
     const increaseArtistViewCount = async () => {
       try {
-        const res = await instance.patch(`artists/${id}/views`);
-        console.log(res);
-      } catch (e) {
-        console.error('Error:', e);
+        const response = await instance.patch(`artists/${id}/views`);
+      } catch (error) {
+        console.error('아티스트 정보 가져오기 오류:', error);
       }
     };
 
@@ -57,20 +56,10 @@ const ArtistDetail = () => {
           <div>
             <div className='relative'>
               <div className='z-0 flex items-center justify-center mx-20 overflow-hidden rounded-full w-13 h-13'>
-                <img
-                  className='object-cover h-full'
-                  src={artist.pictureUrl}
-                  alt='사진'
-                />
+                <img className='object-cover h-full' src={artist.pictureUrl} alt='사진' />
               </div>
-              <div
-                className='absolute w-12 h-12 py-2.5 bottom-0 right-12'
-                onClick={handleLikeBtn}
-              >
-                <img
-                  src={artist.liked ? `${heartFull}` : `${heart}`}
-                  className='h-full'
-                />
+              <div className='absolute w-12 h-12 py-2.5 bottom-0 right-12' onClick={handleLikeBtn}>
+                <img src={artist.liked ? `${heartFull}` : `${heart}`} className='h-full' />
               </div>
             </div>
           </div>

@@ -16,12 +16,12 @@ const useUserStore = create((set) => ({
   userInfo: {},
   getUserInfo: async () => {
     try {
-      const res = await instance.get(`${baseURL}/members`);
+      const response = await instance.get(`${baseURL}/members`);
       set((state) => ({
-        userInfo: res.data.data,
+        userInfo: response.data.data,
       }));
-    } catch (e) {
-      console.log(e);
+    } catch (error) {
+      console.log('유저 정보 조회 실패:', error);
     }
   },
 
@@ -29,12 +29,12 @@ const useUserStore = create((set) => ({
   bookingList: [],
   getBookingList: async () => {
     try {
-      const res = await instance.get(`${baseURL}/members/reservations`);
+      const response = await instance.get(`${baseURL}/members/reservations`);
       set((state) => ({
-        bookingList: res.data.data.reservationList,
+        bookingList: response.data.data.reservationList,
       }));
-    } catch (e) {
-      console.log(e);
+    } catch (error) {
+      console.log('예약내역 조회 실패:', error);
     }
   },
 }));
