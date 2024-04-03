@@ -17,8 +17,9 @@ app = Flask(__name__)
 scheduler = BackgroundScheduler()
 
 
-def RMSE(y_true, y_pred): # RMSE 함수
-    return np.sqrt(np.mean((np.array(y_true)-np.array(y_pred))**2))
+def RMSE(y_true, y_pred):  # RMSE 함수
+    return np.sqrt(np.mean((np.array(y_true) - np.array(y_pred)) ** 2))
+
 
 # score(RMSE) 계산
 def CF(data, sim, member):
@@ -37,6 +38,7 @@ def CF(data, sim, member):
             if weight_sum != 0:
                 predict[i] = weighted_sum / weight_sum
     return predict
+
 
 def CollaborativeFiltering():
     conn = pymysql.connect(host=DB_HOST, user=DB_USER, password=DB_PASSWORD, db='refesta', charset='utf8')
@@ -58,11 +60,12 @@ def CollaborativeFiltering():
     cur.close()
     conn.close()
 
-def save_to_csv(data, filename):
 
+def save_to_csv(data, filename):
     with open(filename, 'w', newline='') as csvfile:
         csvwriter = csv.writer(csvfile)
         csvwriter.writerows(data)
+
 
 def read_from_csv(filename):
     with open(filename, 'r', newline='') as csvfile:
@@ -70,12 +73,12 @@ def read_from_csv(filename):
         data = [row for row in csvreader]
     return data
 
+
 def makeusertable():
     conn = pymysql.connect(host=DB_HOST, user=DB_USER, password=DB_PASSWORD, db='refesta', charset='utf8')
     cur = conn.cursor()
 
-
-    #1
+    # 1
     cur.execute("SELECT MAX(id) from member")
     memberN = cur.fetchone()[0]
 
@@ -83,55 +86,56 @@ def makeusertable():
     membergenre = cur.fetchall()
     membergenretable = [[0 for _ in range(9)] for _ in range(memberN)]
     for i in membergenre:
-        membergenretable[i[0]-1][i[1]-1]+=10;
+        membergenretable[i[0] - 1][i[1] - 1] += 10;
 
     save_to_csv(membergenretable, 'membergenretable.csv')
 
-    #2
+    # 2
     cur.execute("SELECT COUNT(*) from festival")
     festivalN = cur.fetchone()[0]
-    lineupgenretable = [[0  for _ in range(festivalN)] for _ in range(9)]
+    lineupgenretable = [[0 for _ in range(festivalN)] for _ in range(9)]
     for i in range(festivalN):
-        cur.execute(f"SELECT artist_id, genre_id FROM artist_genre WHERE artist_id IN (SELECT artist_id FROM festival_lineup WHERE festival_id = {i+1})")
+        cur.execute(
+            f"SELECT artist_id, genre_id FROM artist_genre WHERE artist_id IN (SELECT artist_id FROM festival_lineup WHERE festival_id = {i + 1})")
         lineup = cur.fetchall()
         for j in lineup:
-            lineupgenretable[j[1]-1][i]+=1
+            lineupgenretable[j[1] - 1][i] += 1
     cur.execute("SELECT name FROM festival")
     festivalName = cur.fetchall()
     for i in range(festivalN):
         if "재즈" in festivalName[i]:
-            lineupgenretable[8][i]+=20
+            lineupgenretable[8][i] += 50
             for j in range(9):
-                if j==8: continue
-                lineupgenretable[j][i]-=15
+                if j == 8: continue
+                lineupgenretable[j][i] -= 30
         if "힙합" in festivalName[i]:
-            lineupgenretable[2][i]+=20
+            lineupgenretable[2][i] += 50
             for j in range(9):
-                if j==2: continue
-                lineupgenretable[j][i]-=15
+                if j == 2: continue
+                lineupgenretable[j][i] -= 30
         if "락" in festivalName[i]:
-            lineupgenretable[5][i]+=20
+            lineupgenretable[5][i] += 50
             for j in range(9):
-                if j==5: continue
-                lineupgenretable[j][i]-=15
+                if j == 5: continue
+                lineupgenretable[j][i] -= 30
         if "인디" in festivalName[i]:
-            lineupgenretable[4][i]+=20
+            lineupgenretable[4][i] += 50
             for j in range(9):
-                if j==4: continue
-                lineupgenretable[j][i]-=15
+                if j == 4: continue
+                lineupgenretable[j][i] -= 30
 
     save_to_csv(lineupgenretable, 'lineupgenretable.csv')
 
-    #1+2
+    # 1+2
     memberfestivalgenretable = [[0 for _ in range(festivalN)] for _ in range(memberN)]
     for i in range(memberN):
         for j in range(festivalN):
             for k in range(9):
-                memberfestivalgenretable[i][j]+=membergenretable[i][k]*lineupgenretable[k][j]
+                memberfestivalgenretable[i][j] += membergenretable[i][k] * lineupgenretable[k][j]
 
     save_to_csv(memberfestivalgenretable, 'memberfestivalgenretable.csv')
 
-    #3
+    # 3
     cur.execute("SELECT member_id,artist_id,is_liked FROM artist_like")
     artistlike = cur.fetchall()
     memberartistliketable = [[0 for _ in range(festivalN)] for _ in range(memberN)]
@@ -139,70 +143,74 @@ def makeusertable():
         cur.execute(f"select festival_id from festival_lineup where artist_id={i[1]}")
         for j in cur.fetchall():
             if not bool(int.from_bytes(i[2], byteorder='big')):
-                memberartistliketable[i[0]-1][j[0]-1]-=10
+                memberartistliketable[i[0] - 1][j[0] - 1] -= 10
             else:
-                memberartistliketable[i[0]-1][j[0]-1]+=20
+                memberartistliketable[i[0] - 1][j[0] - 1] += 20
     for i in range(memberN):
-        cur.execute(f"SELECT artist_id,preference FROM member_artist_preference where member_id={i+1}")
+        cur.execute(f"SELECT artist_id,preference FROM member_artist_preference where member_id={i + 1}")
         for j in cur.fetchall():
             cur.execute(f"select festival_id from festival_lineup where artist_id={j[0]}")
             for k in cur.fetchall():
-                memberartistliketable[i][k[0]-1]+=j[1]
+                memberartistliketable[i][k[0] - 1] += j[1]
 
     save_to_csv(memberartistliketable, 'memberartistliketable.csv')
 
-    #4
+    # 4
     cur.execute("SELECT member_id,festival_id,is_liked FROM festival_like")
     memberfestivalliketable = [[0 for _ in range(festivalN)] for _ in range(memberN)]
     for i in cur.fetchall():
 
         if not bool(int.from_bytes(i[2], byteorder='big')):
-            memberfestivalliketable[i[0]-1][i[1]-1]-=15
+            memberfestivalliketable[i[0] - 1][i[1] - 1] -= 15
         else:
-            memberfestivalliketable[i[0]-1][i[1]-1]+=40
+            memberfestivalliketable[i[0] - 1][i[1] - 1] += 40
     for i in range(memberN):
         cur.execute(f"SELECT festival_id,preference FROM member_festival_preference where member_id={i + 1}")
         for j in cur.fetchall():
-            memberfestivalliketable[i][j[0]-1]+=j[1]
+            memberfestivalliketable[i][j[0] - 1] += j[1]
 
     save_to_csv(memberfestivalliketable, 'memberfestivalliketable.csv')
 
-    #5
-    cur.execute("SELECT m.member_id, m.song_id, m.preference, f.festival_id FROM member_song_preference m JOIN festival_setlist f ON m.song_id = f.song_id")
+    # 5
+    cur.execute(
+        "SELECT m.member_id, m.song_id, m.preference, f.festival_id FROM member_song_preference m JOIN festival_setlist f ON m.song_id = f.song_id")
     membersongliketable = [[0 for _ in range(festivalN)] for _ in range(memberN)]
     for i in cur.fetchall():
-        membersongliketable[i[0]-1][i[3]-1]+=i[2]
+        membersongliketable[i[0] - 1][i[3] - 1] += i[2]
 
     save_to_csv(membersongliketable, 'membersongliketable.csv')
 
-    #6
+    # 6
     cur.execute("select member_id,festival_id from review where is_deleted=0;")
     review = cur.fetchall()
     memberreviewtable = [[0 for _ in range(festivalN)] for _ in range(memberN)]
     for i in review:
-        memberreviewtable[i[0]-1][i[1]-1]+=1
+        memberreviewtable[i[0] - 1][i[1] - 1] += 1
 
     save_to_csv(memberreviewtable, 'memberreviewtable.csv')
 
-    #7
+    # 7
     cur.execute("SELECT member_id, festival_id FROM reservation WHERE status = 'SUCCESS'")
     reserv = cur.fetchall()
     memberreservtable = [[0 for _ in range(festivalN)] for _ in range(memberN)]
 
     for i in reserv:
-        memberreservtable[i[0]-1][i[1]-1]=1
+        memberreservtable[i[0] - 1][i[1] - 1] = 1
 
     save_to_csv(memberreservtable, 'memberreservtable.csv')
 
-    #final
+    # final
     finaltable = [[0 for _ in range(festivalN)] for _ in range(memberN)]
     for i in range(memberN):
         for j in range(festivalN):
-            finaltable[i][j] = memberreservtable[i][j]+memberreviewtable[i][j]+membersongliketable[i][j]+memberfestivalliketable[i][j]+memberartistliketable[i][j]+memberfestivalgenretable[i][j]
+            finaltable[i][j] = memberreservtable[i][j] + memberreviewtable[i][j] + membersongliketable[i][j] + \
+                               memberfestivalliketable[i][j] + memberartistliketable[i][j] + \
+                               memberfestivalgenretable[i][j]
     save_to_csv(finaltable, 'finaltable.csv')
     cur.close()
     conn.close()
     CollaborativeFiltering()
+
 
 def memberrecommend(member):
     print(member)
@@ -226,15 +234,15 @@ def memberrecommend(member):
         for j in range(len(finalrecommend[i])):
             finalrecommend[i][j] = finalrecommend[i][j] + int(cfrecommend[i][j] / 100)
 
-    sorted = np.argsort(finalrecommend[member-1])[::-1]
+    sorted = np.argsort(finalrecommend[member - 1])[::-1]
     for i in sorted:
-        cur.execute("INSERT INTO member_festival (member_id, festival_id) VALUES (%s, %s)", (member, str(i+1)))
+        cur.execute("INSERT INTO member_festival (member_id, festival_id) VALUES (%s, %s)", (member, str(i + 1)))
     conn.commit()
 
-    recomartist=[]
+    recomartist = []
     for i in sorted:
-        cur.execute(f"SELECT artist_id FROM festival_lineup where festival_id = {i+1}")
-        artistTemp=[]
+        cur.execute(f"SELECT artist_id FROM festival_lineup where festival_id = {i + 1}")
+        artistTemp = []
         for j in cur.fetchall():
             artistTemp.append(j[0])
         random.shuffle(artistTemp)
@@ -247,6 +255,7 @@ def memberrecommend(member):
     cur.close()
     conn.close()
 
+
 @scheduler.scheduled_job('cron', day_of_week='*', hour=4)
 def initialization():
     conn = pymysql.connect(host=DB_HOST, user=DB_USER, password=DB_PASSWORD, db='refesta', charset='utf8')
@@ -255,10 +264,11 @@ def initialization():
     cur.execute("SELECT MAX(id) FROM member")
     memberN = cur.fetchone()[0]
     for i in range(memberN):
-        memberrecommend(i+1)
+        memberrecommend(i + 1)
     cur.close()
     conn.close()
     return "추천 갱신 완료"
+
 
 @app.route('/recommend', methods=['GET'])
 def recommendusers():
@@ -268,7 +278,7 @@ def recommendusers():
     cur.execute("SELECT MAX(id) FROM member")
     memberN = cur.fetchone()[0]
     for i in range(memberN):
-        memberrecommend(i+1)
+        memberrecommend(i + 1)
     cur.close()
     conn.close()
     return "Success initialization"
@@ -290,6 +300,7 @@ def register():
     conn.close()
     return "추천 완료"
 
+
 if __name__ == '__main__':
     conn = pymysql.connect(host=DB_HOST, user=DB_USER, password=DB_PASSWORD, db='refesta', charset='utf8')
     cur = conn.cursor()
@@ -297,7 +308,7 @@ if __name__ == '__main__':
     cur.execute("SELECT MAX(id) FROM member")
     memberN = cur.fetchone()[0]
     for i in range(memberN):
-        cur.execute(f"SELECT * FROM member WHERE id = {i+1}")
+        cur.execute(f"SELECT * FROM member WHERE id = {i + 1}")
         row = cur.fetchone()
         if row is None: continue
         memberrecommend(i + 1)
