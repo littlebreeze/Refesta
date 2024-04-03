@@ -8,11 +8,11 @@ Refesta : 사용자 맞춤 페스티벌을 추천·예매하고, 그 날의 기�
 
 ## 📅 진행 기간
 
-2024.02.28 ~ 2024.04.04
+2024.02.26 ~ 2024.04.04
 
 ## 🤝 팀원 소개
 
-SSAFY 10기 공통 프로젝트 A704
+SSAFY 10기 특화 프로젝트 A601
 
 |                      팀장<br>권정훈                      |                   팀원<br>강지헌                   |                      팀원<br>이경배                       |                  팀원<br>이지원                  |                         팀원<br>최정윤                          |                     팀원<br>하재률                      |
 | :------------------------------------------------------: | :------------------------------------------------: | :-------------------------------------------------------: | :----------------------------------------------: | :-------------------------------------------------------------: | :-----------------------------------------------------: |
@@ -68,17 +68,17 @@ Refesta을 통해 맞춤 페스티벌 추천을 받고, 예매하고, 추억해�
 ## 💻 주요 기술
 
 - ![](https://img.shields.io/badge/Framework-%23121011?style=for-the-badge)![Spring Boot](https://img.shields.io/badge/springboot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white)![](https://img.shields.io/badge/2.7.13-515151?style=for-the-badge)
-- ![](https://img.shields.io/badge/Build-%23121011?style=for-the-badge)![Gradle](https://img.shields.io/badge/Gradle-02303A?style=for-the-badge&logo=Gradle&logoColor=white)![](https://img.shields.io/badge/7.1.1-515151?style=for-the-badge)
+- ![](https://img.shields.io/badge/Build-%23121011?style=for-the-badge)![Gradle](https://img.shields.io/badge/Gradle-02303A?style=for-the-badge&logo=Gradle&logoColor=white)![](https://img.shields.io/badge/9.0-515151?style=for-the-badge)
 - ![](https://img.shields.io/badge/Language-%23121011?style=for-the-badge)![Java](https://img.shields.io/badge/java-%23ED8B00?style=for-the-badge&logo=openjdk&logoColor=white)![](https://img.shields.io/badge/17-515151?style=for-the-badge)
 
-[![React Native](https://img.shields.io/badge/React_Native-0.73.2-blue?style=flat&logo=react)](https://reactnative.dev/)
-[![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.2.1-green?style=flat&logo=spring)](https://spring.io/projects/spring-boot)
+[![React](https://img.shields.io/badge/react-18.2.0-blue?style=flat&logo=react)](https://ko.legacy.reactjs.org/)
+[![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.2.3-green?style=flat&logo=spring)](https://spring.io/projects/spring-boot)
 [![Java](https://img.shields.io/badge/Java-17-orange?style=flat&logo=java)](https://www.oracle.com/java/)
 [![mysql](https://img.shields.io/badge/mysql-8.3.0-4479A1?style=flat&logo=mysql)](https://mysql.com/)
 [![Redis](https://img.shields.io/badge/Redis-7.2.4-red?style=flat&logo=redis)](https://redis.io/)
 
-[![reactquery](https://img.shields.io/badge/reactquery-FF4154?style=flat&logo=reactquery)](https://tanstack.com/query/v4/docs/framework/react/overview)
-[![tailwindcss](https://img.shields.io/badge/tailwindcss-06B6D4?style=flat&logo=tailwindcss)](https://tailwindcss.com/)
+[![reactquery](https://img.shields.io/badge/reactquery-3.39.3-FF4154?style=flat&logo=reactquery)](https://tanstack.com/query/v4/docs/framework/react/overview)
+[![tailwindcss](https://img.shields.io/badge/tailwindcss-3.4.1-06B6D4?style=flat&logo=tailwindcss)](https://tailwindcss.com/)
 [![Kakao pay API](https://img.shields.io/badge/API-Kakao_Pay-FFCD00?style=flat)](https://developers.kakao.com/product/kakaoPay)
 
 [![Git](https://img.shields.io/badge/Git-gray?style=flat&logo=git)](https://git-scm.com/)
@@ -98,7 +98,7 @@ Refesta을 통해 맞춤 페스티벌 추천을 받고, 예매하고, 추억해�
 
 ### Backend - 메인
 
-- Spring Boot 3.2.1
+- Spring Boot 3.2.3
 - Spring Data JPA
 - Spring Security
 - Spring Web
@@ -114,16 +114,23 @@ Refesta을 통해 맞춤 페스티벌 추천을 받고, 예매하고, 추억해�
 - Flask
 - PySpark
 - MySQL
+- schedular
+- sklearn
 
 ### Frontend
 
 - React
+- Vite
 - Tailwind
 - Zustand
 - React Query
 - axios
 - React Router DOM
-- Vite
+- Sweetalert2
+- React player
+- Browser image compression
+- eslint
+- prettier
 
 ### 배포
 
@@ -279,7 +286,6 @@ client
 - [벤더서버 API 명세서](https://instinctive-talk-7a7.notion.site/API-91f9f1b051804354b61c55cf7f994712)
 
 ## 📊 ERD 다이어그램
-<!-- ERD 캡쳐하기 -->
 ![ERD](/images/ERD.png)
 
 ## 🎨 와이어프레임
@@ -287,5 +293,5 @@ client
 <img src="/images/와이어프레임.png"  width="400px" height="600px">
 
 ### 프로젝트 결산 노션 페이지
-<!-- 결산 페이지 만들면 넣기 아님 빼기 -->
-- [4주차 결산 페이지](https://instinctive-talk-7a7.notion.site/8a1c64ca57fd45ff837a4aef4ae53faf?pvs=4)
+<!-- 결산 페이지 만들면 넣기 아님 빼기 
+- [4주차 결산 페이지](https://instinctive-talk-7a7.notion.site/8a1c64ca57fd45ff837a4aef4ae53faf?pvs=4) -->
