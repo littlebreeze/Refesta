@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 import Swal from 'sweetalert2';
 
@@ -10,6 +10,7 @@ import { useProfileQuery, usePostProfileQuery } from '@/queries/startPagesQuerie
 
 const ProfileInfo = ({ setStep, stepParam }) => {
   const nav = useNavigate();
+  const { state } = useLocation();
 
   const { data, isLoading, isError, error } = useProfileQuery();
   const [nickname, setNickname] = useState('');
@@ -33,7 +34,8 @@ const ProfileInfo = ({ setStep, stepParam }) => {
   };
 
   useEffect(() => {
-    if (!data.data.status) {
+    console.log(data);
+    if (!state) {
       nav('/', { replace: true });
     }
     if (!isLoading) getUserProfile();
