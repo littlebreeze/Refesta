@@ -138,7 +138,11 @@ const RegisterReviewPage = ({ isOpen, onClose, selectedFile: propSelectedFile })
   // 프리뷰
   const preview = useMemo(() => {
     return isImage ? (
-      <img key={`file-preview-${Date.now()}`} className='object-cover w-full h-full' src={fileUrl} />
+      <img
+        key={`file-preview-${Date.now()}`}
+        className='object-cover w-full h-full'
+        src={fileUrl}
+      />
     ) : (
       <ReactPlayer
         key={`file-preview-${Date.now()}`}
@@ -157,20 +161,26 @@ const RegisterReviewPage = ({ isOpen, onClose, selectedFile: propSelectedFile })
 
   if (!isOpen) return null;
   return (
-    <div className='absolute inset-0 z-50 flex items-center justify-center'>
+    <div className='fixed inset-0 z-50 flex items-center justify-center'>
       {isOpen && (
         <div className='w-full overflow-y-auto bg-white h-lvh'>
           <div className='flex flex-col items-center justify-between w-full h-full pb-10'>
             <div className='relative flex items-center justify-center w-full h-10 text-lg font-bold py-7 border-y-2'>
               후기 작성
-              <button onClick={onClose} className='absolute right-2'>
+              <button
+                onClick={onClose}
+                className='absolute right-2'
+              >
                 <img src={xBtn} />
               </button>
             </div>
             <section className='flex flex-col'>
               <div className='flex my-5 px-7'>
                 <div className='overflow-hidden h-14 w-9'>
-                  <img className='object-cover h-full' src={festivalInfoData.posterUrl} />
+                  <img
+                    className='object-cover h-full'
+                    src={festivalInfoData.posterUrl}
+                  />
                 </div>
                 <div className='flex flex-col justify-center px-3'>
                   <div className='font-bold leading-5 text-left'>{festivalInfoData.name}</div>
@@ -187,7 +197,10 @@ const RegisterReviewPage = ({ isOpen, onClose, selectedFile: propSelectedFile })
                     className='absolute flex items-center justify-center w-12 h-12 bg-gray-300 rounded-full bottom-3 right-10'
                     onClick={handleImageChange}
                   >
-                    <img className='w-2/3' src={picture} />
+                    <img
+                      className='w-3/4'
+                      src={picture}
+                    />
                   </div>
                   <input
                     ref={inputFileRef}

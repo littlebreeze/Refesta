@@ -34,8 +34,8 @@ const ReviewItem = ({ review }) => {
     };
   }, [videoRef]);
   return (
-    <div className='flex flex-col pb-5 mx-5 mb-5 border-b-2'>
-      <div className='flex items-center'>
+    <div className='flex flex-col items-center pb-5 mx-5 mb-5 border-b-2'>
+      <div className='flex items-center w-full'>
         <div className='overflow-hidden rounded-full h-7 w-7'>
           <img
             className='object-cover w-full h-full'
@@ -67,7 +67,7 @@ const ReviewItem = ({ review }) => {
           />
         )}
       </div>
-      <div className='px-1 mt-2 text-sm text-left'>{contents}</div>
+      <div className='px-1 mt-2 text-sm text-left w-80'>{contents}</div>
     </div>
   );
 };
