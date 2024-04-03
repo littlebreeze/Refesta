@@ -27,7 +27,7 @@ const FestivalInfo = () => {
         setLikedFestival((prevLiked) => !prevLiked);
       }
     } catch (error) {
-      console.error('페스티벌 좋아요 실패', error);
+      console.error('페스티벌 좋아요 실패:', error);
     }
   };
 

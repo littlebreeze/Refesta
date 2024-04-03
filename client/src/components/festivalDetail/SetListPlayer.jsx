@@ -58,7 +58,7 @@ const SetListPlayer = () => {
     try {
       await instance.patch(`recommendations/songs/${currSong.id}`);
     } catch (error) {
-      console.error('Error:', error);
+      console.error('음악 선호도 증가 오류:', error);
     }
   };
 

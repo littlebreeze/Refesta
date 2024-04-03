@@ -29,7 +29,7 @@ const SearchResultContainer = () => {
         setFestivalList(response.data.data.festivalList);
         setArtistList(response.data.data.artistList);
       } catch (error) {
-        console.error('Error:', error);
+        console.error('검색어 받아오기 오류:', error);
       }
     };
     getSearchResultData();

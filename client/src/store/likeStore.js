@@ -9,12 +9,12 @@ const useLikeStore = create((set) => ({
   likeFestivalList: [],
   getLikeFestivalList: async () => {
     try {
-      const res = await instance.get(`${baseURL}/members/festivals`);
+      const response = await instance.get(`${baseURL}/members/festivals`);
       set((state) => ({
-        likeFestivalList: res.data.data.festivalList,
+        likeFestivalList: response.data.data.festivalList,
       }));
-    } catch (e) {
-      console.log(e);
+    } catch (error) {
+      console.log('좋아하는 페스티벌 목록 조회 실패:', error);
     }
   },
 
@@ -22,12 +22,12 @@ const useLikeStore = create((set) => ({
   likeArtistList: [],
   getLikeArtistList: async () => {
     try {
-      const res = await instance.get(`${baseURL}/members/artists`);
+      const response = await instance.get(`${baseURL}/members/artists`);
       set((state) => ({
-        likeArtistList: res.data.data.artistList,
+        likeArtistList: response.data.data.artistList,
       }));
-    } catch (e) {
-      console.log(e);
+    } catch (error) {
+      console.log('좋아하는 아티스트 정보 조회 실패:', error);
     }
   },
   // 아티스트 좋아요 토글

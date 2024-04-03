@@ -23,8 +23,8 @@ const ReviewWrapper = () => {
         try {
           const compressedFile = await browserImageCompression(file);
           setSelectedFile(compressedFile);
-        } catch (e) {
-          console.log('이미지 압축 오류', e);
+        } catch (error) {
+          console.error('이미지 압축 오류:', error);
         }
       } else {
         setSelectedFile(file);
@@ -39,10 +39,7 @@ const ReviewWrapper = () => {
       {isModalOpen ? (
         <></>
       ) : (
-        <div
-          className='fixed w-10 bg-gray-400 rounded-full opacity-60 bottom-3 right-3'
-          onClick={handlePlusClick}
-        >
+        <div className='fixed w-10 bg-gray-400 rounded-full opacity-60 bottom-3 right-3' onClick={handlePlusClick}>
           <img src={plus} />
           <input
             ref={fileInputRef}
@@ -54,11 +51,7 @@ const ReviewWrapper = () => {
         </div>
       )}
 
-      <RegisterReview
-        isOpen={isModalOpen}
-        onClose={() => setModalOpen(false)}
-        selectedFile={selectedFile}
-      />
+      <RegisterReview isOpen={isModalOpen} onClose={() => setModalOpen(false)} selectedFile={selectedFile} />
     </div>
   );
 };

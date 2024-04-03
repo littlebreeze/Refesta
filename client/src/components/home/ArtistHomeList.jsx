@@ -22,7 +22,7 @@ const ArtistHomeList = () => {
 
   useEffect(() => {
     if (!isLoading) setArtistData(data.data.data.artistInfoList);
-    if (isError) console.log(error);
+    if (isError) console.log('아티스트 정보 오류', error);
   }, [data]);
 
   return (

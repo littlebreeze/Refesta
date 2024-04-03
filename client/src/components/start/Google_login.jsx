@@ -39,15 +39,13 @@ const Google_Login = () => {
       // isSigUp으로 기존/신규 여부 판단
       response.data.data.signUp ? handleProfile(response.data.data) : handleHome();
     } catch (error) {
-      console.log(error);
+      console.log('로그인 실패:', error);
     }
   };
 
   useEffect(() => {
     if (code) {
       postLogin(code);
-    } else {
-      console.log('로그인 재시도하세요.');
     }
   }, [code, nav]);
 
