@@ -70,10 +70,6 @@ Refesta을 통해 맞춤 페스티벌 추천을 받고, 예매하고, 추억해�
 
 ## 💻 주요 기술
 
-- ![](https://img.shields.io/badge/Framework-%23121011?style=for-the-badge)![Spring Boot](https://img.shields.io/badge/springboot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white)![](https://img.shields.io/badge/2.7.13-515151?style=for-the-badge)
-- ![](https://img.shields.io/badge/Build-%23121011?style=for-the-badge)![Gradle](https://img.shields.io/badge/Gradle-02303A?style=for-the-badge&logo=Gradle&logoColor=white)![](https://img.shields.io/badge/9.0-515151?style=for-the-badge)
-- ![](https://img.shields.io/badge/Language-%23121011?style=for-the-badge)![Java](https://img.shields.io/badge/java-%23ED8B00?style=for-the-badge&logo=openjdk&logoColor=white)![](https://img.shields.io/badge/17-515151?style=for-the-badge)
-
 [![React](https://img.shields.io/badge/react-18.2.0-blue?style=flat&logo=react)](https://ko.legacy.reactjs.org/)
 [![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.2.3-green?style=flat&logo=spring)](https://spring.io/projects/spring-boot)
 [![Java](https://img.shields.io/badge/Java-17-orange?style=flat&logo=java)](https://www.oracle.com/java/)
