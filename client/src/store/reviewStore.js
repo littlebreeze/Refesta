@@ -14,7 +14,7 @@ const useReviewStore = create((set) => ({
         reviewList: response.data.data,
       }));
     } catch (error) {
-      console.log('페스티벌 후기 리스트 조회 실패:', error);
+      //error
     }
   },
   // 후기 작성
@@ -30,7 +30,7 @@ const useReviewStore = create((set) => ({
       });
       if (onSuccess) onSuccess();
     } catch (error) {
-      console.log('후기 작성 실패:', error);
+      //error
       return null;
     }
   },
@@ -44,7 +44,7 @@ const useReviewStore = create((set) => ({
         myReviewList: response.data.data.reviewList,
       }));
     } catch (error) {
-      console.log('내가 쓴 후기 조회 실패:', error);
+      //error
     }
   },
 
@@ -57,7 +57,7 @@ const useReviewStore = create((set) => ({
         myReviewList: state.myReviewList.filter((review) => review.reviewId !== id),
       }));
     } catch (error) {
-      console.log('후기 삭제 실패:', error);
+      //error
     }
   },
 }));

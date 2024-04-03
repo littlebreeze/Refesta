@@ -24,7 +24,7 @@ const ReviewWrapper = () => {
           const compressedFile = await browserImageCompression(file);
           setSelectedFile(compressedFile);
         } catch (error) {
-          console.error('이미지 압축 오류:', error);
+          //error
         }
       } else {
         setSelectedFile(file);

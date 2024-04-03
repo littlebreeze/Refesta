@@ -41,16 +41,16 @@ const FestivalDetailPage = () => {
           nav('/Notfound');
         }
       } catch (error) {
-        console.error('페스티벌 정보 조회 실패:', error);
+        //error
       }
     };
 
     // 페스티벌 조회수 증가
     const increaseFestivalViewCount = async () => {
       try {
-        const response = await instance.patch(`festivals/${id}/views`);
-      } catch (error) {
-        console.error('페스티벌 조회수 증가 실패:', error);
+        const response = await instance.patch(`recommendations/festivals/${id}?point=1`);
+      } catch (e) {
+        //error
       }
     };
 
@@ -77,7 +77,7 @@ const FestivalDetailPage = () => {
           const response = await instance.get(`festivals/${id}/info`);
           setFestivalInfoDetailData(response.data.data.infoImgUrl);
         } catch (error) {
-          console.error('예정 페스티벌 정보 조회 실패:', error);
+          //error
         }
       };
       getFestivalInfoDetailData();
@@ -91,7 +91,7 @@ const FestivalDetailPage = () => {
           addSongInfoMap(response.data.data.songInfoMap);
           setSelectedLineupList(response.data.data.lineupList);
         } catch (error) {
-          console.error('완료 페스티벌 정보 조회 실패:', error);
+          //error
         }
       };
       getSetListData();

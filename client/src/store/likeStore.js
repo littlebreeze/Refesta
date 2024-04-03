@@ -14,7 +14,7 @@ const useLikeStore = create((set) => ({
         likeFestivalList: response.data.data.festivalList,
       }));
     } catch (error) {
-      console.log('좋아하는 페스티벌 목록 조회 실패:', error);
+      //error
     }
   },
 
@@ -27,7 +27,7 @@ const useLikeStore = create((set) => ({
         likeArtistList: response.data.data.artistList,
       }));
     } catch (error) {
-      console.log('좋아하는 아티스트 정보 조회 실패:', error);
+      //error
     }
   },
   // 아티스트 좋아요 토글

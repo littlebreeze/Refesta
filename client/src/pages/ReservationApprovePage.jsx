@@ -17,7 +17,7 @@ const ReservationApprovePage = () => {
           nav(`/reservation/result/${data.data.reservation_id}`);
         })
         .catch((error) => {
-          console.log('결제 승인 오류:', error);
+          //error
         });
     }
   }, []);

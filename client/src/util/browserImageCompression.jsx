@@ -8,7 +8,7 @@ const browserImageCompression = async (file) => {
     };
     return await imageCompression(file, options);
   } catch (error) {
-    console.log('이미지 압축 실패:', error);
+    //error
   }
   return;
 };

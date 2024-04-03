@@ -51,12 +51,10 @@ const GenreList = ({ setStep, stepParam }) => {
   const onClickStart = () => {
     setModalOpen(true);
     mutate(selectedGenre, {
-      onMutate: () => {
-        console.log('mutate');
-      },
+      onMutate: () => {},
       onSuccess: (data, variables, context) => {
         setModalOpen(false);
-        console.log('success');
+
         Swal.fire({
           title: '환영합니다.',
           html: 'Refesta에서 당신에게 <br>딱 맞는 페스티벌을 찾아보세요!',
@@ -66,10 +64,10 @@ const GenreList = ({ setStep, stepParam }) => {
         nav('/', { replace: true });
       },
       onError: (error, variables, context) => {
-        console.log(error);
+        //error
       },
       onSettled: (data, error, variables, context) => {
-        console.log('settled');
+        //settled
       },
     });
     // setTimeout(() => {
@@ -82,7 +80,7 @@ const GenreList = ({ setStep, stepParam }) => {
     // }, 6000);
 
     if (isError) {
-      console.log('장르 선택 오류:', error);
+      //error
     }
   };
 
