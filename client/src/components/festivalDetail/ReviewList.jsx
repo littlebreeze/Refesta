@@ -15,7 +15,7 @@ const ReviewList = () => {
   }, [addReviews, id]);
 
   return (
-    <div className='flex flex-col items-center'>
+    <div className='flex flex-col items-center pt-3'>
       {reviewList && reviewList.length > 0 ? (
         reviewList.map((review, index) => (
           <ReviewItem

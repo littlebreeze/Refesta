@@ -63,7 +63,6 @@ const GenreList = ({ setStep, stepParam }) => {
           confirmButtonColor: '#061E58',
           confirmButtonText: '확인',
         });
-
         nav('/', { replace: true });
       },
       onError: (error, variables, context) => {
