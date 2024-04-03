@@ -622,9 +622,13 @@ numpy==1.26.3
 6. DB 앤드포인트 복사 후 인텔리제이에 DB 연동(Test Connection으로 Success가 나오는지 꼭 확인) 
 7. application-secret.yaml에 DB정보 추가해주기
 
-## https 적용
+## https 적용 (Nginx)
 
 https://velog.io/@wlstjdwkd/SSL-docker-%EC%BB%A8%ED%85%8C%EC%9D%B4%EB%84%88-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-ssl-%EC%A0%81%EC%9A%A9
+
+## https 적용 (Springboot)
+
+https://velog.io/@kirilocha/Spring-boot-SSL-%EC%9D%B8%EC%A6%9D%EC%84%9C-%EC%A0%81%EC%9A%A9%ED%95%98%EA%B8%B0
 
 ## etc/nginx/sites-available/default, etc/nginx/sites-enabled/default
 
