@@ -30,7 +30,7 @@ Refesta을 통해 맞춤 페스티벌 추천을 받고, 예매하고, 추억해�
 
 ### 맞춤 페스티벌 정보 제공
 
-<!-- gif 들어갈 자리 -->
+![홈](/images/홈.gif)
 
 - 유투브 재생 목록 또는 선택한 선호 장르 기반 추천 시스템을 통해 사용자 맞춤 추천
 - 예정된 페스티벌의 상세 정보 / 좋아할만한 아티스트 / 지난 페스티벌의 셋리스트 제공
@@ -38,7 +38,7 @@ Refesta을 통해 맞춤 페스티벌 추천을 받고, 예매하고, 추억해�
 
 ### 예매
 
-<!-- gif 들어갈 자리 -->
+![예매](/images/예매.gif)
 
 - 예정된 페스티벌에 대한 예매
 - 카카오페이 결제
@@ -46,7 +46,7 @@ Refesta을 통해 맞춤 페스티벌 추천을 받고, 예매하고, 추억해�
 
 ### 검색
 
-<!-- gif 들어갈 자리 -->
+![검색](/images/검색.gif)
 
 - 페스티벌, 아티스트 통합 검색
 
@@ -54,12 +54,15 @@ Refesta을 통해 맞춤 페스티벌 추천을 받고, 예매하고, 추억해�
 
 ### 셋리스트
 
-<!-- gif 들어갈 자리 -->
+![셋리스트](/images/셋리스트.gif)
 
 - 지난 페스티벌을 그대로 본딴 노래 목록 및 플레이어 제공
 - 전체 또는 원하는 아티스트를 선택하여 재생 목록 커스텀 가능
-- 마음에 드는 재생 목록이라면, 연동된 나의 유투브 재생 목록으로 내보내기
 - 노래 감상과 함께 후기 게시판을 통한 페스티벌 추억을 회상
+
+![재생목록내보내기](/images/재생목록내보내기.gif)
+
+- 마음에 드는 재생 목록이라면, 연동된 나의 유투브 재생 목록으로 내보내기
 
 ## 🏛️ 프로젝트 구조도
 
@@ -233,7 +236,7 @@ server
 │  
 └─resources
 ```
-<!-- 추천쪽 파일 구조 cmd -> tree /f | clip 으로 가져오기 -->
+
 ### Backend - 추천
 
 ```
@@ -278,20 +281,15 @@ client
 └─util
 ```
 
-## 📃 명세서
+## 📃 프로젝트 산출물
 
 - [프로젝트 노션](https://instinctive-talk-7a7.notion.site/Aticket-637a6f1875244119a8c89f14ed540b44?pvs=4)
-<!-- 밑에 두 개 바꾸기 -->
-- [메인서버 API 명세서](https://instinctive-talk-7a7.notion.site/API-0123398122db48e6ad3e735f07a752ea)
-- [벤더서버 API 명세서](https://instinctive-talk-7a7.notion.site/API-91f9f1b051804354b61c55cf7f994712)
+- [화면 정의서](https://www.figma.com/file/bxs6l1zCnb9wPEKiLhj30e/%ED%8E%98%EC%8A%A4%ED%8B%B0%EB%B2%8C-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8?type=design&node-id=0-1&mode=design&t=oEZFw1x6hpYl0e2k-0)
+- [API 명세서](https://www.notion.so/API-75a33ec196d343899287e49c6e081bdd)
 
 ## 📊 ERD 다이어그램
 ![ERD](/images/ERD.png)
 
-## 🎨 와이어프레임
-<!-- 이거 우리 있나? -->
-<img src="/images/와이어프레임.png"  width="400px" height="600px">
-
+<!-- 결산 페이지 만들면 넣기 
 ### 프로젝트 결산 노션 페이지
-<!-- 결산 페이지 만들면 넣기 아님 빼기 
 - [4주차 결산 페이지](https://instinctive-talk-7a7.notion.site/8a1c64ca57fd45ff837a4aef4ae53faf?pvs=4) -->
