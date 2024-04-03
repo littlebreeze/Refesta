@@ -15,7 +15,7 @@ const LikeItem = ({ content, onClick }) => {
     try {
       const response = await instance.patch(`festivals/${id}`);
     } catch (error) {
-      console.error('페스티벌 좋아요 실패', error);
+      //error
     }
   };
 

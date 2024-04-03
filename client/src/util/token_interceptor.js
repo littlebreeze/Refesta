@@ -38,7 +38,7 @@ instance.interceptors.request.use(
   },
   (error) => {
     // 요청 오류 시 작업 수행
-    console.log('요청 인터셉터 실패:', error);
+    //error
     return Promise.reject(error);
   }
 );
@@ -61,7 +61,7 @@ instance.interceptors.response.use(
         // 이미 alert가 띄워진 상태라면 다시 띄우지 않음
         isAlertShown = true; // alert가 떠있음을 표시
         const originRequest = error.config;
-        console.log('인터셉터 응답 실패:', error.response);
+        //error
         try {
           const response = await regenerateRefreshToken();
           if (response.status == 200) {

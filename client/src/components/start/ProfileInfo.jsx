@@ -113,7 +113,7 @@ const ProfileInfo = ({ setStep, stepParam }) => {
         confirmButtonColor: '#061E58',
         confirmButtonText: '확인',
       });
-      console.log('회원가입 실패:', error);
+      //error
     }
   };
 

@@ -20,7 +20,7 @@ const YoutubeConnect = ({ setStep, stepParam }) => {
       }, 2000);
     }
     if (isError) {
-      console.log('재생목록 요청 실패:', error);
+      //error
     }
   };
   const onClickSkip = () => {

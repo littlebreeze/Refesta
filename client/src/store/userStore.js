@@ -21,7 +21,7 @@ const useUserStore = create((set) => ({
         userInfo: response.data.data,
       }));
     } catch (error) {
-      console.log('유저 정보 조회 실패:', error);
+      //error
     }
   },
 
@@ -34,7 +34,7 @@ const useUserStore = create((set) => ({
         bookingList: response.data.data.reservationList,
       }));
     } catch (error) {
-      console.log('예약내역 조회 실패:', error);
+      //error
     }
   },
 }));
