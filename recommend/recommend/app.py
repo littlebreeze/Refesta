@@ -79,11 +79,11 @@ def makeusertable():
     cur.execute("SELECT MAX(id) from member")
     memberN = cur.fetchone()[0]
 
-    cur.execute("SELECT member_id, genre_id FROM prefer_genre")
+    cur.execute("SELECT member_id, genre_id FROM member_genre")
     membergenre = cur.fetchall()
     membergenretable = [[0 for _ in range(9)] for _ in range(memberN)]
     for i in membergenre:
-        membergenretable[i[1]-1][i[0]-1]+=20;
+        membergenretable[i[1]-1][i[0]-1]+=10;
 
     save_to_csv(membergenretable, 'membergenretable.csv')
 
