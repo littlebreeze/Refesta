@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
 
+import Swal from 'sweetalert2';
 import instance from '@util/token_interceptor';
 import { useGenreQuery } from '@/queries/startPagesQueries';
 
@@ -48,14 +49,20 @@ const GenreList = ({ setStep, stepParam }) => {
   };
 
   const onClickStart = () => {
+    setModalOpen(true);
     mutate(selectedGenre, {
       onMutate: () => {
         console.log('mutate');
-        setModalOpen(true);
       },
       onSuccess: (data, variables, context) => {
         console.log('success');
-        alert('서비스를 시작합니다');
+        Swal.fire({
+          title: '환영합니다.',
+          html: 'Refesta에서 당신에게 <br>딱 맞는 페스티벌을 찾아보세요!',
+          confirmButtonColor: '#061E58',
+          confirmButtonText: '확인',
+        });
+
         nav('/', { replace: true });
       },
       onError: (error, variables, context) => {

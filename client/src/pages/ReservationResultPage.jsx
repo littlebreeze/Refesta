@@ -35,16 +35,13 @@ const ReservationResultPage = () => {
     <div className='flex flex-col items-center justify-between w-full h-full'>
       <div className='flex flex-col items-center'>
         <div className='w-full mt-10'>
-          <img
-            className='w-full'
-            src={billImg}
-          />
+          <img className='w-full' src={billImg} />
         </div>
         <div className='w-full mt-5 text-sm text-center text-gray-400'>예매번호 : {reservationNum}</div>
         <BillingResult billingResult={billingResult} />
       </div>
       <button
-        className='flex items-center justify-center w-11/12 mb-5 text-white rounded-md bg-ourIndigo h-14'
+        className='flex items-center justify-center w-11/12 mb-16 text-white rounded-md bg-ourIndigo h-14'
         onClick={() => {
           nav('/', { replace: true });
         }}

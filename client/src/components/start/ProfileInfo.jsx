@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 
+import Swal from 'sweetalert2';
+
 import defaultImg from '@assets/default_img.jpg';
 import editPencil from '@assets/edit_pencil.png';
 
@@ -7,7 +9,6 @@ import { useProfileQuery, usePostProfileQuery } from '@/queries/startPagesQuerie
 
 const ProfileInfo = ({ setStep, stepParam }) => {
   const { data, isLoading, isError, error } = useProfileQuery();
-
   const [nickname, setNickname] = useState('');
   const [imgInfo, setImgInfo] = useState({
     url: '',
@@ -59,11 +60,21 @@ const ProfileInfo = ({ setStep, stepParam }) => {
     let size = e.target.files[0].size;
 
     if (size > maxSize) {
-      alert('파일 용량이 큽니다');
+      Swal.fire({
+        title: '파일 용량 초과',
+        html: '파일 용량이 너무 큽니다.<br>10MB 이하의 파일을 첨부해 주세요. ',
+        confirmButtonColor: '#061E58',
+        confirmButtonText: '확인',
+      });
       return;
     }
     if (!allowedTypes.includes(type)) {
-      alert('허용되지 않는 파일 타입입니다.');
+      Swal.fire({
+        title: '지원하지 않는 타입',
+        html: '지원하지 않는 파일 타입입니다.<br>jpg/jpeg/png/gif 중에서 첨부해 주세요.',
+        confirmButtonColor: '#061E58',
+        confirmButtonText: '확인',
+      });
       return;
     }
 
@@ -78,7 +89,12 @@ const ProfileInfo = ({ setStep, stepParam }) => {
   // 사용자 입력 정보 서버로 전달
   const onClickRegist = () => {
     if (!nickname) {
-      alert('닉네임은 비워둘 수 없습니다.');
+      Swal.fire({
+        title: '닉네임 설정',
+        html: '닉네임을 한 글자 이상 입력해 주세요.',
+        confirmButtonColor: '#061E58',
+        confirmButtonText: '확인',
+      });
       return;
     }
     const formData = new FormData();
@@ -91,7 +107,12 @@ const ProfileInfo = ({ setStep, stepParam }) => {
       setStep(stepParam.step2);
     }
     if (isError) {
-      alert('요청 실패');
+      Swal.fire({
+        title: '요청 실패',
+        html: '가입에 실패했습니다.<br>다시 시도해 주세요.',
+        confirmButtonColor: '#061E58',
+        confirmButtonText: '확인',
+      });
       console.log(error);
     }
   };
