@@ -85,6 +85,8 @@ def makeusertable():
     for i in membergenre:
         membergenretable[i[1]-1][i[0]-1]+=20;
 
+    save_to_csv(membergenretable, 'membergenretable.csv')
+
     #2
     cur.execute("SELECT COUNT(*) from festival")
     festivalN = cur.fetchone()[0]
@@ -117,6 +119,8 @@ def makeusertable():
             for j in range(9):
                 if j==4: continue
                 lineupgenretable[j][i]-=15
+
+    save_to_csv(lineupgenretable, 'lineupgenretable.csv')
 
     #1+2
     memberfestivalgenretable = [[0 for _ in range(festivalN)] for _ in range(memberN)]
