@@ -297,7 +297,11 @@ if __name__ == '__main__':
     cur.execute("SELECT MAX(id) FROM member")
     memberN = cur.fetchone()[0]
     for i in range(memberN):
+        cur.execute(f"SELECT * FROM member WHERE id = {i+1}")
+        row = cur.fetchone()
+        if row is None: continue
         memberrecommend(i + 1)
+
     cur.close()
     conn.close()
     scheduler.start()
