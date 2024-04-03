@@ -1,5 +1,6 @@
 import { useState } from 'react';
 
+import Swal from 'sweetalert2';
 import { getGenreImage } from '@util/get-genre-image';
 
 import select from '@assets/select.png';
@@ -9,7 +10,12 @@ const GenreItem = ({ icon, onClickGenre, selectedGenre }) => {
 
   const onClickItem = () => {
     if (!selectedGenre.includes(icon.id) && selectedGenre.length === 3) {
-      alert('장르는 3개까지 선택 가능합니다.');
+      Swal.fire({
+        title: '장르 선택 초과',
+        html: '장르는 3개까지 선택 가능합니다.',
+        confirmButtonColor: '#061E58',
+        confirmButtonText: '확인',
+      });
       return;
     }
     setIsSelected(!isSelected);
