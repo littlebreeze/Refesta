@@ -198,7 +198,7 @@ const RegisterReviewPage = ({ isOpen, onClose, selectedFile: propSelectedFile })
                     onClick={handleImageChange}
                   >
                     <img
-                      className='w-full'
+                      className='w-3/4'
                       src={picture}
                     />
                   </div>
