@@ -34,7 +34,6 @@ const ProfileInfo = ({ setStep, stepParam }) => {
   };
 
   useEffect(() => {
-    console.log(data);
     if (!state) {
       nav('/', { replace: true });
     }
