@@ -83,7 +83,7 @@ def makeusertable():
     membergenre = cur.fetchall()
     membergenretable = [[0 for _ in range(9)] for _ in range(memberN)]
     for i in membergenre:
-        membergenretable[i[1]-1][i[0]-1]+=1;
+        membergenretable[i[1]-1][i[0]-1]+=20;
 
     #2
     cur.execute("SELECT COUNT(*) from festival")
