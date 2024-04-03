@@ -36,7 +36,7 @@ const ArtistDetail = () => {
       try {
         const response = await instance.patch(`recommendations/artists/${id}?point=1`);
       } catch (error) {
-        console.error('아티스트 조회수 증가 오류:', error);
+        //console.error('아티스트 조회수 증가 오류:', error);
       }
     };
 
@@ -56,20 +56,10 @@ const ArtistDetail = () => {
           <div>
             <div className='relative'>
               <div className='z-0 flex items-center justify-center mx-20 overflow-hidden rounded-full w-13 h-13'>
-                <img
-                  className='object-cover h-full'
-                  src={artist.pictureUrl}
-                  alt='사진'
-                />
+                <img className='object-cover h-full' src={artist.pictureUrl} alt='사진' />
               </div>
-              <div
-                className='absolute w-12 h-12 py-2.5 bottom-0 right-12'
-                onClick={handleLikeBtn}
-              >
-                <img
-                  src={artist.liked ? `${heartFull}` : `${heart}`}
-                  className='h-full'
-                />
+              <div className='absolute w-12 h-12 py-2.5 bottom-0 right-12' onClick={handleLikeBtn}>
+                <img src={artist.liked ? `${heartFull}` : `${heart}`} className='h-full' />
               </div>
             </div>
           </div>

@@ -25,8 +25,7 @@ const useArtistStore = create((set) => ({
         throw new Error('Server Error');
       }
     } catch (error) {
-      console.log('아티스트 상세 조회 실패:', error);
-      throw error;
+      //error
     }
   },
   // 아티스트 좋아요 버튼
@@ -43,7 +42,7 @@ const useArtistStore = create((set) => ({
     try {
       const response = await instance.patch(`${baseURL}/artists/${artistId}`);
     } catch (error) {
-      console.log('아티스트 좋아요 실패:', error);
+      //error
     }
   },
 }));

@@ -28,7 +28,7 @@ const PlayListCreateButton = () => {
         try {
           createYoutubePlaylist();
         } catch (error) {
-          console.error('유튜브 재생목록 오류:', error);
+          //error
         }
       }
     });
