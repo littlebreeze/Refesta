@@ -49,8 +49,8 @@ const FestivalDetailPage = () => {
     const increaseFestivalViewCount = async () => {
       try {
         const response = await instance.patch(`festivals/${id}/views`);
-      } catch (e) {
-        console.error('페스티벌 조회수 증가 실패:', e);
+      } catch (error) {
+        console.error('페스티벌 조회수 증가 실패:', error);
       }
     };
 

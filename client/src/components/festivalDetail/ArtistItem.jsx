@@ -25,9 +25,9 @@ const ArtistItem = ({ artist }) => {
 
   return (
     <li className='flex-col p-2'>
-      <div className='relative mb-2' onClick={toggleSelect}>
+      <div className='relative mb-2 h-[40px]' onClick={toggleSelect}>
         {isSelectedArtist && <img className='absolute w-[40px] rounded-full ' src={select} alt='' />}
-        <img className='w-[40px] rounded-full' src={artist.pictureUrl} alt='' />
+        <img className='w-[40px] h-full rounded-full object-cover' src={artist.pictureUrl} alt='' />
       </div>
       <div className='w-[40px] text-xs truncate'>{artist.name}</div>
     </li>
