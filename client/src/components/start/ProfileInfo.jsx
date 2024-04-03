@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import Swal from 'sweetalert2';
 
@@ -8,6 +9,8 @@ import editPencil from '@assets/edit_pencil.png';
 import { useProfileQuery, usePostProfileQuery } from '@/queries/startPagesQueries';
 
 const ProfileInfo = ({ setStep, stepParam }) => {
+  const nav = useNavigate();
+
   const { data, isLoading, isError, error } = useProfileQuery();
   const [nickname, setNickname] = useState('');
   const [imgInfo, setImgInfo] = useState({
@@ -30,10 +33,9 @@ const ProfileInfo = ({ setStep, stepParam }) => {
   };
 
   useEffect(() => {
-    // if (!state) {
-    //   alert('잘못된 접근입니다.');
-    //   nav('/', { replace: true });
-    // }
+    if (!data.data.status) {
+      nav('/', { replace: true });
+    }
     if (!isLoading) getUserProfile();
   }, [isLoading]);
 
