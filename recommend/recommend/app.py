@@ -291,6 +291,14 @@ def register():
     return "추천 완료"
 
 if __name__ == '__main__':
+    conn = pymysql.connect(host=DB_HOST, user=DB_USER, password=DB_PASSWORD, db='refesta', charset='utf8')
+    cur = conn.cursor()
     makeusertable()
+    cur.execute("SELECT MAX(id) FROM member")
+    memberN = cur.fetchone()[0]
+    for i in range(memberN):
+        memberrecommend(i + 1)
+    cur.close()
+    conn.close()
     scheduler.start()
     app.run(host='0.0.0.0', port=8082)
