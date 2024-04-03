@@ -11,33 +11,33 @@ const nav = useNavigate;
 const useKakaoStore = create((set) => ({
   kakaoPay: async (festivalId, count) => {
     try {
-      const res = await instance.post(`${baseURL}/reservations`, {
+      const response = await instance.post(`${baseURL}/reservations`, {
         festivalId: festivalId,
         count: count,
       });
-      return res.data.data.redirect_url;
-    } catch (e) {
-      console.log(e);
+      return response.data.data.redirect_url;
+    } catch (error) {
+      console.log('예매 실패:', error);
     }
   },
   billingResult: {},
   getBillingResult: async (reservationId) => {
     try {
-      const res = await instance.get(`${baseURL}/reservations/${reservationId}`);
+      const response = await instance.get(`${baseURL}/reservations/${reservationId}`);
       set((state) => ({
-        billingResult: res.data.data,
+        billingResult: response.data.data,
       }));
-    } catch (e) {
+    } catch (error) {
       nav('/Notfound');
-      console.log(e);
+      console.log('영수증 가져오기 실패:', error);
     }
   },
   approvePayment: async (pgToken) => {
     try {
-      const res = await instance.post(`${baseURL}/reservations/success`, pgToken);
-      return res.data;
-    } catch (e) {
-      console.log(e);
+      const response = await instance.post(`${baseURL}/reservations/success`, pgToken);
+      return response.data;
+    } catch (error) {
+      console.log('결제 승인 실패:', error);
     }
   },
 }));

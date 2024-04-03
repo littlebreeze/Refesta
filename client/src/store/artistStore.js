@@ -16,17 +16,17 @@ const useArtistStore = create((set) => ({
   artist: {},
   addArtist: async (artistId) => {
     try {
-      const res = await instance.get(`${baseURL}/artists/${artistId}`);
-      if (res.data.status === 'success') {
+      const response = await instance.get(`${baseURL}/artists/${artistId}`);
+      if (response.data.status === 'success') {
         set(() => ({
-          artist: res.data.data,
+          artist: response.data.data,
         }));
       } else {
         throw new Error('Server Error');
       }
-    } catch (e) {
-      console.log(e);
-      throw e;
+    } catch (error) {
+      console.log('아티스트 상세 조회 실패:', error);
+      throw error;
     }
   },
   // 아티스트 좋아요 버튼
@@ -41,9 +41,9 @@ const useArtistStore = create((set) => ({
   // 아티스트 좋아요버튼 요청
   updateArtistLike: async (artistId) => {
     try {
-      const res = await instance.patch(`${baseURL}/artists/${artistId}`);
-    } catch (e) {
-      console.log('아티스트 좋아요 실패', e);
+      const response = await instance.patch(`${baseURL}/artists/${artistId}`);
+    } catch (error) {
+      console.log('아티스트 좋아요 실패:', error);
     }
   },
 }));

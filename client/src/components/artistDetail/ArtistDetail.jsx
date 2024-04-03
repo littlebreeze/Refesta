@@ -34,10 +34,9 @@ const ArtistDetail = () => {
     // 아티스트 상세 페이지 접근 데이터 제공
     const increaseArtistViewCount = async () => {
       try {
-        const res = await instance.patch(`recommendations/artists/${id}?point=1`);
-        console.log(res);
-      } catch (e) {
-        console.error('Error:', e);
+        const response = await instance.patch(`recommendations/artists/${id}?point=1`);
+      } catch (error) {
+        console.error('아티스트 조회수 증가 오류:', error);
       }
     };
 

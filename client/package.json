@@ -10,10 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@sweetalert2/themes": "^5.0.16",
     "axios": "^1.6.8",
     "browser-image-compression": "^2.0.2",
-    "korean-regexp": "^1.0.11",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-player": "^2.15.1",
