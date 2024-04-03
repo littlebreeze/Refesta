@@ -19,7 +19,7 @@ const ReservationDetailPage = () => {
   }, [id]);
 
   return (
-    <div>
+    <div className='flex flex-col items-center'>
       <PosterImage posterUrl={billingResult.posterUrl} />
       <BillingResult billingResult={billingResult} />
     </div>
