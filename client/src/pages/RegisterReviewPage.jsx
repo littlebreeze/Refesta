@@ -161,7 +161,7 @@ const RegisterReviewPage = ({ isOpen, onClose, selectedFile: propSelectedFile })
 
   if (!isOpen) return null;
   return (
-    <div className='absolute inset-0 z-50 flex items-center justify-center'>
+    <div className='fixed inset-0 z-50 flex items-center justify-center'>
       {isOpen && (
         <div className='w-full overflow-y-auto bg-white h-lvh'>
           <div className='flex flex-col items-center justify-between w-full h-full pb-10'>
