@@ -55,6 +55,7 @@ const GenreList = ({ setStep, stepParam }) => {
         console.log('mutate');
       },
       onSuccess: (data, variables, context) => {
+        setModalOpen(false);
         console.log('success');
         Swal.fire({
           title: '환영합니다.',
