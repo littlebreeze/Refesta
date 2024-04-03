@@ -625,3 +625,39 @@ numpy==1.26.3
 ## https 적용
 
 https://velog.io/@wlstjdwkd/SSL-docker-%EC%BB%A8%ED%85%8C%EC%9D%B4%EB%84%88-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-ssl-%EC%A0%81%EC%9A%A9
+
+## etc/nginx/sites-available/default, etc/nginx/sites-enabled/default
+
+```conf
+
+server {
+
+        listen 443 ssl; # managed by Certbot
+        ssl_certificate /etc/letsencrypt/live/j10a601.p.ssafy.io/fullchain.pem; # managed by Certbot
+        ssl_certificate_key /etc/letsencrypt/live/j10a601.p.ssafy.io/privkey.pem; # managed by Certbot
+        include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+        ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+
+        server_name j10a601.p.ssafy.io;
+        index index.html index.htm;
+
+        access_log  /var/log/nginx/access.log;
+        error_log   /var/log/nginx/error.log;
+
+        location / {
+                proxy_pass http://j10a601.p.ssafy.io;
+                proxy_set_header Host $host;
+                proxy_set_header X-Real-IP $remote_addr;
+                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                proxy_set_header X-Forwarded-Proto $scheme;
+                proxy_redirect off;
+
+                proxy_buffer_size          128k;
+                proxy_buffers              4 256k;
+                proxy_busy_buffers_size    256k;
+        }
+
+
+}
+
+```
